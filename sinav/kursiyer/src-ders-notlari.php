@@ -1,5 +1,6 @@
 ﻿<?php
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/src.php';
 
 $tur = isset($_GET['tur']) ? strtolower($_GET['tur']) : 'src1';
 $grup = isset($_GET['grup']) ? $_GET['grup'] : 'src';
@@ -217,6 +218,23 @@ $dersler = [
     14 => ["baslik" => "14 - ARAÇ BİLGİSİ VE EKONOMİK SÜRÜŞ", "ico" => "fa-tachometer-alt", "ozet" => "Motor çalışma prensipleri, yeşil bantta sürüş, yakıt tasarrufu teknikleri ve düzenli bakım.", "icerik" => ""],
     15 => ["baslik" => "15 - MESLEKİ GELİŞİM DERSİ", "ico" => "fa-user-graduate", "ozet" => "Müşteri ilişkileri, imaj yönetimi, mesleki etik ve hizmet kalitesini artırma stratejileri.", "icerik" => ""]
 ];
+
+// DB'de ders notu varsa statik katalog yerine DB kullan
+try {
+    $dersRows = src_ders_notlari(db());
+    if (!empty($dersRows)) {
+        $dersler = [];
+        foreach ($dersRows as $dr) {
+            $dersler[(int)$dr['sira']] = [
+                'baslik' => $dr['baslik'],
+                'ico' => $dr['ico'],
+                'ozet' => $dr['ozet'],
+                'icerik' => $dr['icerik'],
+            ];
+        }
+    }
+} catch (Throwable) {
+}
 
 $top_path = __DIR__ . '/_layout_top.php';
 if (file_exists($top_path)) {

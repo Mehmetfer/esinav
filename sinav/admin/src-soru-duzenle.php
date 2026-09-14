@@ -13,7 +13,7 @@ $isEdit = $id > 0;
 $pageTitle = $isEdit ? 'SRC Soru Düzenle' : 'SRC Yeni Soru';
 $activeMenu = 'src-sorular';
 
-$form = ['ders' => 'trafik', 'soru' => '', 'secenek_a' => '', 'secenek_b' => '', 'secenek_c' => '', 'secenek_d' => '', 'dogru' => 'A', 'aktif' => 1, 'kaynak' => 'manuel', 'gorsel' => ''];
+$form = ['ders' => 'is_sagligi', 'soru' => '', 'secenek_a' => '', 'secenek_b' => '', 'secenek_c' => '', 'secenek_d' => '', 'dogru' => 'A', 'aktif' => 1, 'kaynak' => 'manuel', 'gorsel' => ''];
 $error = '';
 $message = '';
 
@@ -26,8 +26,8 @@ if ($isEdit) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $ders = (string)($_POST['ders'] ?? 'trafik');
-    if (!isset(src_ders_adlari()[$ders])) $ders = 'trafik';
+    $ders = (string)($_POST['ders'] ?? 'is_sagligi');
+    if (!isset(src_ders_adlari()[$ders])) $ders = 'is_sagligi';
     $dogru = strtoupper(substr((string)($_POST['dogru'] ?? 'A'), 0, 1));
     if (!in_array($dogru, ['A', 'B', 'C', 'D'], true)) $dogru = 'A';
     $kaynak = trim((string)($_POST['kaynak'] ?? 'manuel'));

@@ -73,7 +73,15 @@ try {
       <a class="nav-item <?= $activeMenu === 'kitaplar' ? 'active' : '' ?>" href="/admin/books.php"><span class="ico">📚</span> E-Kitaplar</a>
       <a class="nav-item <?= $activeMenu === 'animasyonlar' ? 'active' : '' ?>" href="/admin/animations.php"><span class="ico">🎞️</span> Animasyonlar</a>
       <a class="nav-item <?= $activeMenu === 'trafik' ? 'active' : '' ?>" href="/admin/traffic-signs.php"><span class="ico">🅿</span> Trafik İşaretleri</a>
-      
+
+      <a class="nav-item <?= $activeMenu === 'src-ders-notlari' || $activeMenu === 'src-sorular' || str_starts_with((string)$activeMenu, 'src-') ? 'active' : '' ?>" href="/admin/src-ders-notlari.php"><span class="ico">🚛</span> SRC Eğitimi</a>
+      <?php if ($activeMenu === 'src-ders-notlari' || $activeMenu === 'src-sorular' || str_starts_with((string)$activeMenu, 'src-')): ?>
+      <div class="nav-sub">
+        <a class="<?= $activeMenu === 'src-ders-notlari' ? 'active' : '' ?>" href="/admin/src-ders-notlari.php">Ders Notları</a>
+        <a class="<?= $activeMenu === 'src-sorular' ? 'active' : '' ?>" href="/admin/src-sorular.php">Soru Havuzu</a>
+      </div>
+      <?php endif; ?>
+
       <a class="nav-item <?= $activeMenu === 'raporlar' || str_starts_with((string)$activeMenu, 'rapor') ? 'active' : '' ?>" href="/admin/user-progress.php"><span class="ico">📊</span> İlerleme Takibi</a>
       <a class="nav-item <?= $activeMenu === 'ayarlar' ? 'active' : '' ?>" href="/admin/settings.php"><span class="ico">⚙️</span> Ayarlar</a>
     <a class="nav-item <?= $activeMenu === 'reklam' ? 'active' : '' ?>" href="/admin/reklam-yonetim.php"><span class="ico">📣</span> Reklam Yönetimi</a>

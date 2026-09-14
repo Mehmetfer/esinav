@@ -43,7 +43,7 @@ function src_dagilim(): array {
 function src_ensure_tables(PDO $pdo): void {
     $pdo->exec("CREATE TABLE IF NOT EXISTS src_sorular (
       id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      konu VARCHAR(30) NOT NULL DEFAULT 'trafik_cezalar',
+      ders VARCHAR(30) NOT NULL DEFAULT 'is_sagligi',
       soru TEXT NOT NULL,
       secenek_a VARCHAR(500) NOT NULL,
       secenek_b VARCHAR(500) NOT NULL,
@@ -53,7 +53,7 @@ function src_ensure_tables(PDO $pdo): void {
       aktif TINYINT(1) NOT NULL DEFAULT 1,
       gorsel VARCHAR(255) NULL,
       kaynak VARCHAR(20) NULL,
-      KEY idx_src_soru_konu (konu)
+      KEY idx_src_soru_konu (ders)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci");
     $pdo->exec("CREATE TABLE IF NOT EXISTS src_oturum (
       id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -82,6 +82,8 @@ function src_ensure_tables(PDO $pdo): void {
       id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       konu VARCHAR(30) NOT NULL,
       baslik VARCHAR(200) NOT NULL,
+      ozet TEXT NULL,
+      ico VARCHAR(30) NULL,
       icerik LONGTEXT NULL,
       dosya VARCHAR(255) NULL,
       sira TINYINT NOT NULL DEFAULT 0,
@@ -106,7 +108,7 @@ function src_seed_if_needed(PDO $pdo): void {
 }
 
 function src_oturum_soru(PDO $pdo, int $oturumId, int $sira): ?array {
-    $st = $pdo->prepare("SELECT es.sira, es.cevap, s.soru, s.secenek_a, s.secenek_b, s.secenek_c, s.secenek_d, s.dogru, s.gorsel, s.konu FROM src_soru es INNER JOIN src_sorular s ON s.id = es.soru_id WHERE es.oturum_id = ? AND es.sira = ?");
+    $st = $pdo->prepare("SELECT es.sira, es.cevap, s.soru, s.secenek_a, s.secenek_b, s.secenek_c, s.secenek_d, s.dogru, s.gorsel, s.ders FROM src_soru es INNER JOIN src_sorular s ON s.id = es.soru_id WHERE es.oturum_id = ? AND es.sira = ?");
     $st->execute([$oturumId, $sira]);
     return $st->fetch() ?: null;
 }
@@ -116,14 +118,14 @@ function src_oturum_baslat(PDO $pdo, int $kursiyerId, string $tip = 'deneme', ?s
     try {
         $pdo->prepare("UPDATE src_oturum SET durum = 'bitti', bitis = NOW() WHERE kursiyer_id = ? AND durum = 'devam' AND tip = ?")->execute([$kursiyerId, $tip]);
         if ($tip === 'konulu' && $konu) {
-            $st = $pdo->prepare("SELECT id FROM src_sorular WHERE konu = ? AND aktif = 1 ORDER BY RAND() LIMIT 10");
+            $st = $pdo->prepare("SELECT id FROM src_sorular WHERE ders = ? AND aktif = 1 ORDER BY RAND() LIMIT 10");
             $st->execute([$konu]);
             $ids = $st->fetchAll(PDO::FETCH_COLUMN);
         } else {
             $dagilim = src_dagilim();
             $ids = [];
             foreach ($dagilim as $k => $adet) {
-                $st = $pdo->prepare("SELECT id FROM src_sorular WHERE konu = ? AND aktif = 1 ORDER BY RAND() LIMIT ?");
+                $st = $pdo->prepare("SELECT id FROM src_sorular WHERE ders = ? AND aktif = 1 ORDER BY RAND() LIMIT ?");
                 $st->execute([$k, $adet]);
                 foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $fid) { $ids[] = (int)$fid; }
             }
@@ -171,11 +173,11 @@ function src_istatistik(PDO $pdo, int $oturumId): array {
     $konular = src_konular();
     $dersler = [];
     foreach (array_keys($konular) as $k) { $dersler[$k] = ['ad' => $konular[$k], 'toplam' => 0, 'dogru' => 0, 'yanlis' => 0, 'bos' => 0]; }
-    $st = $pdo->prepare("SELECT es.cevap, s.dogru, s.konu FROM src_soru es INNER JOIN src_sorular s ON s.id = es.soru_id WHERE es.oturum_id = ?");
+    $st = $pdo->prepare("SELECT es.cevap, s.dogru, s.ders FROM src_soru es INNER JOIN src_sorular s ON s.id = es.soru_id WHERE es.oturum_id = ?");
     $st->execute([$oturumId]);
     $dogru = $yanlis = $bos = 0;
     foreach ($st->fetchAll() as $r) {
-        $k = (string)($r['konu'] ?? 'trafik_cezalar');
+        $k = (string)($r['ders'] ?? 'trafik_cezalar');
         if (!isset($dersler[$k])) $k = 'trafik_cezalar';
         $dersler[$k]['toplam']++;
         if ($r['cevap'] === null) { $dersler[$k]['bos']++; $bos++; }
@@ -183,4 +185,36 @@ function src_istatistik(PDO $pdo, int $oturumId): array {
         else { $dersler[$k]['yanlis']++; $yanlis++; }
     }
     return ['puan' => $dogru * SRC_PUAN_DOGRU, 'dogru' => $dogru, 'yanlis' => $yanlis, 'bos' => $bos, 'dersler' => $dersler];
+}
+
+/**
+ * SRC ders notlarini DB'den okur (admin panelinden yönetilir).
+ * @return list<array{id:int,konu:string,baslik:string,ozet?:string,ico?:string,icerik?:string,dosya?:string,sira:int,aktif:int}>
+ */
+function src_ders_notlari(PDO $pdo): array
+{
+    try {
+        $rows = $pdo->query(
+            "SELECT * FROM src_ders_notlari WHERE aktif = 1 ORDER BY sira, id"
+        )->fetchAll();
+    } catch (Throwable) {
+        return [];
+    }
+
+    // Katilimci sayfasiyla uyumlu sekilde konulara gore grupla (baslik sirasina gore)
+    $sonuc = [];
+    foreach ($rows as $r) {
+        $sonuc[] = [
+            'id' => (int)$r['id'],
+            'konu' => (string)($r['konu'] ?? ''),
+            'baslik' => (string)$r['baslik'],
+            'ozet' => (string)($r['ozet'] ?? ''),
+            'ico' => (string)($r['ico'] ?? 'fa-book'),
+            'icerik' => (string)($r['icerik'] ?? ''),
+            'dosya' => (string)($r['dosya'] ?? ''),
+            'sira' => (int)$r['sira'],
+            'aktif' => (int)$r['aktif'],
+        ];
+    }
+    return $sonuc;
 }
