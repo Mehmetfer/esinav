@@ -1,0 +1,158 @@
+﻿/* MTSK Teorik E-Sinav — resmi tarza yakin arayuz */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+.mtsk-body{
+  min-height:100vh;
+  background:#d8d4c8;
+  font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+  color:#111;
+}
+.mtsk-wrap{
+  max-width:1280px;margin:0 auto;min-height:100vh;
+  display:flex;flex-direction:column;padding:8px 10px 10px;
+}
+
+.mtsk-header{
+  display:grid;
+  grid-template-columns:140px 1.2fr 1.4fr auto;
+  gap:12px;align-items:center;
+  background:linear-gradient(180deg,#e8e4d4,#d5d0be);
+  border:1px solid #b9b49f;border-radius:8px;
+  padding:8px 12px;margin-bottom:8px;
+}
+.mtsk-brand{display:flex;align-items:center;gap:8px}
+.mtsk-brand strong{font-size:.95rem}
+.mtsk-mini-grid{
+  display:grid;grid-template-columns:repeat(4,8px);gap:2px;
+}
+.mtsk-mini-grid i{width:8px;height:8px;background:#c4c0b0;border-radius:1px;display:block}
+.mtsk-mini-grid i.on{background:#16a34a}
+
+.mtsk-user{display:flex;align-items:center;gap:10px}
+.mtsk-photo{
+  width:48px;height:56px;border-radius:4px;background:#cfd3d8;color:#334155;
+  display:flex;align-items:center;justify-content:center;font-weight:800;border:1px solid #9aa3ad;
+}
+.mtsk-sayin{font-weight:800;font-size:.95rem}
+.mtsk-tc{font-size:.82rem;color:#374151}
+
+.mtsk-exam-type{text-align:center;font-size:.95rem}
+.mtsk-exam-type b{font-size:1.05rem}
+
+.mtsk-right{display:flex;align-items:center;gap:10px}
+.mtsk-clock{
+  position:relative;width:64px;height:64px;
+  display:flex;align-items:center;justify-content:center;
+}
+.mtsk-ring{position:absolute;inset:0;transform:rotate(-90deg)}
+.mtsk-ring .bg{fill:none;stroke:#c5c1b2;stroke-width:3.2}
+.mtsk-ring .fg{fill:none;stroke:#dc2626;stroke-width:3.2;stroke-linecap:round}
+.mtsk-clock span{font-weight:800;font-size:.9rem;position:relative;z-index:1}
+.mtsk-clock-label{font-size:.68rem;color:#444;max-width:70px;line-height:1.15}
+.mtsk-info{
+  width:34px;height:34px;border-radius:50%;border:2px solid #64748b;
+  background:#e2e8f0;font-weight:800;cursor:pointer;
+}
+.mtsk-finish{
+  border:1px solid #7f1d1d;background:#b91c1c;color:#fff;
+  font-weight:800;padding:10px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;
+}
+
+.mtsk-main{
+  flex:1;display:grid;grid-template-columns:1.15fr 1fr;gap:10px;min-height:360px;
+}
+.mtsk-qbox,.mtsk-opts{
+  background:#f7f4ea;border:1px solid #c9c3ae;border-radius:10px;padding:14px 16px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);
+}
+.mtsk-qhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap}
+.mtsk-qhead h1{margin:0;font-size:1.25rem}
+.mtsk-progress{display:flex;align-items:center;gap:8px;min-width:240px;flex:1;font-size:.8rem;color:#444}
+.mtsk-bar{flex:1;height:12px;background:#d6d3d1;border-radius:999px;overflow:hidden;border:1px solid #a8a29e}
+.mtsk-bar i{display:block;height:100%;background:#111}
+.mtsk-progress b{min-width:40px}
+.mtsk-qtext{font-size:1.15rem;line-height:1.6;font-weight:600;margin:0}
+.mtsk-qimg{margin-top:14px;text-align:center}
+.mtsk-qimg img{
+  max-width:100%;max-height:340px;width:auto;height:auto;
+  border-radius:8px;border:1px solid #c4bdb0;background:#fff;
+  object-fit:contain;
+}
+
+.mtsk-opts{display:flex;flex-direction:column;gap:12px;justify-content:center}
+.mtsk-opt{
+  display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;
+  border:1px solid #d6b896;background:#f3d2b0;color:#111;
+  border-radius:14px;padding:16px 18px;cursor:pointer;font:inherit;
+  box-shadow:0 2px 0 rgba(0,0,0,.06);
+}
+.mtsk-opt:hover{filter:brightness(1.03)}
+.mtsk-opt.selected{outline:3px solid #7c2d12;background:#ebb07a}
+.mtsk-opt em{font-style:normal;font-weight:900;min-width:24px}
+.mtsk-opt span{font-weight:600;line-height:1.4;padding-top:1px}
+
+.mtsk-footer{
+  margin-top:10px;display:grid;grid-template-columns:150px 1fr 150px;gap:8px;align-items:center;
+}
+.mtsk-nav{
+  border:0;background:#7f1d1d;color:#fff;font-weight:800;
+  padding:14px 8px;border-radius:8px;cursor:pointer;
+}
+.mtsk-nav:disabled{opacity:.4;cursor:default}
+.mtsk-grid{
+  display:grid;grid-template-columns:repeat(25,minmax(0,1fr));gap:3px;
+  background:rgba(0,0,0,.06);border-radius:8px;padding:8px 6px;
+}
+.mtsk-cell{
+  border:0;background:transparent;cursor:pointer;padding:0;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.mtsk-cell .ans{
+  width:22px;height:22px;border-radius:50%;background:#b91c1c;color:#fff;
+  font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;
+}
+.mtsk-cell .empty{
+  width:18px;height:18px;border-radius:50%;background:#fff;border:1px solid #a8a29e;
+}
+.mtsk-cell .cur{
+  width:22px;height:22px;border-radius:50%;background:#111;
+}
+.mtsk-cell .no{font-size:.68rem;font-weight:700;color:#333}
+.mtsk-cell.current .no{font-weight:900}
+
+/* start page helpers */
+.k-exam-start{text-align:center;padding:28px 20px}
+.k-timer-box{margin-bottom:18px}
+.k-timer-label{font-weight:700;color:#64748b;margin-bottom:6px}
+.k-timer-big{font-size:2.4rem;font-weight:800;letter-spacing:.06em}
+.k-start-btn{
+  display:inline-block;border:0;background:#3d4f8f;color:#fff;
+  font-weight:800;font-size:1.15rem;padding:14px 48px;border-radius:10px;
+  cursor:pointer;text-decoration:none;
+}
+.k-info-box{
+  margin:16px auto 0;max-width:720px;text-align:left;
+  background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;
+  border-radius:10px;padding:12px 14px;font-size:.9rem;line-height:1.45;
+}
+.k-btn-sm{
+  display:inline-block;background:#2563eb;color:#fff;text-decoration:none;
+  padding:7px 12px;border-radius:8px;font-size:.82rem;font-weight:700;
+}
+
+@media (max-width:1000px){
+  .mtsk-header{grid-template-columns:1fr;text-align:left}
+  .mtsk-main{grid-template-columns:1fr}
+  .mtsk-footer{grid-template-columns:1fr}
+  .mtsk-grid{grid-template-columns:repeat(10,minmax(0,1fr))}
+}
+
+
+.mtsk-report-wrap{margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mtsk-report{border:1px solid #b45309;background:#fef3c7;color:#92400e;font-weight:700;font-size:.8rem;padding:7px 12px;border-radius:8px;cursor:pointer}
+.mtsk-report:hover{background:#fde68a}
+.mtsk-report:disabled{opacity:.55;cursor:default}
+.mtsk-report-msg{font-size:.82rem;font-weight:700}
+.mtsk-report-msg.ok{color:#15803d}
+.mtsk-report-msg.err{color:#b91c1c}
+

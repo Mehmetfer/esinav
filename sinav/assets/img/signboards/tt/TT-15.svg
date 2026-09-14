@@ -1,0 +1,6 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="TT-15">
+  <circle cx="100" cy="92" r="72" fill="#fff" stroke="#e10600" stroke-width="12"/>
+  <line x1="48" y1="48" x2="152" y2="136" stroke="#e10600" stroke-width="10"/>
+  <text x="100" y="168" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="18" fill="#111">TT-15</text>
+  <text x="100" y="192" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#334155">Yasak / kısıtlama</text>
+</svg>

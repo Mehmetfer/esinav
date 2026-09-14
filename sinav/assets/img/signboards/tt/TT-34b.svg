@@ -1,0 +1,6 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="TT-34b">
+  <circle cx="100" cy="92" r="72" fill="#fff" stroke="#9ca3af" stroke-width="10"/>
+  <line x1="48" y1="140" x2="152" y2="44" stroke="#9ca3af" stroke-width="12"/>
+  <text x="100" y="100" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#374151">TT-34b</text>
+  <text x="100" y="192" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#334155">Son</text>
+</svg>

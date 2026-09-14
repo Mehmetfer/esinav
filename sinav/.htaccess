@@ -1,0 +1,21 @@
+﻿# Apache — Esinav.mehmetfer.com.tr
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+</IfModule>
+
+# config.local.php dis erisime kapali
+<Files "config.local.php">
+  Require all denied
+</Files>
+<Files "config.php">
+  Require all denied
+</Files>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+

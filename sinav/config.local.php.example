@@ -1,0 +1,18 @@
+﻿<?php
+declare(strict_types=1);
+
+/**
+ * Bu dosyayı config.local.php olarak kopyalayın ve gerçek bilgileri yazın.
+ * Hosting: Esinav.mehmetfer.com.tr — DB: u2759108_esinav
+ */
+return [
+    'db_host' => 'localhost',
+    'db_name' => 'u2759108_esinav',
+    'db_user' => 'u2759108_esinav',
+    'db_pass' => 'BURAYA_SIFRE',
+    'db_charset' => 'utf8mb4',
+    'site_name' => 'METRO e-SINAV',
+    'site_url' => 'https://esinav.mehmetfer.com.tr',
+    'session_name' => 'metro_esinav_sess',
+];
+

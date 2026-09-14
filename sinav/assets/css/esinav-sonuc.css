@@ -1,0 +1,73 @@
+/* E-Sinav sonuc istatistikleri */
+.rs-genel{
+  display:grid;grid-template-columns:1.2fr .9fr;gap:14px;
+  background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:14px;
+}
+.rs-genel-left{padding:0 0 16px}
+.rs-head{
+  background:#f59e0b;color:#fff;font-weight:800;padding:10px 14px;font-size:1rem;
+}
+.rs-table{width:100%;border-collapse:collapse}
+.rs-table th,.rs-table td{
+  padding:11px 14px;border-bottom:1px solid #eef2f7;text-align:left;font-size:.92rem;
+}
+.rs-table th{width:42%;color:#475569;font-weight:700;background:#fafafa}
+.rs-badge{
+  display:inline-block;font-weight:800;padding:4px 10px;border-radius:6px;
+}
+.rs-badge.ok{color:#166534;background:#dcfce7}
+.rs-badge.fail{color:#991b1b;background:#fee2e2}
+.rs-pill{
+  display:inline-block;min-width:42px;text-align:center;padding:4px 10px;
+  border-radius:999px;color:#fff;font-weight:800;font-size:.85rem;
+}
+.rs-pill.navy{background:#1e3a8a}
+.rs-pill.blue{background:#38bdf8;color:#0f172a}
+.rs-pill.green{background:#22c55e}
+.rs-pill.orange{background:#f97316}
+.rs-pill.gray{background:#9ca3af}
+.rs-btn{
+  display:inline-block;margin:12px 14px 0;background:#1e3a8a;color:#fff;
+  text-decoration:none;font-weight:700;padding:10px 16px;border-radius:8px;
+}
+.rs-genel-right{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:20px;border-left:1px solid #eef2f7;
+}
+.rs-pie{
+  width:180px;height:180px;border-radius:50%;
+  box-shadow:inset 0 0 0 14px #fff;
+}
+.rs-legend{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:#334155}
+.rs-legend i{
+  display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;
+}
+.rs-legend i.g{background:#22c55e}
+.rs-legend i.r{background:#ef4444}
+.rs-legend i.b{background:#d1d5db}
+
+.rs-dersler{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.rs-ders{
+  background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+.rs-ders-head{
+  background:#6b7280;color:#fff;font-weight:800;padding:10px 12px;font-size:.88rem;
+  min-height:48px;display:flex;align-items:center;
+}
+.rs-mini{width:100%;border-collapse:collapse;font-size:.84rem}
+.rs-mini th,.rs-mini td{padding:9px 10px;border-bottom:1px solid #eef2f7}
+.rs-mini th{text-align:left;color:#64748b;font-weight:700}
+.rs-mini td{text-align:right;font-weight:800}
+
+@media (max-width:1000px){
+  .rs-genel{grid-template-columns:1fr}
+  .rs-genel-right{border-left:0;border-top:1px solid #eef2f7}
+  .rs-dersler{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .rs-dersler{grid-template-columns:1fr}
+}

@@ -1,0 +1,9 @@
+_work/
+_paket/
+_*.py
+*.log
+.env
+config.local.php
+uploads/
+*.sqlite*
+part_*

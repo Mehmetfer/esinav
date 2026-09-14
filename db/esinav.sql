@@ -1,0 +1,2432 @@
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19  Distrib 10.11.14-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: u2759108_esinav
+-- ------------------------------------------------------
+-- Server version	10.11.14-MariaDB-0ubuntu0.24.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `admin_permissions`
+--
+
+DROP TABLE IF EXISTS `admin_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin_permissions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `admin_id` int(10) unsigned NOT NULL,
+  `role_slug` varchar(20) NOT NULL DEFAULT 'admin',
+  `permissions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`permissions`)),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admin_permissions`
+--
+
+LOCK TABLES `admin_permissions` WRITE;
+/*!40000 ALTER TABLE `admin_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `admin_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `animations`
+--
+
+DROP TABLE IF EXISTS `animations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `animations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text DEFAULT NULL,
+  `file_path` varchar(255) DEFAULT NULL,
+  `thumbnail` varchar(255) DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `animations_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `animations_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `animations`
+--
+
+LOCK TABLES `animations` WRITE;
+/*!40000 ALTER TABLE `animations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `animations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ayarlar`
+--
+
+DROP TABLE IF EXISTS `ayarlar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ayarlar` (
+  `anahtar` varchar(64) NOT NULL,
+  `deger` text DEFAULT NULL,
+  PRIMARY KEY (`anahtar`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ayarlar`
+--
+
+LOCK TABLES `ayarlar` WRITE;
+/*!40000 ALTER TABLE `ayarlar` DISABLE KEYS */;
+INSERT INTO `ayarlar` VALUES
+('kurs_adi','METRO SÜRÜCÜ KURSU'),
+('reklam_kodu','<script async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6435990060938299\"\r\n     crossorigin=\"anonymous\"></script>'),
+('site_baslik','METRO e-SINAV');
+/*!40000 ALTER TABLE `ayarlar` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `books`
+--
+
+DROP TABLE IF EXISTS `books`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `books` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text DEFAULT NULL,
+  `file_path` varchar(255) DEFAULT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `books_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `books_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `books`
+--
+
+LOCK TABLES `books` WRITE;
+/*!40000 ALTER TABLE `books` DISABLE KEYS */;
+/*!40000 ALTER TABLE `books` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `slug` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `categories_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `education_groups`
+--
+
+DROP TABLE IF EXISTS `education_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `education_groups` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `slug` varchar(20) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` text DEFAULT NULL,
+  `icon` varchar(10) DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `education_groups`
+--
+
+LOCK TABLES `education_groups` WRITE;
+/*!40000 ALTER TABLE `education_groups` DISABLE KEYS */;
+INSERT INTO `education_groups` VALUES
+(1,'ehliyet','Ehliyet','Ehliyet sÄ±navÄ±na hazÄ±rlÄ±k iÃ§erikleri','ðŸš—',1,1,'2026-09-11 14:28:14'),
+(2,'src','SRC','SRC sÄ±navÄ±na hazÄ±rlÄ±k iÃ§erikleri','ðŸ“‹',2,1,'2026-09-11 14:28:14'),
+(3,'ebru','Ebru Hoca','','',3,1,'2026-09-12 10:53:05'),
+(4,'cank','Cenk Hoca','','',4,1,'2026-09-12 10:53:05');
+/*!40000 ALTER TABLE `education_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `esinav_oturum`
+--
+
+DROP TABLE IF EXISTS `esinav_oturum`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `esinav_oturum` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `kursiyer_id` int(10) unsigned NOT NULL,
+  `baslangic` datetime NOT NULL,
+  `bitis` datetime DEFAULT NULL,
+  `sure_sn` int(11) NOT NULL DEFAULT 2700,
+  `puan` int(11) DEFAULT NULL,
+  `dogru_sayisi` int(11) DEFAULT NULL,
+  `basarili` tinyint(1) DEFAULT NULL,
+  `durum` varchar(10) NOT NULL DEFAULT 'devam',
+  PRIMARY KEY (`id`),
+  KEY `idx_oturum_kursiyer` (`kursiyer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `esinav_oturum`
+--
+
+LOCK TABLES `esinav_oturum` WRITE;
+/*!40000 ALTER TABLE `esinav_oturum` DISABLE KEYS */;
+/*!40000 ALTER TABLE `esinav_oturum` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `esinav_soru`
+--
+
+DROP TABLE IF EXISTS `esinav_soru`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `esinav_soru` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `oturum_id` int(10) unsigned NOT NULL,
+  `soru_id` int(10) unsigned NOT NULL,
+  `sira` tinyint(3) unsigned NOT NULL,
+  `cevap` char(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_oturum_sira` (`oturum_id`,`sira`),
+  KEY `idx_es_oturum` (`oturum_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1451 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `esinav_soru`
+--
+
+LOCK TABLES `esinav_soru` WRITE;
+/*!40000 ALTER TABLE `esinav_soru` DISABLE KEYS */;
+INSERT INTO `esinav_soru` VALUES
+(1,1,46,1,NULL),
+(2,1,18,2,NULL),
+(3,1,6,3,NULL),
+(4,1,25,4,NULL),
+(5,1,14,5,NULL),
+(6,1,42,6,NULL),
+(7,1,13,7,NULL),
+(8,1,41,8,NULL),
+(9,1,2,9,NULL),
+(10,1,1,10,NULL),
+(11,1,15,11,NULL),
+(12,1,44,12,NULL),
+(13,1,30,13,NULL),
+(14,1,5,14,NULL),
+(15,1,27,15,NULL),
+(16,1,20,16,NULL),
+(17,1,12,17,NULL),
+(18,1,28,18,NULL),
+(19,1,45,19,NULL),
+(20,1,11,20,NULL),
+(21,1,16,21,NULL),
+(22,1,48,22,NULL),
+(23,1,26,23,NULL),
+(24,1,29,24,NULL),
+(25,1,33,25,NULL),
+(26,1,36,26,NULL),
+(27,1,24,27,NULL),
+(28,1,23,28,NULL),
+(29,1,39,29,NULL),
+(30,1,9,30,NULL),
+(31,1,34,31,NULL),
+(32,1,3,32,NULL),
+(33,1,22,33,NULL),
+(34,1,37,34,NULL),
+(35,1,4,35,NULL),
+(36,1,40,36,NULL),
+(37,1,47,37,NULL),
+(38,1,43,38,NULL),
+(39,1,50,39,NULL),
+(40,1,49,40,NULL),
+(41,1,19,41,NULL),
+(42,1,8,42,NULL),
+(43,1,31,43,NULL),
+(44,1,32,44,NULL),
+(45,1,21,45,NULL),
+(46,1,38,46,NULL),
+(47,1,17,47,NULL),
+(48,1,7,48,NULL),
+(49,1,10,49,NULL),
+(50,1,35,50,NULL),
+(51,2,5,1,NULL),
+(52,2,15,2,NULL),
+(53,2,36,3,NULL),
+(54,2,42,4,NULL),
+(55,2,3,5,NULL),
+(56,2,20,6,NULL),
+(57,2,32,7,NULL),
+(58,2,12,8,NULL),
+(59,2,37,9,NULL),
+(60,2,44,10,NULL),
+(61,2,46,11,NULL),
+(62,2,35,12,NULL),
+(63,2,14,13,NULL),
+(64,2,49,14,NULL),
+(65,2,25,15,NULL),
+(66,2,21,16,NULL),
+(67,2,33,17,NULL),
+(68,2,29,18,NULL),
+(69,2,38,19,NULL),
+(70,2,50,20,NULL),
+(71,2,6,21,NULL),
+(72,2,11,22,NULL),
+(73,2,7,23,NULL),
+(74,2,13,24,NULL),
+(75,2,34,25,NULL),
+(76,2,18,26,NULL),
+(77,2,1,27,NULL),
+(78,2,23,28,NULL),
+(79,2,30,29,NULL),
+(80,2,45,30,NULL),
+(81,2,43,31,NULL),
+(82,2,40,32,NULL),
+(83,2,47,33,NULL),
+(84,2,26,34,NULL),
+(85,2,39,35,NULL),
+(86,2,48,36,NULL),
+(87,2,24,37,NULL),
+(88,2,9,38,NULL),
+(89,2,4,39,NULL),
+(90,2,41,40,NULL),
+(91,2,31,41,NULL),
+(92,2,8,42,NULL),
+(93,2,22,43,NULL),
+(94,2,2,44,NULL),
+(95,2,10,45,NULL),
+(96,2,27,46,NULL),
+(97,2,28,47,NULL),
+(98,2,17,48,NULL),
+(99,2,16,49,NULL),
+(100,2,19,50,NULL),
+(151,4,10,1,NULL),
+(152,4,17,2,NULL),
+(153,4,4,3,NULL),
+(154,4,26,4,NULL),
+(155,4,49,5,NULL),
+(156,4,29,6,NULL),
+(157,4,25,7,NULL),
+(158,4,38,8,NULL),
+(159,4,37,9,NULL),
+(160,4,34,10,NULL),
+(161,4,6,11,NULL),
+(162,4,23,12,NULL),
+(163,4,19,13,NULL),
+(164,4,13,14,NULL),
+(165,4,50,15,NULL),
+(166,4,45,16,NULL),
+(167,4,40,17,NULL),
+(168,4,28,18,NULL),
+(169,4,43,19,NULL),
+(170,4,27,20,NULL),
+(171,4,35,21,NULL),
+(172,4,41,22,NULL),
+(173,4,42,23,NULL),
+(174,4,33,24,NULL),
+(175,4,9,25,NULL),
+(176,4,18,26,NULL),
+(177,4,1,27,NULL),
+(178,4,48,28,NULL),
+(179,4,32,29,NULL),
+(180,4,24,30,NULL),
+(181,4,3,31,NULL),
+(182,4,7,32,NULL),
+(183,4,21,33,NULL),
+(184,4,20,34,NULL),
+(185,4,8,35,NULL),
+(186,4,36,36,NULL),
+(187,4,14,37,NULL),
+(188,4,12,38,NULL),
+(189,4,2,39,NULL),
+(190,4,30,40,NULL),
+(191,4,47,41,NULL),
+(192,4,22,42,NULL),
+(193,4,46,43,NULL),
+(194,4,44,44,NULL),
+(195,4,31,45,NULL),
+(196,4,11,46,NULL),
+(197,4,39,47,NULL),
+(198,4,5,48,NULL),
+(199,4,16,49,NULL),
+(200,4,15,50,NULL),
+(401,9,46,1,NULL),
+(402,9,246,2,NULL),
+(403,9,216,3,NULL),
+(404,9,48,4,NULL),
+(405,9,119,5,NULL),
+(406,9,137,6,'C'),
+(407,9,183,7,'C'),
+(408,9,192,8,'D'),
+(409,9,33,9,'A'),
+(410,9,175,10,'A'),
+(411,9,30,11,'B'),
+(412,9,110,12,NULL),
+(413,9,214,13,NULL),
+(414,9,108,14,NULL),
+(415,9,191,15,NULL),
+(416,9,109,16,NULL),
+(417,9,130,17,NULL),
+(418,9,77,18,NULL),
+(419,9,6,19,NULL),
+(420,9,168,20,NULL),
+(421,9,12,21,NULL),
+(422,9,152,22,NULL),
+(423,9,172,23,NULL),
+(424,9,245,24,NULL),
+(425,9,126,25,NULL),
+(426,9,90,26,NULL),
+(427,9,13,27,NULL),
+(428,9,143,28,NULL),
+(429,9,241,29,NULL),
+(430,9,22,30,NULL),
+(431,9,167,31,NULL),
+(432,9,209,32,NULL),
+(433,9,224,33,NULL),
+(434,9,10,34,NULL),
+(435,9,182,35,NULL),
+(436,9,222,36,NULL),
+(437,9,112,37,NULL),
+(438,9,41,38,NULL),
+(439,9,20,39,NULL),
+(440,9,240,40,NULL),
+(441,9,63,41,NULL),
+(442,9,113,42,NULL),
+(443,9,154,43,NULL),
+(444,9,120,44,NULL),
+(445,9,219,45,NULL),
+(446,9,4,46,NULL),
+(447,9,56,47,NULL),
+(448,9,195,48,NULL),
+(449,9,213,49,NULL),
+(450,9,72,50,NULL),
+(451,10,38,1,NULL),
+(452,10,193,2,NULL),
+(453,10,131,3,NULL),
+(454,10,90,4,NULL),
+(455,10,246,5,NULL),
+(456,10,204,6,NULL),
+(457,10,26,7,NULL),
+(458,10,105,8,NULL),
+(459,10,245,9,NULL),
+(460,10,167,10,NULL),
+(461,10,247,11,NULL),
+(462,10,44,12,NULL),
+(463,10,226,13,NULL),
+(464,10,185,14,NULL),
+(465,10,109,15,NULL),
+(466,10,12,16,NULL),
+(467,10,96,17,NULL),
+(468,10,149,18,NULL),
+(469,10,71,19,NULL),
+(470,10,142,20,NULL),
+(471,10,212,21,NULL),
+(472,10,58,22,NULL),
+(473,10,151,23,NULL),
+(474,10,178,24,NULL),
+(475,10,219,25,NULL),
+(476,10,13,26,NULL),
+(477,10,117,27,NULL),
+(478,10,130,28,NULL),
+(479,10,17,29,NULL),
+(480,10,115,30,NULL),
+(481,10,32,31,NULL),
+(482,10,171,32,NULL),
+(483,10,202,33,NULL),
+(484,10,4,34,NULL),
+(485,10,29,35,NULL),
+(486,10,144,36,NULL),
+(487,10,225,37,NULL),
+(488,10,125,38,NULL),
+(489,10,39,39,NULL),
+(490,10,22,40,NULL),
+(491,10,124,41,NULL),
+(492,10,238,42,NULL),
+(493,10,82,43,NULL),
+(494,10,150,44,NULL),
+(495,10,203,45,NULL),
+(496,10,1,46,NULL),
+(497,10,31,47,NULL),
+(498,10,154,48,NULL),
+(499,10,112,49,NULL),
+(500,10,49,50,NULL),
+(551,12,71,1,NULL),
+(552,12,226,2,NULL),
+(553,12,63,3,NULL),
+(554,12,230,4,NULL),
+(555,12,137,5,NULL),
+(556,12,143,6,NULL),
+(557,12,160,7,NULL),
+(558,12,105,8,NULL),
+(559,12,95,9,NULL),
+(560,12,64,10,NULL),
+(561,12,228,11,NULL),
+(562,12,24,12,NULL),
+(563,12,171,13,NULL),
+(564,12,213,14,NULL),
+(565,12,241,15,NULL),
+(566,12,174,16,NULL),
+(567,12,202,17,NULL),
+(568,12,55,18,NULL),
+(569,12,116,19,NULL),
+(570,12,90,20,NULL),
+(571,12,36,21,NULL),
+(572,12,92,22,NULL),
+(573,12,66,23,NULL),
+(574,12,148,24,NULL),
+(575,12,32,25,NULL),
+(576,12,54,26,NULL),
+(577,12,215,27,NULL),
+(578,12,123,28,NULL),
+(579,12,40,29,NULL),
+(580,12,120,30,NULL),
+(581,12,19,31,NULL),
+(582,12,109,32,NULL),
+(583,12,217,33,NULL),
+(584,12,140,34,NULL),
+(585,12,22,35,NULL),
+(586,12,74,36,NULL),
+(587,12,16,37,NULL),
+(588,12,84,38,NULL),
+(589,12,69,39,NULL),
+(590,12,94,40,NULL),
+(591,12,135,41,NULL),
+(592,12,67,42,NULL),
+(593,12,5,43,NULL),
+(594,12,240,44,NULL),
+(595,12,128,45,NULL),
+(596,12,201,46,NULL),
+(597,12,192,47,NULL),
+(598,12,81,48,NULL),
+(599,12,87,49,NULL),
+(600,12,176,50,NULL),
+(601,13,167,1,NULL),
+(602,13,108,2,NULL),
+(603,13,126,3,NULL),
+(604,13,187,4,NULL),
+(605,13,146,5,NULL),
+(606,13,209,6,NULL),
+(607,13,15,7,NULL),
+(608,13,56,8,NULL),
+(609,13,20,9,NULL),
+(610,13,178,10,NULL),
+(611,13,51,11,NULL),
+(612,13,180,12,NULL),
+(613,13,79,13,NULL),
+(614,13,89,14,NULL),
+(615,13,176,15,NULL),
+(616,13,54,16,NULL),
+(617,13,131,17,NULL),
+(618,13,229,18,NULL),
+(619,13,181,19,NULL),
+(620,13,97,20,NULL),
+(621,13,69,21,NULL),
+(622,13,156,22,NULL),
+(623,13,179,23,NULL),
+(624,13,55,24,NULL),
+(625,13,240,25,NULL),
+(626,13,145,26,NULL),
+(627,13,150,27,NULL),
+(628,13,182,28,NULL),
+(629,13,241,29,NULL),
+(630,13,87,30,NULL),
+(631,13,37,31,NULL),
+(632,13,102,32,NULL),
+(633,13,19,33,NULL),
+(634,13,77,34,NULL),
+(635,13,212,35,NULL),
+(636,13,34,36,NULL),
+(637,13,39,37,NULL),
+(638,13,217,38,NULL),
+(639,13,50,39,NULL),
+(640,13,224,40,NULL),
+(641,13,219,41,NULL),
+(642,13,29,42,NULL),
+(643,13,116,43,NULL),
+(644,13,169,44,NULL),
+(645,13,141,45,NULL),
+(646,13,125,46,NULL),
+(647,13,135,47,NULL),
+(648,13,228,48,NULL),
+(649,13,90,49,NULL),
+(650,13,48,50,NULL),
+(651,14,204,1,'A'),
+(652,14,168,2,'C'),
+(653,14,112,3,'C'),
+(654,14,175,4,NULL),
+(655,14,155,5,NULL),
+(656,14,58,6,NULL),
+(657,14,114,7,NULL),
+(658,14,208,8,NULL),
+(659,14,190,9,NULL),
+(660,14,89,10,NULL),
+(661,14,121,11,NULL),
+(662,14,74,12,NULL),
+(663,14,1,13,NULL),
+(664,14,16,14,NULL),
+(665,14,46,15,NULL),
+(666,14,50,16,NULL),
+(667,14,68,17,NULL),
+(668,14,52,18,NULL),
+(669,14,152,19,NULL),
+(670,14,83,20,NULL),
+(671,14,129,21,NULL),
+(672,14,223,22,NULL),
+(673,14,96,23,NULL),
+(674,14,119,24,NULL),
+(675,14,222,25,NULL),
+(676,14,95,26,NULL),
+(677,14,111,27,NULL),
+(678,14,2,28,NULL),
+(679,14,48,29,NULL),
+(680,14,39,30,NULL),
+(681,14,215,31,NULL),
+(682,14,198,32,NULL),
+(683,14,100,33,NULL),
+(684,14,197,34,NULL),
+(685,14,44,35,NULL),
+(686,14,54,36,NULL),
+(687,14,171,37,NULL),
+(688,14,130,38,NULL),
+(689,14,18,39,NULL),
+(690,14,67,40,NULL),
+(691,14,145,41,NULL),
+(692,14,183,42,NULL),
+(693,14,17,43,NULL),
+(694,14,26,44,NULL),
+(695,14,134,45,NULL),
+(696,14,188,46,NULL),
+(697,14,203,47,NULL),
+(698,14,218,48,NULL),
+(699,14,161,49,NULL),
+(700,14,86,50,NULL),
+(701,15,33,1,NULL),
+(702,15,7,2,NULL),
+(703,15,16,3,NULL),
+(704,15,2,4,NULL),
+(705,15,48,5,NULL),
+(706,15,83,6,NULL),
+(707,15,10,7,NULL),
+(708,15,114,8,NULL),
+(709,15,227,9,NULL),
+(710,15,24,10,NULL),
+(711,15,77,11,NULL),
+(712,15,43,12,NULL),
+(713,15,215,13,NULL),
+(714,15,216,14,NULL),
+(715,15,226,15,NULL),
+(716,15,49,16,NULL),
+(717,15,13,17,NULL),
+(718,15,121,18,NULL),
+(719,15,147,19,NULL),
+(720,15,201,20,NULL),
+(721,15,63,21,NULL),
+(722,15,71,22,NULL),
+(723,15,138,23,NULL),
+(724,15,69,24,NULL),
+(725,15,131,25,NULL),
+(726,15,62,26,NULL),
+(727,15,74,27,NULL),
+(728,15,67,28,NULL),
+(729,15,105,29,NULL),
+(730,15,176,30,NULL),
+(731,15,198,31,NULL),
+(732,15,154,32,NULL),
+(733,15,107,33,NULL),
+(734,15,21,34,NULL),
+(735,15,243,35,NULL),
+(736,15,95,36,NULL),
+(737,15,184,37,NULL),
+(738,15,119,38,NULL),
+(739,15,172,39,NULL),
+(740,15,126,40,NULL),
+(741,15,228,41,NULL),
+(742,15,60,42,NULL),
+(743,15,167,43,NULL),
+(744,15,232,44,NULL),
+(745,15,88,45,NULL),
+(746,15,15,46,NULL),
+(747,15,110,47,NULL),
+(748,15,166,48,NULL),
+(749,15,230,49,NULL),
+(750,15,76,50,NULL),
+(751,16,75,1,'B'),
+(752,16,172,2,'C'),
+(753,16,219,3,NULL),
+(754,16,91,4,NULL),
+(755,16,27,5,NULL),
+(756,16,225,6,NULL),
+(757,16,113,7,NULL),
+(758,16,84,8,NULL),
+(759,16,81,9,NULL),
+(760,16,21,10,NULL),
+(761,16,204,11,NULL),
+(762,16,140,12,NULL),
+(763,16,16,13,NULL),
+(764,16,15,14,NULL),
+(765,16,30,15,NULL),
+(766,16,246,16,NULL),
+(767,16,55,17,NULL),
+(768,16,133,18,NULL),
+(769,16,39,19,NULL),
+(770,16,139,20,NULL),
+(771,16,183,21,NULL),
+(772,16,5,22,'C'),
+(773,16,144,23,'D'),
+(774,16,178,24,NULL),
+(775,16,184,25,NULL),
+(776,16,192,26,NULL),
+(777,16,141,27,NULL),
+(778,16,179,28,NULL),
+(779,16,232,29,NULL),
+(780,16,147,30,NULL),
+(781,16,99,31,NULL),
+(782,16,138,32,NULL),
+(783,16,43,33,NULL),
+(784,16,115,34,NULL),
+(785,16,29,35,NULL),
+(786,16,185,36,NULL),
+(787,16,44,37,NULL),
+(788,16,171,38,NULL),
+(789,16,68,39,NULL),
+(790,16,25,40,NULL),
+(791,16,199,41,NULL),
+(792,16,83,42,NULL),
+(793,16,241,43,NULL),
+(794,16,146,44,NULL),
+(795,16,111,45,NULL),
+(796,16,33,46,NULL),
+(797,16,19,47,NULL),
+(798,16,191,48,NULL),
+(799,16,215,49,NULL),
+(800,16,114,50,NULL),
+(801,17,82,1,'A'),
+(802,17,64,2,'B'),
+(803,17,96,3,NULL),
+(804,17,20,4,NULL),
+(805,17,71,5,NULL),
+(806,17,245,6,NULL),
+(807,17,109,7,NULL),
+(808,17,8,8,NULL),
+(809,17,54,9,NULL),
+(810,17,10,10,NULL),
+(811,17,33,11,NULL),
+(812,17,219,12,NULL),
+(813,17,89,13,NULL),
+(814,17,186,14,NULL),
+(815,17,16,15,NULL),
+(816,17,161,16,NULL),
+(817,17,69,17,NULL),
+(818,17,175,18,NULL),
+(819,17,123,19,NULL),
+(820,17,120,20,NULL),
+(821,17,104,21,NULL),
+(822,17,122,22,NULL),
+(823,17,45,23,NULL),
+(824,17,37,24,NULL),
+(825,17,226,25,NULL),
+(826,17,9,26,NULL),
+(827,17,238,27,NULL),
+(828,17,99,28,NULL),
+(829,17,247,29,NULL),
+(830,17,1,30,NULL),
+(831,17,32,31,NULL),
+(832,17,185,32,NULL),
+(833,17,26,33,NULL),
+(834,17,187,34,NULL),
+(835,17,143,35,NULL),
+(836,17,48,36,NULL),
+(837,17,182,37,NULL),
+(838,17,168,38,NULL),
+(839,17,190,39,NULL),
+(840,17,136,40,NULL),
+(841,17,223,41,NULL),
+(842,17,121,42,NULL),
+(843,17,169,43,NULL),
+(844,17,210,44,NULL),
+(845,17,3,45,NULL),
+(846,17,44,46,NULL),
+(847,17,145,47,NULL),
+(848,17,138,48,NULL),
+(849,17,198,49,NULL),
+(850,17,108,50,NULL),
+(851,18,233,1,NULL),
+(852,18,88,2,NULL),
+(853,18,117,3,NULL),
+(854,18,19,4,NULL),
+(855,18,228,5,NULL),
+(856,18,74,6,NULL),
+(857,18,217,7,NULL),
+(858,18,84,8,NULL),
+(859,18,208,9,NULL),
+(860,18,15,10,NULL),
+(861,18,87,11,NULL),
+(862,18,210,12,NULL),
+(863,18,16,13,NULL),
+(864,18,41,14,NULL),
+(865,18,92,15,NULL),
+(866,18,13,16,NULL),
+(867,18,151,17,NULL),
+(868,18,104,18,NULL),
+(869,18,148,19,NULL),
+(870,18,103,20,NULL),
+(871,18,191,21,NULL),
+(872,18,29,22,NULL),
+(873,18,186,23,NULL),
+(874,18,9,24,NULL),
+(875,18,82,25,NULL),
+(876,18,146,26,NULL),
+(877,18,196,27,NULL),
+(878,18,144,28,NULL),
+(879,18,180,29,NULL),
+(880,18,52,30,NULL),
+(881,18,178,31,NULL),
+(882,18,109,32,NULL),
+(883,18,23,33,NULL),
+(884,18,44,34,NULL),
+(885,18,213,35,NULL),
+(886,18,135,36,NULL),
+(887,18,134,37,NULL),
+(888,18,131,38,NULL),
+(889,18,73,39,NULL),
+(890,18,154,40,NULL),
+(891,18,17,41,NULL),
+(892,18,225,42,NULL),
+(893,18,32,43,NULL),
+(894,18,121,44,NULL),
+(895,18,81,45,NULL),
+(896,18,60,46,NULL),
+(897,18,56,47,NULL),
+(898,18,79,48,NULL),
+(899,18,64,49,NULL),
+(900,18,28,50,NULL),
+(901,19,226,1,NULL),
+(902,19,230,2,NULL),
+(903,19,210,3,NULL),
+(904,19,177,4,NULL),
+(905,19,11,5,NULL),
+(906,19,131,6,NULL),
+(907,19,41,7,NULL),
+(908,19,48,8,NULL),
+(909,19,196,9,NULL),
+(910,19,169,10,NULL),
+(911,19,35,11,NULL),
+(912,19,25,12,NULL),
+(913,19,119,13,NULL),
+(914,19,88,14,NULL),
+(915,19,50,15,NULL),
+(916,19,109,16,NULL),
+(917,19,212,17,NULL),
+(918,19,79,18,NULL),
+(919,19,240,19,NULL),
+(920,19,219,20,NULL),
+(921,19,205,21,NULL),
+(922,19,100,22,NULL),
+(923,19,121,23,NULL),
+(924,19,229,24,NULL),
+(925,19,45,25,NULL),
+(926,19,157,26,NULL),
+(927,19,242,27,NULL),
+(928,19,51,28,NULL),
+(929,19,5,29,NULL),
+(930,19,16,30,NULL),
+(931,19,61,31,NULL),
+(932,19,84,32,NULL),
+(933,19,113,33,NULL),
+(934,19,167,34,NULL),
+(935,19,228,35,NULL),
+(936,19,180,36,NULL),
+(937,19,55,37,NULL),
+(938,19,34,38,NULL),
+(939,19,116,39,NULL),
+(940,19,117,40,NULL),
+(941,19,172,41,NULL),
+(942,19,91,42,NULL),
+(943,19,83,43,NULL),
+(944,19,118,44,NULL),
+(945,19,42,45,NULL),
+(946,19,148,46,NULL),
+(947,19,77,47,NULL),
+(948,19,81,48,NULL),
+(949,19,43,49,NULL),
+(950,19,30,50,NULL),
+(951,20,138,1,NULL),
+(952,20,49,2,NULL),
+(953,20,77,3,NULL),
+(954,20,78,4,NULL),
+(955,20,111,5,NULL),
+(956,20,58,6,NULL),
+(957,20,87,7,NULL),
+(958,20,152,8,NULL),
+(959,20,3,9,NULL),
+(960,20,117,10,NULL),
+(961,20,74,11,NULL),
+(962,20,238,12,NULL),
+(963,20,172,13,NULL),
+(964,20,54,14,NULL),
+(965,20,213,15,NULL),
+(966,20,57,16,NULL),
+(967,20,222,17,NULL),
+(968,20,215,18,NULL),
+(969,20,223,19,NULL),
+(970,20,219,20,NULL),
+(971,20,237,21,NULL),
+(972,20,171,22,NULL),
+(973,20,134,23,NULL),
+(974,20,132,24,NULL),
+(975,20,13,25,NULL),
+(976,20,66,26,NULL),
+(977,20,146,27,NULL),
+(978,20,11,28,NULL),
+(979,20,188,29,NULL),
+(980,20,100,30,NULL),
+(981,20,135,31,NULL),
+(982,20,92,32,NULL),
+(983,20,130,33,NULL),
+(984,20,207,34,NULL),
+(985,20,191,35,NULL),
+(986,20,228,36,NULL),
+(987,20,174,37,NULL),
+(988,20,99,38,NULL),
+(989,20,176,39,NULL),
+(990,20,39,40,NULL),
+(991,20,4,41,NULL),
+(992,20,230,42,NULL),
+(993,20,126,43,NULL),
+(994,20,166,44,NULL),
+(995,20,149,45,NULL),
+(996,20,204,46,NULL),
+(997,20,173,47,NULL),
+(998,20,177,48,NULL),
+(999,20,86,49,NULL),
+(1000,20,103,50,NULL),
+(1001,21,89,1,'A'),
+(1002,21,96,2,NULL),
+(1003,21,213,3,NULL),
+(1004,21,40,4,NULL),
+(1005,21,141,5,NULL),
+(1006,21,80,6,NULL),
+(1007,21,226,7,NULL),
+(1008,21,50,8,NULL),
+(1009,21,46,9,NULL),
+(1010,21,81,10,NULL),
+(1011,21,148,11,NULL),
+(1012,21,58,12,NULL),
+(1013,21,245,13,NULL),
+(1014,21,24,14,NULL),
+(1015,21,51,15,NULL),
+(1016,21,60,16,NULL),
+(1017,21,69,17,NULL),
+(1018,21,188,18,NULL),
+(1019,21,48,19,NULL),
+(1020,21,177,20,NULL),
+(1021,21,231,21,NULL),
+(1022,21,26,22,NULL),
+(1023,21,126,23,NULL),
+(1024,21,104,24,NULL),
+(1025,21,174,25,NULL),
+(1026,21,182,26,NULL),
+(1027,21,73,27,NULL),
+(1028,21,128,28,NULL),
+(1029,21,102,29,NULL),
+(1030,21,193,30,NULL),
+(1031,21,54,31,NULL),
+(1032,21,47,32,NULL),
+(1033,21,217,33,NULL),
+(1034,21,220,34,NULL),
+(1035,21,22,35,NULL),
+(1036,21,52,36,NULL),
+(1037,21,207,37,NULL),
+(1038,21,16,38,NULL),
+(1039,21,192,39,NULL),
+(1040,21,191,40,NULL),
+(1041,21,243,41,NULL),
+(1042,21,169,42,NULL),
+(1043,21,63,43,NULL),
+(1044,21,79,44,NULL),
+(1045,21,140,45,NULL),
+(1046,21,228,46,NULL),
+(1047,21,172,47,NULL),
+(1048,21,67,48,NULL),
+(1049,21,214,49,NULL),
+(1050,21,137,50,NULL),
+(1051,22,236,1,'B'),
+(1052,22,63,2,NULL),
+(1053,22,247,3,NULL),
+(1054,22,83,4,NULL),
+(1055,22,7,5,NULL),
+(1056,22,30,6,NULL),
+(1057,22,244,7,NULL),
+(1058,22,60,8,NULL),
+(1059,22,153,9,NULL),
+(1060,22,64,10,NULL),
+(1061,22,123,11,NULL),
+(1062,22,238,12,NULL),
+(1063,22,2,13,NULL),
+(1064,22,13,14,NULL),
+(1065,22,22,15,NULL),
+(1066,22,82,16,NULL),
+(1067,22,73,17,NULL),
+(1068,22,36,18,NULL),
+(1069,22,108,19,NULL),
+(1070,22,118,20,NULL),
+(1071,22,178,21,NULL),
+(1072,22,194,22,NULL),
+(1073,22,216,23,NULL),
+(1074,22,3,24,NULL),
+(1075,22,57,25,NULL),
+(1076,22,147,26,NULL),
+(1077,22,175,27,NULL),
+(1078,22,16,28,NULL),
+(1079,22,86,29,NULL),
+(1080,22,155,30,NULL),
+(1081,22,207,31,NULL),
+(1082,22,68,32,NULL),
+(1083,22,186,33,NULL),
+(1084,22,182,34,NULL),
+(1085,22,56,35,NULL),
+(1086,22,210,36,NULL),
+(1087,22,114,37,NULL),
+(1088,22,227,38,NULL),
+(1089,22,185,39,NULL),
+(1090,22,25,40,NULL),
+(1091,22,26,41,NULL),
+(1092,22,40,42,NULL),
+(1093,22,199,43,NULL),
+(1094,22,111,44,NULL),
+(1095,22,154,45,NULL),
+(1096,22,113,46,NULL),
+(1097,22,134,47,NULL),
+(1098,22,75,48,NULL),
+(1099,22,47,49,NULL),
+(1100,22,34,50,NULL),
+(1101,23,192,1,NULL),
+(1102,23,194,2,NULL),
+(1103,23,74,3,NULL),
+(1104,23,207,4,NULL),
+(1105,23,154,5,NULL),
+(1106,23,167,6,NULL),
+(1107,23,244,7,NULL),
+(1108,23,182,8,NULL),
+(1109,23,102,9,NULL),
+(1110,23,116,10,NULL),
+(1111,23,222,11,NULL),
+(1112,23,112,12,NULL),
+(1113,23,141,13,NULL),
+(1114,23,44,14,NULL),
+(1115,23,70,15,NULL),
+(1116,23,88,16,NULL),
+(1117,23,199,17,NULL),
+(1118,23,4,18,NULL),
+(1119,23,226,19,NULL),
+(1120,23,40,20,NULL),
+(1121,23,135,21,NULL),
+(1122,23,79,22,NULL),
+(1123,23,5,23,NULL),
+(1124,23,66,24,NULL),
+(1125,23,177,25,NULL),
+(1126,23,91,26,NULL),
+(1127,23,204,27,NULL),
+(1128,23,35,28,NULL),
+(1129,23,62,29,NULL),
+(1130,23,170,30,NULL),
+(1131,23,203,31,NULL),
+(1132,23,100,32,NULL),
+(1133,23,33,33,NULL),
+(1134,23,227,34,NULL),
+(1135,23,217,35,NULL),
+(1136,23,202,36,NULL),
+(1137,23,120,37,NULL),
+(1138,23,54,38,NULL),
+(1139,23,117,39,NULL),
+(1140,23,155,40,NULL),
+(1141,23,24,41,NULL),
+(1142,23,29,42,NULL),
+(1143,23,49,43,NULL),
+(1144,23,242,44,NULL),
+(1145,23,6,45,NULL),
+(1146,23,17,46,NULL),
+(1147,23,108,47,NULL),
+(1148,23,147,48,NULL),
+(1149,23,48,49,NULL),
+(1150,23,10,50,NULL),
+(1151,24,93,1,'A'),
+(1152,24,145,2,'A'),
+(1153,24,21,3,'A'),
+(1154,24,111,4,'A'),
+(1155,24,87,5,'A'),
+(1156,24,73,6,'B'),
+(1157,24,28,7,'A'),
+(1158,24,112,8,'A'),
+(1159,24,207,9,NULL),
+(1160,24,168,10,'A'),
+(1161,24,81,11,'A'),
+(1162,24,191,12,NULL),
+(1163,24,3,13,NULL),
+(1164,24,103,14,NULL),
+(1165,24,83,15,NULL),
+(1166,24,127,16,NULL),
+(1167,24,225,17,NULL),
+(1168,24,230,18,NULL),
+(1169,24,82,19,NULL),
+(1170,24,71,20,NULL),
+(1171,24,35,21,NULL),
+(1172,24,99,22,NULL),
+(1173,24,213,23,NULL),
+(1174,24,13,24,NULL),
+(1175,24,215,25,NULL),
+(1176,24,26,26,NULL),
+(1177,24,172,27,NULL),
+(1178,24,137,28,NULL),
+(1179,24,53,29,NULL),
+(1180,24,139,30,NULL),
+(1181,24,98,31,NULL),
+(1182,24,229,32,NULL),
+(1183,24,118,33,NULL),
+(1184,24,50,34,NULL),
+(1185,24,189,35,NULL),
+(1186,24,177,36,NULL),
+(1187,24,241,37,NULL),
+(1188,24,181,38,NULL),
+(1189,24,49,39,NULL),
+(1190,24,182,40,NULL),
+(1191,24,96,41,NULL),
+(1192,24,106,42,NULL),
+(1193,24,208,43,NULL),
+(1194,24,196,44,NULL),
+(1195,24,232,45,NULL),
+(1196,24,147,46,NULL),
+(1197,24,77,47,NULL),
+(1198,24,132,48,NULL),
+(1199,24,17,49,NULL),
+(1200,24,47,50,NULL),
+(1201,25,173,1,'A'),
+(1202,25,51,2,'C'),
+(1203,25,1,3,NULL),
+(1204,25,85,4,NULL),
+(1205,25,20,5,NULL),
+(1206,25,105,6,NULL),
+(1207,25,175,7,NULL),
+(1208,25,197,8,NULL),
+(1209,25,151,9,NULL),
+(1210,25,145,10,NULL),
+(1211,25,42,11,NULL),
+(1212,25,130,12,NULL),
+(1213,25,48,13,NULL),
+(1214,25,73,14,NULL),
+(1215,25,135,15,NULL),
+(1216,25,76,16,NULL),
+(1217,25,89,17,NULL),
+(1218,25,243,18,NULL),
+(1219,25,131,19,NULL),
+(1220,25,43,20,NULL),
+(1221,25,220,21,NULL),
+(1222,25,45,22,NULL),
+(1223,25,95,23,NULL),
+(1224,25,184,24,NULL),
+(1225,25,11,25,NULL),
+(1226,25,50,26,NULL),
+(1227,25,192,27,NULL),
+(1228,25,33,28,NULL),
+(1229,25,204,29,NULL),
+(1230,25,148,30,NULL),
+(1231,25,224,31,NULL),
+(1232,25,62,32,NULL),
+(1233,25,230,33,NULL),
+(1234,25,162,34,NULL),
+(1235,25,3,35,NULL),
+(1236,25,19,36,NULL),
+(1237,25,119,37,NULL),
+(1238,25,97,38,NULL),
+(1239,25,68,39,NULL),
+(1240,25,199,40,NULL),
+(1241,25,64,41,NULL),
+(1242,25,6,42,NULL),
+(1243,25,17,43,NULL),
+(1244,25,106,44,NULL),
+(1245,25,213,45,NULL),
+(1246,25,202,46,NULL),
+(1247,25,120,47,NULL),
+(1248,25,193,48,NULL),
+(1249,25,77,49,NULL),
+(1250,25,7,50,NULL),
+(1251,26,130,1,'B'),
+(1252,26,224,2,'C'),
+(1253,26,237,3,NULL),
+(1254,26,195,4,NULL),
+(1255,26,82,5,NULL),
+(1256,26,225,6,NULL),
+(1257,26,100,7,NULL),
+(1258,26,18,8,NULL),
+(1259,26,176,9,NULL),
+(1260,26,63,10,NULL),
+(1261,26,93,11,NULL),
+(1262,26,191,12,NULL),
+(1263,26,146,13,NULL),
+(1264,26,54,14,NULL),
+(1265,26,238,15,NULL),
+(1266,26,73,16,NULL),
+(1267,26,15,17,NULL),
+(1268,26,23,18,NULL),
+(1269,26,213,19,NULL),
+(1270,26,110,20,NULL),
+(1271,26,168,21,NULL),
+(1272,26,1,22,NULL),
+(1273,26,17,23,NULL),
+(1274,26,61,24,NULL),
+(1275,26,101,25,NULL),
+(1276,26,230,26,NULL),
+(1277,26,105,27,NULL),
+(1278,26,177,28,NULL),
+(1279,26,64,29,NULL),
+(1280,26,96,30,NULL),
+(1281,26,106,31,NULL),
+(1282,26,95,32,NULL),
+(1283,26,181,33,NULL),
+(1284,26,217,34,NULL),
+(1285,26,202,35,NULL),
+(1286,26,127,36,NULL),
+(1287,26,167,37,NULL),
+(1288,26,190,38,NULL),
+(1289,26,133,39,NULL),
+(1290,26,124,40,NULL),
+(1291,26,171,41,NULL),
+(1292,26,155,42,NULL),
+(1293,26,211,43,NULL),
+(1294,26,26,44,NULL),
+(1295,26,132,45,NULL),
+(1296,26,242,46,NULL),
+(1297,26,44,47,NULL),
+(1298,26,45,48,NULL),
+(1299,26,152,49,NULL),
+(1300,26,154,50,NULL),
+(1301,27,121,1,'A'),
+(1302,27,48,2,'A'),
+(1303,27,90,3,'A'),
+(1304,27,107,4,'A'),
+(1305,27,149,5,'A'),
+(1306,27,129,6,'A'),
+(1307,27,51,7,NULL),
+(1308,27,211,8,NULL),
+(1309,27,176,9,NULL),
+(1310,27,101,10,NULL),
+(1311,27,20,11,NULL),
+(1312,27,26,12,NULL),
+(1313,27,217,13,NULL),
+(1314,27,34,14,NULL),
+(1315,27,216,15,NULL),
+(1316,27,123,16,NULL),
+(1317,27,127,17,NULL),
+(1318,27,29,18,NULL),
+(1319,27,52,19,NULL),
+(1320,27,58,20,NULL),
+(1321,27,240,21,NULL),
+(1322,27,43,22,NULL),
+(1323,27,88,23,NULL),
+(1324,27,105,24,NULL),
+(1325,27,218,25,NULL),
+(1326,27,188,26,NULL),
+(1327,27,46,27,NULL),
+(1328,27,79,28,NULL),
+(1329,27,94,29,NULL),
+(1330,27,12,30,NULL),
+(1331,27,42,31,NULL),
+(1332,27,144,32,NULL),
+(1333,27,145,33,NULL),
+(1334,27,220,34,NULL),
+(1335,27,89,35,NULL),
+(1336,27,212,36,NULL),
+(1337,27,147,37,NULL),
+(1338,27,229,38,NULL),
+(1339,27,177,39,NULL),
+(1340,27,128,40,NULL),
+(1341,27,116,41,NULL),
+(1342,27,190,42,NULL),
+(1343,27,175,43,NULL),
+(1344,27,44,44,NULL),
+(1345,27,138,45,NULL),
+(1346,27,166,46,NULL),
+(1347,27,148,47,NULL),
+(1348,27,38,48,NULL),
+(1349,27,97,49,NULL),
+(1350,27,194,50,NULL),
+(1351,28,5,1,NULL),
+(1352,28,213,2,NULL),
+(1353,28,221,3,NULL),
+(1354,28,153,4,NULL),
+(1355,28,87,5,NULL),
+(1356,28,33,6,NULL),
+(1357,28,82,7,NULL),
+(1358,28,108,8,NULL),
+(1359,28,131,9,NULL),
+(1360,28,115,10,NULL),
+(1361,28,152,11,NULL),
+(1362,28,220,12,NULL),
+(1363,28,124,13,NULL),
+(1364,28,222,14,NULL),
+(1365,28,101,15,NULL),
+(1366,28,79,16,NULL),
+(1367,28,94,17,NULL),
+(1368,28,43,18,NULL),
+(1369,28,113,19,NULL),
+(1370,28,219,20,NULL),
+(1371,28,118,21,NULL),
+(1372,28,179,22,NULL),
+(1373,28,172,23,NULL),
+(1374,28,73,24,NULL),
+(1375,28,130,25,NULL),
+(1376,28,144,26,NULL),
+(1377,28,139,27,NULL),
+(1378,28,241,28,NULL),
+(1379,28,198,29,NULL),
+(1380,28,210,30,NULL),
+(1381,28,37,31,NULL),
+(1382,28,215,32,NULL),
+(1383,28,227,33,NULL),
+(1384,28,204,34,NULL),
+(1385,28,100,35,NULL),
+(1386,28,208,36,NULL),
+(1387,28,143,37,NULL),
+(1388,28,166,38,NULL),
+(1389,28,41,39,NULL),
+(1390,28,155,40,NULL),
+(1391,28,150,41,NULL),
+(1392,28,234,42,NULL),
+(1393,28,140,43,NULL),
+(1394,28,125,44,NULL),
+(1395,28,121,45,NULL),
+(1396,28,176,46,NULL),
+(1397,28,135,47,NULL),
+(1398,28,102,48,NULL),
+(1399,28,240,49,NULL),
+(1400,28,167,50,NULL),
+(1401,29,118,1,NULL),
+(1402,29,125,2,NULL),
+(1403,29,29,3,NULL),
+(1404,29,191,4,NULL),
+(1405,29,217,5,NULL),
+(1406,29,59,6,NULL),
+(1407,29,115,7,NULL),
+(1408,29,12,8,NULL),
+(1409,29,49,9,NULL),
+(1410,29,113,10,NULL),
+(1411,29,134,11,NULL),
+(1412,29,169,12,NULL),
+(1413,29,143,13,NULL),
+(1414,29,85,14,NULL),
+(1415,29,16,15,NULL),
+(1416,29,209,16,NULL),
+(1417,29,23,17,NULL),
+(1418,29,43,18,NULL),
+(1419,29,243,19,NULL),
+(1420,29,193,20,NULL),
+(1421,29,176,21,NULL),
+(1422,29,139,22,NULL),
+(1423,29,61,23,NULL),
+(1424,29,216,24,NULL),
+(1425,29,207,25,NULL),
+(1426,29,224,26,NULL),
+(1427,29,168,27,NULL),
+(1428,29,213,28,NULL),
+(1429,29,30,29,NULL),
+(1430,29,152,30,NULL),
+(1431,29,5,31,NULL),
+(1432,29,22,32,NULL),
+(1433,29,179,33,NULL),
+(1434,29,91,34,NULL),
+(1435,29,215,35,NULL),
+(1436,29,107,36,NULL),
+(1437,29,7,37,NULL),
+(1438,29,42,38,NULL),
+(1439,29,44,39,NULL),
+(1440,29,64,40,NULL),
+(1441,29,13,41,NULL),
+(1442,29,132,42,NULL),
+(1443,29,45,43,NULL),
+(1444,29,121,44,NULL),
+(1445,29,151,45,NULL),
+(1446,29,28,46,NULL),
+(1447,29,221,47,NULL),
+(1448,29,60,48,NULL),
+(1449,29,164,49,NULL),
+(1450,29,4,50,NULL);
+/*!40000 ALTER TABLE `esinav_soru` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `esinav_soru_bildirim`
+--
+
+DROP TABLE IF EXISTS `esinav_soru_bildirim`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `esinav_soru_bildirim` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `oturum_id` int(11) NOT NULL,
+  `soru_id` int(11) NOT NULL DEFAULT 0,
+  `kursiyer_id` int(11) NOT NULL,
+  `notu` varchar(1000) NOT NULL DEFAULT '',
+  `durum` varchar(20) NOT NULL DEFAULT 'yeni',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_oturum` (`oturum_id`),
+  KEY `idx_kursiyer` (`kursiyer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `esinav_soru_bildirim`
+--
+
+LOCK TABLES `esinav_soru_bildirim` WRITE;
+/*!40000 ALTER TABLE `esinav_soru_bildirim` DISABLE KEYS */;
+/*!40000 ALTER TABLE `esinav_soru_bildirim` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `exam_answers`
+--
+
+DROP TABLE IF EXISTS `exam_answers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exam_answers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `attempt_id` int(10) unsigned NOT NULL,
+  `question_id` int(10) unsigned NOT NULL,
+  `user_answer` char(1) DEFAULT NULL,
+  `is_correct` tinyint(1) DEFAULT NULL,
+  `answered_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `attempt_id` (`attempt_id`),
+  KEY `question_id` (`question_id`),
+  CONSTRAINT `exam_answers_ibfk_1` FOREIGN KEY (`attempt_id`) REFERENCES `exam_attempts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `exam_answers_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `exam_answers`
+--
+
+LOCK TABLES `exam_answers` WRITE;
+/*!40000 ALTER TABLE `exam_answers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `exam_answers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `exam_attempts`
+--
+
+DROP TABLE IF EXISTS `exam_attempts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exam_attempts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `exam_id` int(10) unsigned DEFAULT NULL,
+  `group_id` int(10) unsigned NOT NULL,
+  `type` enum('konu','deneme','cikmis','e_sinav') NOT NULL,
+  `started_at` datetime NOT NULL,
+  `finished_at` datetime DEFAULT NULL,
+  `duration_seconds` int(11) NOT NULL DEFAULT 0,
+  `total_questions` int(11) NOT NULL DEFAULT 0,
+  `correct_count` int(11) NOT NULL DEFAULT 0,
+  `wrong_count` int(11) NOT NULL DEFAULT 0,
+  `empty_count` int(11) NOT NULL DEFAULT 0,
+  `score` int(11) NOT NULL DEFAULT 0,
+  `is_passed` tinyint(1) DEFAULT NULL,
+  `status` enum('devam','bitti','iptal') DEFAULT 'devam',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `exam_attempts_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `exam_attempts`
+--
+
+LOCK TABLES `exam_attempts` WRITE;
+/*!40000 ALTER TABLE `exam_attempts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `exam_attempts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `exam_questions`
+--
+
+DROP TABLE IF EXISTS `exam_questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exam_questions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `exam_id` int(10) unsigned NOT NULL,
+  `question_id` int(10) unsigned NOT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `exam_id` (`exam_id`),
+  KEY `question_id` (`question_id`),
+  CONSTRAINT `exam_questions_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `exam_questions_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `exam_questions`
+--
+
+LOCK TABLES `exam_questions` WRITE;
+/*!40000 ALTER TABLE `exam_questions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `exam_questions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `exams`
+--
+
+DROP TABLE IF EXISTS `exams`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exams` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `topic_id` int(10) unsigned DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text DEFAULT NULL,
+  `type` enum('konu','deneme','cikmis') NOT NULL DEFAULT 'konu',
+  `question_count` int(11) NOT NULL DEFAULT 20,
+  `duration_seconds` int(11) NOT NULL DEFAULT 2700,
+  `passing_score` int(11) NOT NULL DEFAULT 70,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`),
+  KEY `topic_id` (`topic_id`),
+  CONSTRAINT `exams_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `exams_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `exams_ibfk_3` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `exams`
+--
+
+LOCK TABLES `exams` WRITE;
+/*!40000 ALTER TABLE `exams` DISABLE KEYS */;
+/*!40000 ALTER TABLE `exams` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `kursiyer_aktivite`
+--
+
+DROP TABLE IF EXISTS `kursiyer_aktivite`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `kursiyer_aktivite` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `kursiyer_id` int(10) unsigned NOT NULL,
+  `tip` varchar(40) NOT NULL,
+  `baslik` varchar(255) NOT NULL,
+  `detay` text DEFAULT NULL,
+  `puan` int(11) DEFAULT NULL,
+  `basarili` tinyint(1) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_akt_kursiyer` (`kursiyer_id`),
+  KEY `idx_akt_tip` (`tip`),
+  KEY `idx_akt_created` (`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `kursiyer_aktivite`
+--
+
+LOCK TABLES `kursiyer_aktivite` WRITE;
+/*!40000 ALTER TABLE `kursiyer_aktivite` DISABLE KEYS */;
+/*!40000 ALTER TABLE `kursiyer_aktivite` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `kursiyerler`
+--
+
+DROP TABLE IF EXISTS `kursiyerler`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `kursiyerler` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tc_kimlik` char(11) DEFAULT NULL,
+  `telefon` varchar(20) NOT NULL,
+  `sifre_hash` varchar(255) NOT NULL,
+  `ad` varchar(80) NOT NULL,
+  `soyad` varchar(80) NOT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `ehliyet_sinifi` varchar(10) DEFAULT NULL,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_kursiyer_tel` (`telefon`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `kursiyerler`
+--
+
+LOCK TABLES `kursiyerler` WRITE;
+/*!40000 ALTER TABLE `kursiyerler` DISABLE KEYS */;
+/*!40000 ALTER TABLE `kursiyerler` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `questions`
+--
+
+DROP TABLE IF EXISTS `questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `questions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `topic_id` int(10) unsigned DEFAULT NULL,
+  `question_text` text NOT NULL,
+  `option_a` varchar(500) NOT NULL,
+  `option_b` varchar(500) NOT NULL,
+  `option_c` varchar(500) NOT NULL,
+  `option_d` varchar(500) NOT NULL,
+  `correct_answer` char(1) NOT NULL,
+  `explanation` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `difficulty` enum('kolay','orta','zor') DEFAULT 'orta',
+  `source` varchar(50) DEFAULT NULL,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`),
+  KEY `topic_id` (`topic_id`),
+  CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `questions_ibfk_3` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `questions`
+--
+
+LOCK TABLES `questions` WRITE;
+/*!40000 ALTER TABLE `questions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `questions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `slug` varchar(20) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `permissions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`permissions`)),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES
+(1,'superadmin','Super Admin','{\"all\": true}','2026-09-11 14:28:14'),
+(2,'admin','Admin','{\"users\": true, \"questions\": true, \"exams\": true, \"videos\": true, \"books\": true, \"animations\": true, \"traffic_signs\": true, \"dashboard\": true}','2026-09-11 14:28:14');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sorular`
+--
+
+DROP TABLE IF EXISTS `sorular`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sorular` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ders` varchar(20) NOT NULL,
+  `soru` text NOT NULL,
+  `secenek_a` varchar(500) NOT NULL,
+  `secenek_b` varchar(500) NOT NULL,
+  `secenek_c` varchar(500) NOT NULL,
+  `secenek_d` varchar(500) NOT NULL,
+  `dogru` char(1) NOT NULL,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `soru_ar` text DEFAULT NULL,
+  `secenek_a_ar` varchar(500) DEFAULT NULL,
+  `secenek_b_ar` varchar(500) DEFAULT NULL,
+  `secenek_c_ar` varchar(500) DEFAULT NULL,
+  `secenek_d_ar` varchar(500) DEFAULT NULL,
+  `gorsel` varchar(255) DEFAULT NULL,
+  `kaynak` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_soru_ders` (`ders`)
+) ENGINE=InnoDB AUTO_INCREMENT=248 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sorular`
+--
+
+LOCK TABLES `sorular` WRITE;
+/*!40000 ALTER TABLE `sorular` DISABLE KEYS */;
+INSERT INTO `sorular` VALUES
+(1,'trafik','Dönel kavşakta, kavşağa girmek üzere bekleyen sürücü içindeki araçlara nasıl davranmalıdır?','Geçiş hakkı verir','Korna çalarak geçer','Yavaşlayarak girer','Sürekli geçiş hakkı kullanır','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(2,'trafik','Kırmızı ışıkta duran sürücü, yeşil yandığında trafiği engellememek için ne yapmalıdır?','Kavşak içi boşsa ilerler','Bekleyerek trafiği izler','Geri geri döner','Vitese geçmeden bekler','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(3,'trafik','Hız limiti 50 km/h olan yolda yağışlı havada güvenli sürüş için ne yapılmalıdır?','Hız sınırına yükselilir','Hız düşürülür ve takip mesafesi artırılır','Frenler test edilir','Uzaklar yakılır','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(4,'trafik','Öndeki aracı geçmek isteyen sürücü aşağıdakilerden hangisini yapmamalıdır?','Aynaya ve dikiz aynasına bakar','Sinyal verir','Karşıdan geleni kontrol eder','Sürekli sollamaya çalışır','D',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(5,'trafik','Bölünmüş yol nedir?','Tek yönlü yoldur','Gidiş ve geliş yönlerinin ayrıldığı yoldur','Boş yoldur','Sadece otobüs yoludur','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(6,'trafik','Yaya geçişinde yaya varsa sürücü ne yapmalıdır?','Korna çalar','Yayaya öncelik verir, durur','Yavaşça geçer','Uzun far yakar','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(7,'trafik','Park halindeki araç hangi durumda çekilebilir?','Kapı açıkken','Trafiği engellediğinde ve cezalı parkta','Sadece gece','Sadece yokuşta','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(8,'trafik','Takip mesafesi neye göre ayarlanmalıdır?','Durak sayısına','Hız ve hava koşullarına','Renk tercihine','Araç markasına','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(9,'trafik','Kesintisiz yol çizgisi ne ifade eder?','Geçilebilir','Geçilemez, çizgiye yaklaşılmaz','Park edilebilir','Sadece bisiklet geçer','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(10,'trafik','Gece karşıdan gelen araç uzak far yakmışsa sürücü ne yapmalıdır?','Aynı şekilde uzak far yakar','Kısa fara geçer ve bakışını sağa yönlendirir','Hızlanır','Korna çalar','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(11,'trafik','Araç kullanırken cep telefonu kullanmak hangi sonucu doğurur?','Yakıt tasarrufu','Dikkat dağınıklığı ve kaza riski','Hız artışı','Isınma','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(12,'trafik','Dur işareti görüldüğünde sürücü ne yapmalıdır?','Yavaşlayıp geçer','Tamamen durur, yol boşsa geçer','Korna çalar','Beklemeden geçer','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(13,'trafik','Emniyet kemeri neden önemlidir?','Konfor için','Kaza anında hayat kurtarır','Yakıt için','Vergi için','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(14,'trafik','Sol şerit hangi amaçla kullanılır?','Yavaş seyir','Sollama ve ileriye geçme','Sadece otobüs','Park','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(15,'trafik','İşaretsiz kavşakta geçiş hakkı kimindir?','Her zaman sağdan gelen aracın','Soldan gelenin','Büyük aracın','Korna çalanın','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(16,'trafik','Alkollü araç kullanmanın sonucu nedir?','Sadece uyarı','Sürücü belgesine el konulur ve para cezası','Hiçbir cezası yoktur','Sadece puan','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(17,'trafik','Lastik diş derinliği minimum kaç mm olmalıdır?','1.0','1.6','2.5','3.0','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(18,'trafik','Yaya geçidinde yaya varsa sürücü nasıl davranır?','Hızlanır','Durur, yayaya geçiş hakkı verir','Korna çalar','Sollayarak geçer','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(19,'trafik','Araç freni arızalandığında öncelikle ne yapılır?','Motor freni ve el freni kullanılır','Kapı açılır','Korna çalınır','Hızlanılır','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(20,'trafik','Trafik polisinin \'dur\' işareti ne anlama gelir?','Yavaşla','Dur','Geç','Park et','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(21,'trafik','Köprü ve viyadüklerde neden takip mesafesi artırılır?','Rüzgar ve frenleme','Manzara','Yakıt','Gürültü','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(22,'trafik','Hangi durumda geri geri gitmek yasaktır?','Kavşak ve yaya geçidinde','Düz yolda','Boş alanda','Park yerinde','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(23,'trafik','Sisli havada hangi ışık kullanılmalıdır?','Uzak far','Sis farı','Sadece park lambası','Hiçbiri','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(24,'trafik','Seyir halinde emniyet kemeri takılı olmalı mıdır?','Hayır','Evet, her zaman','Sadece şehir dışında','Sadece yokuşta','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(25,'trafik','Yolu kullanırken öncelik kuralı nedir?','Can güvenliği ve trafik kuralları','Hız','Yol genişliği','Araç sayısı','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(26,'ilkyardim','İlk yardımın amacı nedir?','Tedavi etmek','Hayat kurtarmak, durumu kötüleşmesini önlemek, iyileşmeyi kolaylaştırmak','Sadece polis çağırmak','Araç tamir etmek','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(27,'ilkyardim','Bilinci kapalı hastada öncelikle hangisi kontrol edilir?','Nabız ve solunum','Tansiyon','Ateş','Renk','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(28,'ilkyardim','Yanıkta ilk yapılacak işlem nedir?','Soğuk su ile soğutmak','Diş macunu sürmek','Doğrudan buz koymak','Yanığı patlatmak','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(29,'ilkyardim','Kırık şüphesinde hasta nasıl taşınır?','Oynatılmadan sabitlenerek','Sürüklenerek','Hızlıca kaldırılarak','Oturtularak','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(30,'ilkyardim','112 acil hattı hangi durumlarda aranır?','Sadece kaza','Acil tıbbi yardım gereken her durumda','Sadece yangın','Sadece gece','B',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(31,'ilkyardim','Yetişkinde normal nabız kaçtır?','60-100','10-20','150-200','200-300','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(32,'ilkyardim','Burun kanamasında baş nasıl tutulur?','Öne eğilir','Geriye yatırılır','Sağa çevrilir','Sabit tutulur','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(33,'ilkyardim','Zehirlenmede ilk yapılacak nedir?','112 aramak ve hastayı güvenli konuma almak','Hemen kusturmak','Bol su içirmek','Uyutmak','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(34,'ilkyardim','Şoktaki hasta hangi pozisyona alınır?','Yan yatırılır, bacaklar hafif yukarı','Dik oturtulur','Yüzüstü yatırılır','Ayakta bekletilir','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(35,'ilkyardim','Kalp masajı göğüs kemiğinin hangi kısmına yapılır?','Alt üçte biri','Üst kısmı','Orta kısmı','Köprücük kemiği','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(36,'ilkyardim','Solunum yolu tıkanan kişide ilk yardım nedir?','Heimlich manevrası','Su içirme','Boyun bükme','Uyutma','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(37,'ilkyardim','İlk yardımda ilk adım nedir?','Çevre güvenliğini sağlamak','Hemen taşımak','Polis beklemek','Araç sürmek','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(38,'adab','Kızgın sürücüye karşı en doğru davranış nedir?','Sakin kalmak ve güvenli mesafeyi korumak','Aynı şekilde karşılık vermek','Korna çalmak','Yolu kesmek','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(39,'arac','Motor yağı ne zaman kontrol edilir?','Düzenli, her yakıt alımında','Sadece yılda bir','Sadece arıza durumunda','Sadece kışın','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(40,'arac','Soğutma sıvısı azalırsa ne olur?','Motor ısınır ve zarar görür','Yakıt artar','Fren gevşer','Lastik iner','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(41,'arac','Lastik basıncı azaldığında ne olur?','Yakıt tüketimi artar, lastik ısınır','Frene etki etmez','Araç hızlanır','Sadece ses yapar','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(42,'arac','Fren hidroliği hangi sistemi etkiler?','Fren sistemini','Direksiyonu','Aküyü','Egzozu','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(43,'arac','Akü göstergesi hangi durumu gösterir?','Şarj durumu','Yakıt','Su','Yağ','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(44,'arac','Katalitik konvertör ne işe yarar?','Egzoz gazlarını temizler','Yakıt depolar','Lastik şişirir','Fren güçlendirir','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(45,'arac','Araç çalışmıyorsa ilk kontrol edilecek nedir?','Akü ve bağlantıları','Lastik','Silecek','Koltuk','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(46,'arac','Motor ve iç ses kontrolü neden önemlidir?','Erken arıza tespiti','Yalnızca estetik','Yakıt tasarrufu','Hız','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(47,'arac','Aşınmış fren balatasının belirtisi nedir?','Uzun fren mesafesi ve ses','Yakıt kokusu','Sadece ısınma','Sadece görünüm','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(48,'arac','Hava filtresi tıkanırsa ne olur?','Motor güç kaybı, yakıt artışı','Sadece ses','Fren gevşer','Akü biter','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(49,'arac','Direksiyonun titremesi neye işaret edebilir?','Balans/rot sorunu','Yalnızca hız','Yalnızca rüzgar','Sadece yük','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(50,'arac','Kullanmadan önce hangi genel kontrol yapılır?','Lastik, ışık, silecek, yakıt','Sadece kapı','Sadece müzik','Sadece klima','A',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(51,'trafik','Yerleşim birimleri dışındaki karayollarında geceleri seyrederken, yeterince aydınlatılmamış tünellere girerken, benzeri yer ve hâllerde ----------- yakılması mecburidir. Verilen ifadede boş bırakılan yere aşağıdakilerden hangisi yazılmalıdır?','sis ışıklarının','park ışıklarının','yakını gösteren ışıkların','uzağı gösteren ışıkların','D',1,'عند السير ليلاً على الطرق خارج المناطق السكنية، وعند دخول الأنفاق غير المضاءة جيداً وما شابه ذلك، يجب تشغيل -----------. ما الذي يملأ الفراغ؟','أضواء الضباب','أضواء الوقوف','الأضواء القصيرة','الأضواء العالية',NULL,NULL),
+(52,'trafik','Kara Yolları Trafik Yönetmeliği’ne göre aşağıdaki durumlardan hangisinin oluşması hâlinde, araç için yeni tescil belgesi düzenlenmesi zorunludur?','Hurdaya ayrılması','Teknik değişiklik yaptırılması','Aracın yaralanmalı kazaya karışması','Aracın teknik muayenesinin zamanında yaptırılmaması','B',1,'وفقاً للائحة مرور الطرق، في أي حالة يجب إصدار وثيقة تسجيل جديدة للمركبة؟','إخراجها من الخدمة كخردة','إجراء تعديل فني عليها','تورطها في حادث إصابة','عدم إجراء الفحص الفني في موعده',NULL,NULL),
+(53,'trafik','Tüm kara yollarındaki işaretleme standartlarının tespiti, yayınlanması ve kontrolü hangi kurumun görevidir?','İçişleri Bakanlığının','Devlet Planlama Teşkilatının','Milli Eğitim Bakanlığının','Ulaştırma ve Altyapı Bakanlığının','D',1,'تحديد ونشر ومراقبة معايير العلامات على جميع الطرق من مهام أي جهة؟','وزارة الداخلية','هيئة تخطيط الدولة','وزارة التربية الوطنية','وزارة النقل والبنية التحتية',NULL,NULL),
+(54,'trafik','Görseldeki durumda sürücünün hangisini yapması zorunludur? (STOP çizgisi / dur işareti olan kavşak)','Uygun mesafede mutlaka durması','Sola dönecekse, durmadan seyrini sürdürmesi','Sağa dönecekse, durmadan seyrini sürdürmesi','İleri yönde gidecekse, durmadan seyrini sürdürmesi','A',1,'في الوضع الظاهر، ماذا يجب على السائق أن يفعل؟ (تقاطع فيه خط توقف / إشارة قف)','التوقف حتماً على مسافة مناسبة','متابعة السير دون توقف إذا كان سينعطف يساراً','متابعة السير دون توقف إذا كان سينعطف يميناً','متابعة السير دون توقف إذا كان سيسير للأمام',NULL,NULL),
+(55,'trafik','Ticari amaçla yük taşımacılığı yapan ve azami ağırlığı 3,5 tonu geçen araç şoförlerinin, 24 saatlik herhangi bir süre içinde toplam olarak kaç saatten fazla araç sürmesi yasaktır?','6','7','8','9','D',1,'يُمنع على سائقي مركبات نقل البضائع التجارية التي يزيد وزنها الأقصى عن 3.5 طن القيادة أكثر من كم ساعة إجمالاً خلال أي فترة 24 ساعة؟','6','7','8','9',NULL,NULL),
+(56,'arac','Motor çalışır durumda iken aracın gösterge panelinde akü ikaz ışığı yanıyorsa, muhtemel arıza hangisinde olabilir?','Alternatörde','Fren balatalarında','Marş motorunda','Far ampüllerinde','A',1,'إذا أضاء ضوء تحذير البطارية في لوحة العدادات والمحرك يعمل، فأين يحتمل وجود العطل؟','في المولد (الدينامو)','في بطانات الفرامل','في محرك التشغيل','في مصابيح الأضواء',NULL,NULL),
+(57,'arac','Seyir hâlindeyken, aracın ayak frenine basıldığında hangisi meydana gelir?','Ön tekerlekler durur.','Arka tekerlekler durur.','Ön ve arka tekerlekler birlikte durur.','Önce ön tekerlekler, sonra arka tekerlekler durur.','C',1,'أثناء السير، عند الضغط على فرامل القدم ماذا يحدث؟','تتوقف العجلات الأمامية.','تتوقف العجلات الخلفية.','تتوقف العجلات الأمامية والخلفية معاً.','تتوقف الأمامية أولاً ثم الخلفية.',NULL,NULL),
+(58,'trafik','Taşıt yolu üzerinde yapılan çalışmalarda sürücülerin uyması gereken işaretler hangisidir?','Sadece trafik polisi işaretleri','Geçici trafik işaretleri','Sadece ışıklar','Hiçbiri','B',1,'ما الإشارات التي يجب على السائقين اتباعها أثناء الأعمال على الطريق؟','إشارات شرطة المرور فقط','إشارات المرور المؤقتة','الأضواء فقط','لا شيء',NULL,NULL),
+(59,'trafik','Kavşaklarda ilk geçiş hakkı kuralı ile ilgili hangisi doğrudur?','Sağdan gelen ilk geçer','Soldan gelen ilk geçer','Büyük araç ilk geçer','Hızlı olan ilk geçer','A',1,'أي مما يلي صحيح بشأن حق المرور أولاً في التقاطعات؟','القادم من اليمين يمر أولاً','القادم من اليسار يمر أولاً','المركبة الأكبر تمر أولاً','الأسرع يمر أولاً',NULL,NULL),
+(60,'ilkyardim','Bilinç kontrolü nasıl yapılır?','Sadece nabız bakılır','Soru sorulur ve omuzlara dokunulur','Su içirilir','Ayağa kaldırılır','B',1,'كيف يتم التحقق من الوعي؟','بقياس النبض فقط','بسؤال المصاب ولمس الكتفين','بإعطائه ماءً','بإيقافه',NULL,NULL),
+(61,'ilkyardim','Temel yaşam desteğinde göğüs basısı / suni solunum oranı erişkinde genellikle nedir?','15:2','30:2','5:1','10:1','B',1,'ما نسبة الضغطات الصدرية إلى التنفس الاصطناعي للبالغين في الإسعافات الأولية عادة؟','15:2','30:2','5:1','10:1',NULL,NULL),
+(62,'ilkyardim','Hangisi bak-dinle-hisset yönteminde ilk yardımcının yapması gereken uygulamalardan biri değildir?','Kazazedenin nefesini yanağında hissetmeye çalışması','Göğüs bölgesini el ile muayene etmesi','Yüzünü kazazedenin ağzına yaklaştırarak solunum seslerini duymaya çalışması','Kazazedenin göğüs hareketlerini gözlemlemesi','B',1,'أي مما يلي ليس مما يجب على المسعف فعله بطريقة انظر-اسمع-اشعر؟','محاولة الإحساس بنفس المصاب على الخد','فحص منطقة الصدر باليد','تقريب الوجه من فم المصاب لسماع التنفس','مراقبة حركة صدر المصاب',NULL,NULL),
+(63,'arac','Motor yağ seviyesinin kontrolü hangi durumda yapılmalıdır?','Motor sıcak ve çalışırken','Motor soğukken ve düz zeminde','Yokuştayken','Sadece gece','B',1,'متى يجب فحص مستوى زيت المحرك؟','والمحرك ساخن ويعمل','والمحرك بارد وعلى أرض مستوية','على منحدر','ليلاً فقط',NULL,NULL),
+(64,'arac','Akü kutup başlarından önce hangisi sökülür?','Artı (+) kutup','Eksi (−) kutup','Fark etmez','İkisi birden','B',1,'أي قطب بطارية يُفصل أولاً؟','القطب الموجب (+)','القطب السالب (−)','لا فرق','الاثنان معاً',NULL,NULL),
+(65,'adab','Trafikte “empati” kavramı neyi ifade eder?','Hız yapmak','Karşıdakinin yerine kendini koymak','Korna çalmak','Sollamak','B',1,'ماذا يعني مفهوم \"التعاطف\" في المرور؟','السرعة','وضع النفس مكان الآخر','التزمير','التجاوز',NULL,NULL),
+(66,'arac','Yolculuğa başlamadan önce, hangi kontrolün yapılması gerekmez?','Elektrolit yoğunluğu','Motor yağı seviyesi','Lastik hava basınçları','Yakıt seviyesi','A',1,'قبل بدء الرحلة، أي فحص ليس ضرورياً؟','كثافة الإلكتروليت','مستوى زيت المحرك','ضغط هواء الإطارات','مستوى الوقود',NULL,NULL),
+(67,'ilkyardim','Bir travma sonucu deri ya da mukozanın bütünlüğünün bozulmasına ne ad verilir?','Şok','Yara','Koma','Yanık','B',1,'ما اسم اختلال سلامة الجلد أو الغشاء المخاطي نتيجة إصابة؟','صدمة','جرح','غيبوبة','حرق',NULL,NULL),
+(68,'arac','Gösterge panelinde görseldeki uyarı ışığının yanması hangi sistemin devrede olduğunu gösterir? (araç + kayma izi / üçgen ikaz)','Anti blokaj fren sisteminin','Şerit asistan sisteminin','Ekonomik sürüş sisteminin','Stabilite kontrol sisteminin','D',1,'إضاءة ضوء التحذير الظاهر في اللوحة تدل على عمل أي نظام؟ (مركبة + أثر انزلاق / مثلث تحذير)','نظام منع انغلاق الفرامل','مساعد المسار','نظام القيادة الاقتصادية','نظام التحكم بالثبات',NULL,NULL),
+(69,'ilkyardim','Olay yerinde olası tehlikelerin belirlenerek güvenli bir çevrenin oluşturulması işlemi, ilk yardımın temel uygulamalarının hangisi içinde değerlendirilir?','Koruma','Bildirme','Kurtarma','Tedavi','A',1,'تحديد الأخطار المحتملة في موقع الحادث وتأمين بيئة آمنة يُعد ضمن أي تطبيق أساسي للإسعاف؟','الحماية','الإبلاغ','الإنقاذ','العلاج',NULL,NULL),
+(70,'trafik','Sürücünün alkol muayenesi sonucunda ilk kez alkollü çıkması halinde ilgili yasa gereğince cezalardan hangisi uygulanır?','Hafif hapis cezası uygulanır.','Sürücü belgesi 6 ay süreyle geri alınır.','Yalnızca para cezası ile cezalandırılır.','Psiko-teknik değerlendirmeye alınır.','B',1,'عند ثبوت القيادة تحت تأثير الكحول لأول مرة، أي عقوبة تُطبق وفق القانون؟','عقوبة حبس خفيفة.','سحب رخصة القيادة لمدة 6 أشهر.','غرامة مالية فقط.','تقييم نفسي تقني.',NULL,NULL),
+(71,'arac','Otomatik vitesli bir araç, marş yapıldığında çalışmıyorsa hangisinin yapılması yanlıştır?','Çekici çağırılıp götürülmesi','Akü kutup başlarının gevşekliğinin kontrol edilmesi','Aküye ara kablosuyla takviye yapılması','Aracın itilerek çalıştırılması','D',1,'إذا لم تعمل مركبة أوتوماتيك عند التشغيل، أي إجراء خاطئ؟','استدعاء ونقل بالقاطرة','فحص ارتخاء أقطاب البطارية','تعزيز البطارية بكابلات','تشغيل المركبة بالدفع',NULL,NULL),
+(72,'adab','Hangisi, trafik denetim görevlileriyle iletişim kuran sürücünün trafik adabı açısından özen göstermesi gereken davranışlardandır?','Empati kurmaktan kaçınmak','Dinlemeyi etkin şekilde yapmamak','Karşısındaki kişiye saygı duyarak varlığını kabul etmek','Karşısındaki kişinin ne demek istediğini gözden geçirmek yerine, akıl okumak','C',1,'أي سلوك يجب أن يراعيه السائق عند التواصل مع موظفي المرور من ناحية آداب المرور؟','تجنب التعاطف','عدم الاستماع بفعالية','احترام الطرف الآخر وقبول وجوده','قراءة الأفكار بدل فهم ما يقوله',NULL,NULL),
+(73,'trafik','Aksine bir işaret yoksa yerleşim yeri dışındaki bölünmüş yollarda binek otomobil için azami hız sınırı saatte kaç kilometredir?','90','100','110','120','C',1,'إن لم توجد إشارة بخلاف ذلك، ما الحد الأقصى لسرعة سيارة الركاب على الطرق المقسمة خارج المناطق السكنية (كم/س)؟','90','100','110','120',NULL,NULL),
+(74,'trafik','Görseldeki gibi devamlı (kesintisiz) çizgi bulunan kara yolu için hangisi söylenemez?','İki yönlü kara yolu olduğu','Öndeki aracın geçilebileceği','Diğer şeride geçilemeyeceği','Çizginin yolda ayırıcı görev yaptığı','B',1,'بالنسبة لطريق فيه خط متصل كما في الصورة، أي عبارة غير صحيحة؟','أنه طريق ذو اتجاهين','أنه يمكن تجاوز المركبة الأمامية','أنه لا يجوز تغيير المسار إلى الآخر','أن الخط يعمل كفاصل على الطريق',NULL,NULL),
+(75,'trafik','I. Yüklerin üzerine yolcu bindirilmesi\nII. Kasanın yan ve arka kapaklarının kapalı olması\nIII. Yolcuların kasa içinde ayrılacak bir yerde oturtulması\nIV. Yüklerin sağlam olarak yerleştirilmiş ve bağlanmış olması\n\nKamyon, kamyonet ve römorklarda yüklü birlikte yolcu taşınırken, verilenlerden hangilerinin yapılması zorunludur?','Yalnız I','I ve II','II, III ve IV','I, II, III ve IV','C',1,'I. ركوب الركاب فوق الحمولة\nII. إغلاق الأبواب الجانبية والخلفية للصندوق\nIII. إجلاس الركاب في مكان مخصص داخل الصندوق\nIV. تثبيت وربط الحمولة بإحكام\n\nعند نقل الركاب مع الحمولة في الشاحنات والبيك أب والمقطورات، أي مما سبق إلزامي؟','I فقط','I و II','II و III و IV','I و II و III و IV',NULL,NULL),
+(76,'trafik','[T-1] Şehir içi hız sınırına uymayan sürücü ne yapmış olur?','Kural ihlali','Doğru davranış','Tavsiye','İsteğe bağlı','A',1,'[T-1] ماذا يفعل السائق الذي لا يلتزم بحد السرعة داخل المدينة؟','مخالفة','سلوك صحيح','نصيحة','اختياري',NULL,NULL),
+(77,'trafik','[T-2] Emniyet kemeri takmak hangisidir?','Zorunlu','İsteğe bağlı','Sadece şehir dışı','Sadece yolcu','A',1,'[T-2] ارتداء حزام الأمان؟','إلزامي','اختياري','خارج المدينة فقط','للراكب فقط',NULL,NULL),
+(78,'trafik','[T-3] Kırmızı ışıkta geçmek hangisidir?','Yasak','Serbest','Tavsiye','İkaz','A',1,'[T-3] تجاوز الإشارة الحمراء؟','ممنوع','مسموح','نصيحة','تحذير',NULL,NULL),
+(79,'trafik','[T-4] Yaya geçidinde öncelik kimdedir?','Yayada','Otomobilde','Motorsiklette','Kamyonda','A',1,'[T-4] من له الأولوية عند ممر المشاة؟','المشاة','السيارة','الدراجة النارية','الشاحنة',NULL,NULL),
+(80,'trafik','[T-5] Sollama hangi taraftan yapılır?','Soldan','Sağdan','Ortadan','Kaldırımdan','A',1,'[T-5] من أي جانب يتم التجاوز؟','من اليسار','من اليمين','من الوسط','من الرصيف',NULL,NULL),
+(81,'trafik','[T-6] Sisli havada hangisi önerilir?','Hızı azaltmak','Hızı artırmak','Farları kapatmak','Emniyet kemerini çıkarmak','A',1,'[T-6] ما المُستحسن في الضباب؟','تخفيف السرعة','زيادة السرعة','إطفاء الأضواء','خلع الحزام',NULL,NULL),
+(82,'trafik','[T-7] Okul geçidi civarında sürücü ne yapmalıdır?','Dikkatli ve yavaş gitmeli','Hızlanmalı','Korna çalmalı','Sollamalı','A',1,'[T-7] ماذا يفعل السائق قرب ممر المدرسة؟','السير بحذر وببطء','التسريع','التزمير','التجاوز',NULL,NULL),
+(83,'trafik','[T-8] Trafik işaretlerine uymak','Zorunludur','İsteğe bağlıdır','Sadece polis varken','Sadece gece','A',1,'[T-8] الالتزام بإشارات المرور','إلزامي','اختياري','عند وجود الشرطة فقط','ليلاً فقط',NULL,NULL),
+(84,'trafik','[T-9] Alkollü araç kullanmak','Yasaktır','Serbesttir','Tavsiye edilir','Sadece şehir dışı yasak','A',1,'[T-9] القيادة تحت تأثير الكحول','ممنوعة','مسموحة','يُنصح بها','ممنوعة خارج المدينة فقط',NULL,NULL),
+(85,'trafik','[T-10] Park yasağı olan yerde park etmek','İhlaldir','Serbesttir','Tavsiyedir','Zorunludur','A',1,'[T-10] الوقوف في مكان ممنوع الوقوف فيه','مخالفة','مسموح','نصيحة','إلزامي',NULL,NULL),
+(86,'trafik','[T-11] Şehir içi hız sınırına uymayan sürücü ne yapmış olur?','Kural ihlali','Doğru davranış','Tavsiye','İsteğe bağlı','A',1,'[T-11] ماذا يفعل السائق الذي لا يلتزم بحد السرعة داخل المدينة؟','مخالفة','سلوك صحيح','نصيحة','اختياري',NULL,NULL),
+(87,'trafik','[T-12] Emniyet kemeri takmak hangisidir?','Zorunlu','İsteğe bağlı','Sadece şehir dışı','Sadece yolcu','A',1,'[T-12] ارتداء حزام الأمان؟','إلزامي','اختياري','خارج المدينة فقط','للراكب فقط',NULL,NULL),
+(88,'trafik','[T-13] Kırmızı ışıkta geçmek hangisidir?','Yasak','Serbest','Tavsiye','İkaz','A',1,'[T-13] تجاوز الإشارة الحمراء؟','ممنوع','مسموح','نصيحة','تحذير',NULL,NULL),
+(89,'trafik','[T-14] Yaya geçidinde öncelik kimdedir?','Yayada','Otomobilde','Motorsiklette','Kamyonda','A',1,'[T-14] من له الأولوية عند ممر المشاة؟','المشاة','السيارة','الدراجة النارية','الشاحنة',NULL,NULL),
+(90,'trafik','[T-15] Sollama hangi taraftan yapılır?','Soldan','Sağdan','Ortadan','Kaldırımdan','A',1,'[T-15] من أي جانب يتم التجاوز؟','من اليسار','من اليمين','من الوسط','من الرصيف',NULL,NULL),
+(91,'trafik','[T-16] Sisli havada hangisi önerilir?','Hızı azaltmak','Hızı artırmak','Farları kapatmak','Emniyet kemerini çıkarmak','A',1,'[T-16] ما المُستحسن في الضباب؟','تخفيف السرعة','زيادة السرعة','إطفاء الأضواء','خلع الحزام',NULL,NULL),
+(92,'trafik','[T-17] Okul geçidi civarında sürücü ne yapmalıdır?','Dikkatli ve yavaş gitmeli','Hızlanmalı','Korna çalmalı','Sollamalı','A',1,'[T-17] ماذا يفعل السائق قرب ممر المدرسة؟','السير بحذر وببطء','التسريع','التزمير','التجاوز',NULL,NULL),
+(93,'trafik','[T-18] Trafik işaretlerine uymak','Zorunludur','İsteğe bağlıdır','Sadece polis varken','Sadece gece','A',1,'[T-18] الالتزام بإشارات المرور','إلزامي','اختياري','عند وجود الشرطة فقط','ليلاً فقط',NULL,NULL),
+(94,'trafik','[T-19] Alkollü araç kullanmak','Yasaktır','Serbesttir','Tavsiye edilir','Sadece şehir dışı yasak','A',1,'[T-19] القيادة تحت تأثير الكحول','ممنوعة','مسموحة','يُنصح بها','ممنوعة خارج المدينة فقط',NULL,NULL),
+(95,'trafik','[T-20] Park yasağı olan yerde park etmek','İhlaldir','Serbesttir','Tavsiyedir','Zorunludur','A',1,'[T-20] الوقوف في مكان ممنوع الوقوف فيه','مخالفة','مسموح','نصيحة','إلزامي',NULL,NULL),
+(96,'trafik','[T-21] Şehir içi hız sınırına uymayan sürücü ne yapmış olur?','Kural ihlali','Doğru davranış','Tavsiye','İsteğe bağlı','A',1,'[T-21] ماذا يفعل السائق الذي لا يلتزم بحد السرعة داخل المدينة؟','مخالفة','سلوك صحيح','نصيحة','اختياري',NULL,NULL),
+(97,'trafik','[T-22] Emniyet kemeri takmak hangisidir?','Zorunlu','İsteğe bağlı','Sadece şehir dışı','Sadece yolcu','A',1,'[T-22] ارتداء حزام الأمان؟','إلزامي','اختياري','خارج المدينة فقط','للراكب فقط',NULL,NULL),
+(98,'trafik','[T-23] Kırmızı ışıkta geçmek hangisidir?','Yasak','Serbest','Tavsiye','İkaz','A',1,'[T-23] تجاوز الإشارة الحمراء؟','ممنوع','مسموح','نصيحة','تحذير',NULL,NULL),
+(99,'trafik','[T-24] Yaya geçidinde öncelik kimdedir?','Yayada','Otomobilde','Motorsiklette','Kamyonda','A',1,'[T-24] من له الأولوية عند ممر المشاة؟','المشاة','السيارة','الدراجة النارية','الشاحنة',NULL,NULL),
+(100,'trafik','[T-25] Sollama hangi taraftan yapılır?','Soldan','Sağdan','Ortadan','Kaldırımdan','A',1,'[T-25] من أي جانب يتم التجاوز؟','من اليسار','من اليمين','من الوسط','من الرصيف',NULL,NULL),
+(101,'trafik','[T-26] Sisli havada hangisi önerilir?','Hızı azaltmak','Hızı artırmak','Farları kapatmak','Emniyet kemerini çıkarmak','A',1,'[T-26] ما المُستحسن في الضباب؟','تخفيف السرعة','زيادة السرعة','إطفاء الأضواء','خلع الحزام',NULL,NULL),
+(102,'trafik','[T-27] Okul geçidi civarında sürücü ne yapmalıdır?','Dikkatli ve yavaş gitmeli','Hızlanmalı','Korna çalmalı','Sollamalı','A',1,'[T-27] ماذا يفعل السائق قرب ممر المدرسة؟','السير بحذر وببطء','التسريع','التزمير','التجاوز',NULL,NULL),
+(103,'trafik','[T-28] Trafik işaretlerine uymak','Zorunludur','İsteğe bağlıdır','Sadece polis varken','Sadece gece','A',1,'[T-28] الالتزام بإشارات المرور','إلزامي','اختياري','عند وجود الشرطة فقط','ليلاً فقط',NULL,NULL),
+(104,'trafik','[T-29] Alkollü araç kullanmak','Yasaktır','Serbesttir','Tavsiye edilir','Sadece şehir dışı yasak','A',1,'[T-29] القيادة تحت تأثير الكحول','ممنوعة','مسموحة','يُنصح بها','ممنوعة خارج المدينة فقط',NULL,NULL),
+(105,'trafik','[T-30] Park yasağı olan yerde park etmek','İhlaldir','Serbesttir','Tavsiyedir','Zorunludur','A',1,'[T-30] الوقوف في مكان ممنوع الوقوف فيه','مخالفة','مسموح','نصيحة','إلزامي',NULL,NULL),
+(106,'trafik','[T-31] Şehir içi hız sınırına uymayan sürücü ne yapmış olur?','Kural ihlali','Doğru davranış','Tavsiye','İsteğe bağlı','A',1,'[T-31] ماذا يفعل السائق الذي لا يلتزم بحد السرعة داخل المدينة؟','مخالفة','سلوك صحيح','نصيحة','اختياري',NULL,NULL),
+(107,'trafik','[T-32] Emniyet kemeri takmak hangisidir?','Zorunlu','İsteğe bağlı','Sadece şehir dışı','Sadece yolcu','A',1,'[T-32] ارتداء حزام الأمان؟','إلزامي','اختياري','خارج المدينة فقط','للراكب فقط',NULL,NULL),
+(108,'trafik','[T-33] Kırmızı ışıkta geçmek hangisidir?','Yasak','Serbest','Tavsiye','İkaz','A',1,'[T-33] تجاوز الإشارة الحمراء؟','ممنوع','مسموح','نصيحة','تحذير',NULL,NULL),
+(109,'trafik','[T-34] Yaya geçidinde öncelik kimdedir?','Yayada','Otomobilde','Motorsiklette','Kamyonda','A',1,'[T-34] من له الأولوية عند ممر المشاة؟','المشاة','السيارة','الدراجة النارية','الشاحنة',NULL,NULL),
+(110,'trafik','[T-35] Sollama hangi taraftan yapılır?','Soldan','Sağdan','Ortadan','Kaldırımdan','A',1,'[T-35] من أي جانب يتم التجاوز؟','من اليسار','من اليمين','من الوسط','من الرصيف',NULL,NULL),
+(111,'trafik','[T-36] Sisli havada hangisi önerilir?','Hızı azaltmak','Hızı artırmak','Farları kapatmak','Emniyet kemerini çıkarmak','A',1,'[T-36] ما المُستحسن في الضباب؟','تخفيف السرعة','زيادة السرعة','إطفاء الأضواء','خلع الحزام',NULL,NULL),
+(112,'trafik','[T-37] Okul geçidi civarında sürücü ne yapmalıdır?','Dikkatli ve yavaş gitmeli','Hızlanmalı','Korna çalmalı','Sollamalı','A',1,'[T-37] ماذا يفعل السائق قرب ممر المدرسة؟','السير بحذر وببطء','التسريع','التزمير','التجاوز',NULL,NULL),
+(113,'trafik','[T-38] Trafik işaretlerine uymak','Zorunludur','İsteğe bağlıdır','Sadece polis varken','Sadece gece','A',1,'[T-38] الالتزام بإشارات المرور','إلزامي','اختياري','عند وجود الشرطة فقط','ليلاً فقط',NULL,NULL),
+(114,'trafik','[T-39] Alkollü araç kullanmak','Yasaktır','Serbesttir','Tavsiye edilir','Sadece şehir dışı yasak','A',1,'[T-39] القيادة تحت تأثير الكحول','ممنوعة','مسموحة','يُنصح بها','ممنوعة خارج المدينة فقط',NULL,NULL),
+(115,'trafik','[T-40] Park yasağı olan yerde park etmek','İhlaldir','Serbesttir','Tavsiyedir','Zorunludur','A',1,'[T-40] الوقوف في مكان ممنوع الوقوف فيه','مخالفة','مسموح','نصيحة','إلزامي',NULL,NULL),
+(116,'ilkyardim','[IY-1] Kanamalı yaralanmada ilk yapılması gereken nedir?','Kanamayı durdurmaya çalışmak','Su içirmek','Yürütmek','İlaç vermek','A',1,'[IY-1] ما أول ما يُفعل في إصابة نازفة؟','محاولة إيقاف النزف','إعطاء ماء','جعله يمشي','إعطاء دواء',NULL,NULL),
+(117,'ilkyardim','[IY-2] Yanıkta yapılması gerekenlerden biri hangisidir?','Soğuk suyla soğutmak','Diş macunu sürmek','Patlatmak','Sıcak basmak','A',1,'[IY-2] أي مما يلي يُفعل في الحروق؟','التبريد بماء بارد','وضع معجون أسنان','فتح الفقاعة','وضع حرارة',NULL,NULL),
+(118,'ilkyardim','[IY-3] Bayılan kişide ilk kontrol nedir?','Bilinç ve solunum','Kan grubu','Boy','Kilo','A',1,'[IY-3] ما أول فحص للمغمى عليه؟','الوعي والتنفس','فصيلة الدم','الطول','الوزن',NULL,NULL),
+(119,'ilkyardim','[IY-4] Kırık şüphesinde ne yapılmamalıdır?','Zorla oynatmak','Sabitlemek','Yardım çağırmak','Sakinleştirmek','A',1,'[IY-4] ما الذي لا يُفعل عند الاشتباه بكسر؟','تحريكه بالقوة','تثبيته','طلب المساعدة','تهدئته',NULL,NULL),
+(120,'ilkyardim','[IY-5] Zehirlenmede genel yaklaşım nedir?','112’yi aramak','Kusmaya zorlamak her zaman','Süt içirmek her zaman','Yürüyüş yaptırmak','A',1,'[IY-5] ما النهج العام في التسمم؟','الاتصال بـ 112','إجباره على القيء دائماً','إعطاؤه حليباً دائماً','جعله يمشي',NULL,NULL),
+(121,'ilkyardim','[IY-6] Kanamalı yaralanmada ilk yapılması gereken nedir?','Kanamayı durdurmaya çalışmak','Su içirmek','Yürütmek','İlaç vermek','A',1,'[IY-6] ما أول ما يُفعل في إصابة نازفة؟','محاولة إيقاف النزف','إعطاء ماء','جعله يمشي','إعطاء دواء',NULL,NULL),
+(122,'ilkyardim','[IY-7] Yanıkta yapılması gerekenlerden biri hangisidir?','Soğuk suyla soğutmak','Diş macunu sürmek','Patlatmak','Sıcak basmak','A',1,'[IY-7] أي مما يلي يُفعل في الحروق؟','التبريد بماء بارد','وضع معجون أسنان','فتح الفقاعة','وضع حرارة',NULL,NULL),
+(123,'ilkyardim','[IY-8] Bayılan kişide ilk kontrol nedir?','Bilinç ve solunum','Kan grubu','Boy','Kilo','A',1,'[IY-8] ما أول فحص للمغمى عليه؟','الوعي والتنفس','فصيلة الدم','الطول','الوزن',NULL,NULL),
+(124,'ilkyardim','[IY-9] Kırık şüphesinde ne yapılmamalıdır?','Zorla oynatmak','Sabitlemek','Yardım çağırmak','Sakinleştirmek','A',1,'[IY-9] ما الذي لا يُفعل عند الاشتباه بكسر؟','تحريكه بالقوة','تثبيته','طلب المساعدة','تهدئته',NULL,NULL),
+(125,'ilkyardim','[IY-10] Zehirlenmede genel yaklaşım nedir?','112’yi aramak','Kusmaya zorlamak her zaman','Süt içirmek her zaman','Yürüyüş yaptırmak','A',1,'[IY-10] ما النهج العام في التسمم؟','الاتصال بـ 112','إجباره على القيء دائماً','إعطاؤه حليباً دائماً','جعله يمشي',NULL,NULL),
+(126,'ilkyardim','[IY-11] Kanamalı yaralanmada ilk yapılması gereken nedir?','Kanamayı durdurmaya çalışmak','Su içirmek','Yürütmek','İlaç vermek','A',1,'[IY-11] ما أول ما يُفعل في إصابة نازفة؟','محاولة إيقاف النزف','إعطاء ماء','جعله يمشي','إعطاء دواء',NULL,NULL),
+(127,'ilkyardim','[IY-12] Yanıkta yapılması gerekenlerden biri hangisidir?','Soğuk suyla soğutmak','Diş macunu sürmek','Patlatmak','Sıcak basmak','A',1,'[IY-12] أي مما يلي يُفعل في الحروق؟','التبريد بماء بارد','وضع معجون أسنان','فتح الفقاعة','وضع حرارة',NULL,NULL),
+(128,'ilkyardim','[IY-13] Bayılan kişide ilk kontrol nedir?','Bilinç ve solunum','Kan grubu','Boy','Kilo','A',1,'[IY-13] ما أول فحص للمغمى عليه؟','الوعي والتنفس','فصيلة الدم','الطول','الوزن',NULL,NULL),
+(129,'ilkyardim','[IY-14] Kırık şüphesinde ne yapılmamalıdır?','Zorla oynatmak','Sabitlemek','Yardım çağırmak','Sakinleştirmek','A',1,'[IY-14] ما الذي لا يُفعل عند الاشتباه بكسر؟','تحريكه بالقوة','تثبيته','طلب المساعدة','تهدئته',NULL,NULL),
+(130,'ilkyardim','[IY-15] Zehirlenmede genel yaklaşım nedir?','112’yi aramak','Kusmaya zorlamak her zaman','Süt içirmek her zaman','Yürüyüş yaptırmak','A',1,'[IY-15] ما النهج العام في التسمم؟','الاتصال بـ 112','إجباره على القيء دائماً','إعطاؤه حليباً دائماً','جعله يمشي',NULL,NULL),
+(131,'ilkyardim','[IY-16] Kanamalı yaralanmada ilk yapılması gereken nedir?','Kanamayı durdurmaya çalışmak','Su içirmek','Yürütmek','İlaç vermek','A',1,'[IY-16] ما أول ما يُفعل في إصابة نازفة؟','محاولة إيقاف النزف','إعطاء ماء','جعله يمشي','إعطاء دواء',NULL,NULL),
+(132,'ilkyardim','[IY-17] Yanıkta yapılması gerekenlerden biri hangisidir?','Soğuk suyla soğutmak','Diş macunu sürmek','Patlatmak','Sıcak basmak','A',1,'[IY-17] أي مما يلي يُفعل في الحروق؟','التبريد بماء بارد','وضع معجون أسنان','فتح الفقاعة','وضع حرارة',NULL,NULL),
+(133,'ilkyardim','[IY-18] Bayılan kişide ilk kontrol nedir?','Bilinç ve solunum','Kan grubu','Boy','Kilo','A',1,'[IY-18] ما أول فحص للمغمى عليه؟','الوعي والتنفس','فصيلة الدم','الطول','الوزن',NULL,NULL),
+(134,'ilkyardim','[IY-19] Kırık şüphesinde ne yapılmamalıdır?','Zorla oynatmak','Sabitlemek','Yardım çağırmak','Sakinleştirmek','A',1,'[IY-19] ما الذي لا يُفعل عند الاشتباه بكسر؟','تحريكه بالقوة','تثبيته','طلب المساعدة','تهدئته',NULL,NULL),
+(135,'ilkyardim','[IY-20] Zehirlenmede genel yaklaşım nedir?','112’yi aramak','Kusmaya zorlamak her zaman','Süt içirmek her zaman','Yürüyüş yaptırmak','A',1,'[IY-20] ما النهج العام في التسمم؟','الاتصال بـ 112','إجباره على القيء دائماً','إعطاؤه حليباً دائماً','جعله يمشي',NULL,NULL),
+(136,'arac','[AT-1] Motor hararet yaparsa ne yapılmalıdır?','Güvenli yerde durup soğutmak','Hızlanmak','Kapağı hemen açmak','Su ekleyip yola devam','A',1,'[AT-1] ماذا يُفعل إذا سخن المحرك؟','التوقف في مكان آمن والتبريد','التسريع','فتح الغطاء فوراً','إضافة ماء ومتابعة السير',NULL,NULL),
+(137,'arac','[AT-2] Fren hidroliği ne işe yarar?','Fren sisteminde güç iletimi','Cam temizliği','Yakıt artışı','Klima','A',1,'[AT-2] ما وظيفة سائل الفرامل؟','نقل القوة في نظام الفرامل','تنظيف الزجاج','زيادة الوقود','التكييف',NULL,NULL),
+(138,'arac','[AT-3] Lastik basıncı düşükse ne olur?','Yakıt artar, lastik aşınır','Hiçbir şey olmaz','Hız artar','Motor gücü artar','A',1,'[AT-3] ماذا يحدث إذا كان ضغط الإطار منخفضاً؟','يزيد استهلاك الوقود ويتآكل الإطار','لا شيء','تزيد السرعة','تزيد قوة المحرك',NULL,NULL),
+(139,'arac','[AT-4] Silecek suyu bitince ne olur?','Cam temizliği zorlaşır','Motor stop eder','Fren boşalır','Vites tutmaz','A',1,'[AT-4] ماذا يحدث عند نفاد ماء المساحات؟','يصعب تنظيف الزجاج','يتوقف المحرك','تفرغ الفرامل','لا تمسك السرعات',NULL,NULL),
+(140,'arac','[AT-5] Debriyaj ne işe yarar?','Motor-şanzıman bağlantısını keser/bağlar','Far açar','Korna çalar','Cam açar','A',1,'[AT-5] ما وظيفة الدبرياج؟','يفصل/يربط المحرك بناقل الحركة','يشغل الأضواء','يشغل البوق','يفتح الزجاج',NULL,NULL),
+(141,'arac','[AT-6] Motor hararet yaparsa ne yapılmalıdır?','Güvenli yerde durup soğutmak','Hızlanmak','Kapağı hemen açmak','Su ekleyip yola devam','A',1,'[AT-6] ماذا يُفعل إذا سخن المحرك؟','التوقف في مكان آمن والتبريد','التسريع','فتح الغطاء فوراً','إضافة ماء ومتابعة السير',NULL,NULL),
+(142,'arac','[AT-7] Fren hidroliği ne işe yarar?','Fren sisteminde güç iletimi','Cam temizliği','Yakıt artışı','Klima','A',1,'[AT-7] ما وظيفة سائل الفرامل؟','نقل القوة في نظام الفرامل','تنظيف الزجاج','زيادة الوقود','التكييف',NULL,NULL),
+(143,'arac','[AT-8] Lastik basıncı düşükse ne olur?','Yakıt artar, lastik aşınır','Hiçbir şey olmaz','Hız artar','Motor gücü artar','A',1,'[AT-8] ماذا يحدث إذا كان ضغط الإطار منخفضاً؟','يزيد استهلاك الوقود ويتآكل الإطار','لا شيء','تزيد السرعة','تزيد قوة المحرك',NULL,NULL),
+(144,'arac','[AT-9] Silecek suyu bitince ne olur?','Cam temizliği zorlaşır','Motor stop eder','Fren boşalır','Vites tutmaz','A',1,'[AT-9] ماذا يحدث عند نفاد ماء المساحات؟','يصعب تنظيف الزجاج','يتوقف المحرك','تفرغ الفرامل','لا تمسك السرعات',NULL,NULL),
+(145,'arac','[AT-10] Debriyaj ne işe yarar?','Motor-şanzıman bağlantısını keser/bağlar','Far açar','Korna çalar','Cam açar','A',1,'[AT-10] ما وظيفة الدبرياج؟','يفصل/يربط المحرك بناقل الحركة','يشغل الأضواء','يشغل البوق','يفتح الزجاج',NULL,NULL),
+(146,'arac','[AT-11] Motor hararet yaparsa ne yapılmalıdır?','Güvenli yerde durup soğutmak','Hızlanmak','Kapağı hemen açmak','Su ekleyip yola devam','A',1,'[AT-11] ماذا يُفعل إذا سخن المحرك؟','التوقف في مكان آمن والتبريد','التسريع','فتح الغطاء فوراً','إضافة ماء ومتابعة السير',NULL,NULL),
+(147,'arac','[AT-12] Fren hidroliği ne işe yarar?','Fren sisteminde güç iletimi','Cam temizliği','Yakıt artışı','Klima','A',1,'[AT-12] ما وظيفة سائل الفرامل؟','نقل القوة في نظام الفرامل','تنظيف الزجاج','زيادة الوقود','التكييف',NULL,NULL),
+(148,'arac','[AT-13] Lastik basıncı düşükse ne olur?','Yakıt artar, lastik aşınır','Hiçbir şey olmaz','Hız artar','Motor gücü artar','A',1,'[AT-13] ماذا يحدث إذا كان ضغط الإطار منخفضاً؟','يزيد استهلاك الوقود ويتآكل الإطار','لا شيء','تزيد السرعة','تزيد قوة المحرك',NULL,NULL),
+(149,'arac','[AT-14] Silecek suyu bitince ne olur?','Cam temizliği zorlaşır','Motor stop eder','Fren boşalır','Vites tutmaz','A',1,'[AT-14] ماذا يحدث عند نفاد ماء المساحات؟','يصعب تنظيف الزجاج','يتوقف المحرك','تفرغ الفرامل','لا تمسك السرعات',NULL,NULL),
+(150,'arac','[AT-15] Debriyaj ne işe yarar?','Motor-şanzıman bağlantısını keser/bağlar','Far açar','Korna çalar','Cam açar','A',1,'[AT-15] ما وظيفة الدبرياج؟','يفصل/يربط المحرك بناقل الحركة','يشغل الأضواء','يشغل البوق','يفتح الزجاج',NULL,NULL),
+(151,'arac','[AT-16] Motor hararet yaparsa ne yapılmalıdır?','Güvenli yerde durup soğutmak','Hızlanmak','Kapağı hemen açmak','Su ekleyip yola devam','A',1,'[AT-16] ماذا يُفعل إذا سخن المحرك؟','التوقف في مكان آمن والتبريد','التسريع','فتح الغطاء فوراً','إضافة ماء ومتابعة السير',NULL,NULL),
+(152,'arac','[AT-17] Fren hidroliği ne işe yarar?','Fren sisteminde güç iletimi','Cam temizliği','Yakıt artışı','Klima','A',1,'[AT-17] ما وظيفة سائل الفرامل؟','نقل القوة في نظام الفرامل','تنظيف الزجاج','زيادة الوقود','التكييف',NULL,NULL),
+(153,'arac','[AT-18] Lastik basıncı düşükse ne olur?','Yakıt artar, lastik aşınır','Hiçbir şey olmaz','Hız artar','Motor gücü artar','A',1,'[AT-18] ماذا يحدث إذا كان ضغط الإطار منخفضاً؟','يزيد استهلاك الوقود ويتآكل الإطار','لا شيء','تزيد السرعة','تزيد قوة المحرك',NULL,NULL),
+(154,'arac','[AT-19] Silecek suyu bitince ne olur?','Cam temizliği zorlaşır','Motor stop eder','Fren boşalır','Vites tutmaz','A',1,'[AT-19] ماذا يحدث عند نفاد ماء المساحات؟','يصعب تنظيف الزجاج','يتوقف المحرك','تفرغ الفرامل','لا تمسك السرعات',NULL,NULL),
+(155,'arac','[AT-20] Debriyaj ne işe yarar?','Motor-şanzıman bağlantısını keser/bağlar','Far açar','Korna çalar','Cam açar','A',1,'[AT-20] ما وظيفة الدبرياج؟','يفصل/يربط المحرك بناقل الحركة','يشغل الأضواء','يشغل البوق','يفتح الزجاج',NULL,NULL),
+(156,'adab','[TA-1] Trafikte sabır göstermek','Olumlu davranıştır','Gereksizdir','Yasağa aykırıdır','Hız demektir','A',1,'[TA-1] إظهار الصبر في المرور','سلوك إيجابي','غير ضروري','يخالف الحظر','يعني السرعة',NULL,NULL),
+(157,'adab','[TA-2] Gereksiz korna çalmak','Kaba davranıştır','Zorunludur','Tavsiye edilir','Yasal zorunluluk','A',1,'[TA-2] التزمير بلا داعٍ','سلوك فظ','إلزامي','يُنصح به','واجب قانوني',NULL,NULL),
+(158,'adab','[TA-3] Yaya ve bisikletlilere saygı','Trafik adabıdır','Gereksizdir','Yasak','Sadece gece','A',1,'[TA-3] احترام المشاة وراكبي الدراجات','من آداب المرور','غير ضروري','ممنوع','ليلاً فقط',NULL,NULL),
+(159,'adab','[TA-4] Şerit ihlali yapmadan gitmek','Doğru davranıştır','Yanlıştır','İsteğe bağlı','Ceza sebebidir','A',1,'[TA-4] السير دون مخالفة المسار','سلوك صحيح','خاطئ','اختياري','سبب عقوبة',NULL,NULL),
+(160,'adab','[TA-5] Selamlaşma ve nezaket','Trafik kültürünün parçasıdır','Yasaktır','Anlamsızdır','Sadece şehir dışı','A',1,'[TA-5] التحية والأدب','جزء من ثقافة المرور','ممنوع','بلا معنى','خارج المدينة فقط',NULL,NULL),
+(161,'adab','[TA-6] Trafikte sabır göstermek','Olumlu davranıştır','Gereksizdir','Yasağa aykırıdır','Hız demektir','A',1,'[TA-6] إظهار الصبر في المرور','سلوك إيجابي','غير ضروري','يخالف الحظر','يعني السرعة',NULL,NULL),
+(162,'adab','[TA-7] Gereksiz korna çalmak','Kaba davranıştır','Zorunludur','Tavsiye edilir','Yasal zorunluluk','A',1,'[TA-7] التزمير بلا داعٍ','سلوك فظ','إلزامي','يُنصح به','واجب قانوني',NULL,NULL),
+(163,'adab','[TA-8] Yaya ve bisikletlilere saygı','Trafik adabıdır','Gereksizdir','Yasak','Sadece gece','A',1,'[TA-8] احترام المشاة وراكبي الدراجات','من آداب المرور','غير ضروري','ممنوع','ليلاً فقط',NULL,NULL),
+(164,'adab','[TA-9] Şerit ihlali yapmadan gitmek','Doğru davranıştır','Yanlıştır','İsteğe bağlı','Ceza sebebidir','A',1,'[TA-9] السير دون مخالفة المسار','سلوك صحيح','خاطئ','اختياري','سبب عقوبة',NULL,NULL),
+(165,'adab','[TA-10] Selamlaşma ve nezaket','Trafik kültürünün parçasıdır','Yasaktır','Anlamsızdır','Sadece şehir dışı','A',1,'[TA-10] التحية والأدب','جزء من ثقافة المرور','ممنوع','بلا معنى','خارج المدينة فقط',NULL,NULL),
+(166,'ilkyardim','[DÖÇ] Trafik kazasına tanık olan ilk yardımcının sesli ve ağrılı uyaranlara yanıt vermeyen, yutkunma ve öksürük gibi tepkileri olmayan yaralı için hangisini yapması yanlıştır?','Sırtüstü yatırması','Sıkan kıyafetlerini gevşetmesi','Solunum yolu açıklığını sağlaması','Kusması var ise Heimlich manevrası uygulaması','D',1,'[DÖÇ] بالنسبة للمصاب الذي لا يستجيب للمنبهات الصوتية والمؤلمة ولا تظهر لديه ردود فعل مثل البلع أو السعال، أي مما يلي خطأ أن يفعله المسعف؟','وضعه على ظهره','فك الملابس الضيقة','تأمين مجرى التنفس','تطبيق مناورة هايمليخ إذا كان يتقيأ',NULL,'doc'),
+(167,'trafik','[DÖÇ] I. Trafik, ülkenin kaynaklarını, sanayi, ticaret alanlarını ve sosyo-ekonomik yapısını etkiler.\nII. Mühendislik ve sosyal bilimler, doğrudan ve dolaylı bir biçimde trafik kavramı içindedir.\nIII. Trafiğin üç temel unsuru; insan, araç ve çevredir.\nNumaralanmış ifadelerden hangileri doğrudur?','I ve II','I ve III','II ve III','I, II ve III','D',1,'[DÖÇ] I. يؤثر المرور على موارد البلاد والصناعة والتجارة والبنية الاجتماعية الاقتصادية.\nII. الهندسة والعلوم الاجتماعية ضمن مفهوم المرور بشكل مباشر وغير مباشر.\nIII. عناصر المرور الثلاثة: الإنسان والمركبة والبيئة.\nأي العبارات صحيحة؟','I و II','I و III','II و III','I و II و III',NULL,'doc'),
+(168,'arac','[DÖÇ] I. Yakıt sistemi\nII. Ateşleme sistemi\nIII. Soğutma sistemi\nMarşa basıldığında marş motoru dönüyor, araç motoru çalışmıyorsa verilen sistemlerden hangilerinde arıza olabilir?','Yalnız I','I ve II','II ve III','I, II ve III','B',1,'[DÖÇ] I. نظام الوقود\nII. نظام الإشعال\nIII. نظام التبريد\nإذا دار محرك التشغيل عند الضغط على المفتاح ولم يعمل محرك المركبة، ففي أي الأنظمة قد يكون العطل؟','I فقط','I و II','II و III','I و II و III',NULL,'doc'),
+(169,'trafik','[DÖÇ] Ticari amaçla yük taşımacılığı yapan ve azami ağırlığı 3,5 tonu geçen araç şoförlerinin, sürekli 4,5 saatlik araç kullanma süresi sonunda, eğer istirahata çekilmiyor ise en az kaç dakika mola alması mecburidir?','20','25','35','45','D',1,'[DÖÇ] ما الحد الأدنى لدقائق الاستراحة الإلزامية لسائقي مركبات نقل البضائع التجارية التي يزيد وزنها الأقصى عن 3.5 طن بعد قيادة متواصلة لمدة 4.5 ساعة إن لم يدخلوا راحة كاملة؟','20','25','35','45',NULL,'doc'),
+(170,'adab','[DÖÇ] Tablodaki eşleştirmelerden hangisi yanlıştır?\nI. Arabanı hızlı kullanıyorsun! → Sen dili\nII. Kaza yapacağız diye korktum! → Ben dili\nIII. Yanlış yoldan gidiyorsun! → Ben dili\nIV. Arabanı dikkatli kullanman sevindim! → Ben dili','I','II','III','IV','C',1,'[DÖÇ] أي مطابقة في الجدول خاطئة؟\nI. تقود بسرعة! → لغة أنت\nII. خفت أن نتعرض لحادث! → لغة أنا\nIII. تسير في الطريق الخطأ! → لغة أنا\nIV. سررت لقيادتك بحذر! → لغة أنا','I','II','III','IV','doc/adab-ben-sen-dili-tablo.png','doc'),
+(171,'ilkyardim','[DÖÇ] Çocuklara (1-8 yaş) yapılan dış kalp masajı uygulamalarından hangisi doğrudur?','Tek elle göğüs kemiğinin alt yarısına bası','İki elle göğüs kemiğine bası','Karın bölgesine bası','Köprücük kemiği yakınına bası','A',1,'[DÖÇ] أي تطبيق لتدليك القلب الخارجي للأطفال (1–8 سنوات) صحيح؟','ضغط بيد واحدة على النصف السفلي لعظم القص','ضغط بيدتين على عظم القص','ضغط على البطن','ضغط قرب الترقوة','doc/cocuk-kalp-masaji.png','doc'),
+(172,'ilkyardim','[DÖÇ] I. Sinir uçlarının sonlandığı bölge etkilendiği için oldukça ağrılıdır.\nII. Derinin dış tabakasının bir bölümünün kaybı ile oluşan yaralanmalardır.\nIII. Bu tip yaralanmalarda kanama daha çok fışkırır tarzdadır.\nIV. İç organlarda meydana gelebilecek hasarlar hayati tehlike oluşturabilir.\nNumaralanmış özelliklerden hangileri \"sıyrık yaralar\" ile ilgili değildir?','I ve II','I ve III','II ve IV','III ve IV','D',1,'[DÖÇ] I. مؤلمة جداً لأن نهايات الأعصاب تتأثر.\nII. إصابات بفقدان جزء من الطبقة الخارجية للجلد.\nIII. النزف في هذا النوع يكون عادة نافوراً.\nIV. أضرار الأعضاء الداخلية قد تشكل خطراً على الحياة.\nأي الخصائص لا تتعلق بجروح السحج؟','I و II','I و III','II و IV','III و IV',NULL,'doc'),
+(173,'ilkyardim','[DÖÇ] Trafik kazası sonucu olay yerinde bulunan ilk yardımcı, yaralanan dört kazazedeye tespit işlemi uygulamıştır. İlk yardımcı, bu kazazedelerden hangisinin sağ omzunun çıktığını düşünmüştür?','Sağ kolu askıya alınmış kazazede','Sol kolu askıya alınmış kazazede','Boyun ve omuz bölgesi sarılı kazazede','Her iki omzu saran sekiz bandajlı kazazede','A',1,'[DÖÇ] طبق المسعف تثبيتاً لأربعة مصابين في موقع الحادث. أي مصاب ظن أن كتفه الأيمن مخلوع؟','المصاب الذي عُلّق ذراعه الأيمن بحمالة','المصاب الذي عُلّق ذراعه الأيسر بحمالة','المصاب الملفوف حول العنق والكتف','المصاب بضماد على شكل 8 يحيط بالكتفين','doc/omuz-cikigi-tespit.png','doc'),
+(174,'ilkyardim','[DÖÇ] Nefes alabilen, öksüren ve tıkandığını ifade edebilen kazazedeye hangi ilk yardım uygulaması yapılmalıdır?','Bacakları üzerine ata biner şekilde oturulmalı ve bir elin topuğuyla göbeğin üzerinden kürek kemiklerine doğru eğik bir baskı uygulanmalıdır.','Bir elin topuk kısmıyla iki kürek kemiğinin arasına 5 kez kuvvetlice vurulmalıdır.','Bir elin başparmağı midenin üst kısmına, göğüs kemiği altına gelecek şekilde yumruk yaparak konulmalı, kuvvetle arkaya ve yukarı doğru bastırılmalıdır.','Dokunulmadan öksürmeye teşvik edilmelidir.','D',1,'[DÖÇ] ما الإسعاف الواجب لمصاب يستطيع التنفس والسعال والتعبير عن انسداد؟','الجلوس فوق ساقيه والضغط بميل من فوق السرة نحو لوحي الكتف','الضرب بقوة 5 مرات بين لوحي الكتف بكعب اليد','وضع قبضة تحت عظم القص والضغط بقوة للخلف وللأعلى','تشجيعه على السعال دون لمسه',NULL,'doc'),
+(175,'trafik','[DÖÇ] Hız sınırlarını yüzde otuzdan fazla aşmak suretiyle suçunun işlendiği tarihten geriye doğru bir yıl içerisinde aynı kuralı beş defa ihlal ettiği tespit edilenlerin sürücü belgeleri kaç yıl süre ile geri alınır?','1','2','3','5','A',1,'[DÖÇ] لمن ثبتت مخالفته لتجاوز حد السرعة بأكثر من ثلاثين بالمئة خمس مرات خلال سنة واحدة من تاريخ المخالفة، كم سنة تُسحب رخصة قيادته؟','1','2','3','5',NULL,'doc'),
+(176,'trafik','[DÖÇ] I. Kar yağışlı havalarda\nII. Sisli havalarda\nIII. Toz bulutlarının yoğun olduğu havalarda\nNumaralanmış hava koşullarının hangilerinde araç farlarını yakmak gereklidir?','I ve II','I ve III','II ve III','I, II ve III','D',1,'[DÖÇ] I. في الطقس الثلجي\nII. في الضباب\nIII. عند كثافة الغبار\nفي أي الظروف يجب تشغيل أضواء المركبة؟','I و II','I و III','II و III','I و II و III',NULL,'doc'),
+(177,'trafik','[DÖÇ] Geçiş yolları üzerinde hangisinin yapılması yasaktır?','Durmak','Park etmek','Yavaş gitmek','Vites küçültmek','B',1,'[DÖÇ] أي مما يلي ممنوع على طرق العبور/المداخل؟','التوقف','الوقوف (الركن)','السير ببطء','تخفيض السرعة',NULL,'doc'),
+(178,'ilkyardim','[DÖÇ] Uzun süre egzersiz yaptıktan sonra trafiğe çıkan sürücüde korku, terleme, hızlı nabız, titreme, aniden acıkma, yorgunluk ve bulantı gibi belirtiler oluşmuştur. Bilinci yerinde olan ve kusması olmayan sürücünün yaşam bulguları değerlendirildikten sonra yapılması gereken ilk yardım uygulaması hangisidir?','Koma pozisyonu verilir.','Kusturulmaya çalışılır.','Soğuk uygulama yapılır.','Ağızdan şeker ve şekerli içecekler verilir.','D',1,'[DÖÇ] ظهر على سائق بعد تمرين طويل خوف وتعرق ونبض سريع ورعشة وجوع مفاجئ وتعب وغثيان. وهو واعٍ ولا يتقيأ. بعد تقييم العلامات الحيوية ما الإسعاف المطلوب؟','وضع الغيبوبة','محاولة القيء','تطبيق بارد','إعطاء سكر ومشروبات سكرية عن طريق الفم',NULL,'doc'),
+(179,'trafik','[DÖÇ] Hangisi \"park etme\" kurallarındandır?','Aracın kapılarını açık tutmak','5 dakikayı geçmeyecek şekilde beklemek','Park yerindeki araçların çıkışını engellememek','Aracın anahtarını park görevlilerine teslim etmek','C',1,'[DÖÇ] أي مما يلي من قواعد الوقوف؟','إبقاء أبواب المركبة مفتوحة','الانتظار بما لا يزيد عن 5 دقائق','عدم عرقلة خروج المركبات في الموقف','تسليم مفتاح المركبة لمسؤولي الموقف',NULL,'doc'),
+(180,'arac','[DÖÇ] I. Kabloların oksitlenmesi\nII. Marş motorunun arızalanması\nIII. Sigortanın atması\nKorna çalışmıyorsa, sebebi numaralanmış durumlardan hangileri olabilir?','I ve II','I ve III','II ve III','I, II ve III','B',1,'[DÖÇ] I. تأكسد الكابلات\nII. عطل محرك التشغيل\nIII. احتراق الفيوز\nإذا لم يعمل البوق، أي الأسباب محتملة؟','I و II','I و III','II و III','I و II و III',NULL,'doc'),
+(181,'ilkyardim','[DÖÇ] İlk yardımın ABC’sine göre “A” (hava yolu açıklığı) değerlendirmesini gösteren görsel hangisidir?','Baş-çene pozisyonu','Bak-dinle-hisset','Boyun nabzı kontrolü','Bilinç kontrolü','A',1,'[DÖÇ] حسب ABC للإسعاف، أي صورة تُظهر تقييم A (مجرى الهواء)؟','وضعية الرأس والذقن','انظر-اسمع-اشعر','فحص نبض العنق','فحص الوعي','doc/ilkyardim-abc-a.png','doc'),
+(182,'ilkyardim','[DÖÇ] Kanama resimlerinden hangisi atardamar kanamasına aittir?','Kılcal sızıntı','Damlayan kan','Yüzeysel sızıntı','Fışkırır tarzdaki parlak kırmızı kan','D',1,'[DÖÇ] أي صورة للنزف تخص نزف الشريان؟','تسرب شعري','دم يتقاطر','تسرب سطحي','دم أحمر لامع يندفع نافوراً','doc/atardamar-kanamasi.png','doc'),
+(183,'ilkyardim','[DÖÇ] Olay yerinde ilk yardımcının yapabileceği uygulamalardan hangisi görselde doğru gösterilmiştir?','Burun sürüntüsü almak','Burun kanamasına müdahale','Ambu ile suni solunum','Boyun nabzı ölçümü','B',1,'[DÖÇ] أي تطبيق يمكن للمسعف فعله في موقع الحادث كما في الصورة؟','أخذ مسحة أنف','معالجة نزيف الأنف','تنفس صناعي بالأمبو','قياس نبض العنق','doc/burun-kanamasi-mudahale.png','doc'),
+(184,'trafik','[DÖÇ] Kavşakta bulunulan yolun tali yol olduğunu ve ana yola çıkarken yol verilmesi gerektiğini belirten trafik işareti hangisidir?','Ters üçgen (yol ver) levhası','Karşıdan gelene yol ver','Giriş yok','Ana yol kavşağı uyarı işareti','A',1,'[DÖÇ] أي إشارة تدل على أن الطريق فرعي ويجب إعطاء الأولوية عند الخروج إلى الطريق الرئيسي؟','مثلث مقلوب (أعط الأولوية)','أعط الأولوية للقادم من المقابل','ممنوع الدخول','تحذير تقاطع طريق رئيسي','doc/trafik-tali-yol-isareti.png','doc'),
+(185,'trafik','[DÖÇ] Görsele göre ileride sola dönecek sürücü hangi şeridi izlemelidir?','İstediği şeridi','1 numaralı şeridi','2 numaralı şeridi','3 numaralı şeridi','B',1,'[DÖÇ] وفقاً للصورة، أي مسار يجب أن يتبعه السائق الذي سينعطف يساراً؟','أي مسار يريد','المسار رقم 1','المسار رقم 2','المسار رقم 3','doc/trafik-sola-donus-seridi.png','doc'),
+(186,'trafik','[DÖÇ] Görseldeki devamlı (kesintisiz) yol çizgisi sürücüye neyi bildirir?','Karşı şeride geçilebilir','Sağ şeritten gidilemez','Hiçbir sebeple durulamaz','Öndeki araçlar geçilemez / şerit değiştirilemez','D',1,'[DÖÇ] ماذا يُخبر الخط المتصل في الصورة السائق؟','يمكن تجاوز المسار المقابل','لا يُسمح بالمسار الأيمن','لا يُوقف لأي سبب','لا يجوز تجاوز المركبات الأمامية / تغيير المسار','doc/trafik-devamli-yol-cizgisi.png','doc'),
+(187,'trafik','[DÖÇ] Görseldeki yatay trafik işaretlemesi otomobil sürücüsüne neyi bildirir?','Kavşağa 50 m kaldığını','Azami hızın 50 km/s olduğunu','50 m sonra tehlikeli viraj olduğunu','Öndeki aracın 50 m takip mesafesiyle izlenmesi gerektiğini','D',1,'[DÖÇ] ماذا تُخبر العلامة الأفقية في الصورة سائق السيارة؟','بقي 50 م للتقاطع','الحد الأقصى 50 كم/س','منعطف خطر بعد 50 م','يجب متابعة المركبة الأمامية بمسافة 50 م','doc/trafik-takip-mesafesi-isaret.png','doc'),
+(188,'trafik','[DÖÇ] Videoya / görsele göre kırmızı otomobil sürücüsü hakkında hangisi kesinlikle söylenebilir?','Hız limitini aştığı','Takip mesafesini koruduğu','Hatalı sollama / geçme yaptığı','Yorgun veya uykusuz olduğu','C',1,'[DÖÇ] وفقاً للفيديو/الصورة، أي عبارة عن سائق السيارة الحمراء مؤكدة؟','تجاوز حد السرعة','حافظ على مسافة المتابعة','قام بتجاوز خاطئ','كان متعباً أو ناعساً','doc/trafik-kirmizi-otomobil-video.png','doc'),
+(189,'ilkyardim','[FARUK] Aşağıdakilerden hangisi ilk yardımın öncelikli amaçlarındandır?','Trafikteki kaza sayısını azaltmak','Sağlık personelinin mesleki başarısını artırmak','İnsanları zararlı alışkanlıklarından uzaklaştırmak','Yaşamsal fonksiyonların sürdürülmesini sağlamak','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(190,'ilkyardim','[FARUK] Aşağıdakilerden hangisi organların çalışmasını, bilinç, algılama, anlama, hareketlerin birbiri ile uyum ve denge içinde olmasını sağlayan vb. işlevleri kontrol eden sistemi oluşturan yapılardandır?','Omurilik','Pankreas','Böbrekler','Akciğerler','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(191,'ilkyardim','[FARUK] Kazazedenin dolaşımı değerlendirilirken;\nI. Bebeklerde kol atardamarından,\nII. Çocuk ve yetişkinlerde şah damarından nabız alınır.\nVerilenler için aşağıdakilerden hangisi söylenebilir?','I. doğru, II. yanlış','I. yanlış, II. doğru','Her ikisi de doğru','Her ikisi de yanlış','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(192,'ilkyardim','[FARUK] Aşağıdakilerden hangisi solunum durmasının belirtilerinden biri değildir?','Dudakların morarması','Göz bebeklerinin küçülmesi','Göğüs hareketlerinin kaybolması','Nefes alma ve verme sesinin duyulamaması','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(193,'ilkyardim','[FARUK] Yetişkinlere yapılan dış kalp masajı uygulamasıyla ilgili olarak verilenlerden hangisi doğrudur?','Ellerin parmakları göğüs kafesiyle temas ettirilmeden, dirsekler bükülmeden ve göğüs kemiği üzerine vücuda dik olacak şekilde tutulması','Göğüs kemiğinin alt ve üst ucunun tespit edilerek üst yarısına, orta ve yüzük parmağının dik olarak yerleştirilmesi','Uygulama hızının dakikada 30 bası olacak şekilde ayarlanması','Göğüs kemiği 3 cm aşağı inecek şekilde bası uygulanması','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(194,'ilkyardim','[FARUK] Aşağıdakilerden hangisi, çok sayıda yaralının bulunduğu olay yerinde uzuv kopması olan bir kazazedeye turnike uygulayan ilk yardımcının dikkat etmesi gereken kurallardandır?','Çift kemik bulunan bölgeye uygulaması','Tel, lastik, ip gibi malzemeleri kullanması','Uygulanan bölgenin üzerini sargı bezi ile kapatması','Kazazedenin alnına “turnike” ya da “T” harfi yazması','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(195,'ilkyardim','[FARUK] Aşağıdakilerden hangisi ciddi yaralanmalarda yapılması gereken ilk yardım uygulamalarındandır?','Yara içinin kurcalanması','Yarada kanama varsa durdurulması','Yaranın üzerinin temiz pamukla kapatılması','Yaraya saplanan yabancı cisimlerin çıkarılması','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(196,'ilkyardim','[FARUK] Aşağıdakilerden hangisi burkulma belirtilerinden biri değildir?','Şişlik','Kızarma','İşlev kaybı','Hareket ile azalan ağrı','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(197,'ilkyardim','[FARUK] Aşağıdakilerden hangisi kalp spazmında görülen ağrının özelliklerindendir?','Nefes alıp vermekle şiddetinin değişmesi','Genellikle göğüs ortasında başlaması','Dinlenmekle geçmemesi','Uzun süreli olması','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(198,'ilkyardim','[FARUK] I. Sıkan giysiler gevşetilir.\nII. Sırtüstü yatırılarak ayakları 45 cm kaldırılır.\nIII. Kusma varsa mide içeriğini yutması için yarı oturur pozisyonda tutulur.\nIV. Solunum yolu açıklığı kontrol edilir ve açıklığın korunması sağlanır.\nYukarıdakilerden hangileri bayılmış olan bir kazazedeye yapılması gereken ilk yardım uygulamalarındandır?','I ve IV.','II ve III.','I, III ve IV.','I, II, III ve IV.','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(199,'ilkyardim','[FARUK] Aşağıdakilerden hangisi ayak bileklerinden sürükleme yönteminde yapılmaması gereken uygulamalardandır?','Kazazedenin baş, boyun ve gövde ekseni bozulmadan sürüklenmesi','İlk yardımcının, kazazedenin ayak kısmına çömelmesi','Kazazedenin ellerinin yanda serbest bırakılması','Kazazedeye yakın mesafede durulması.','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(200,'trafik','[FARUK] Aşağıdakilerden hangisi Kara Yolları Genel Müdürlüğünün görev ve yetkilerindendir?','Belediye sınırları içindeki yollarda park düzeni, işaretleme, yaya ve okul geçitlerini belirlemek','Kara yolları üzerinde ilk yardım istasyonları kurmak, bu istasyonlara gerekli personeli, araç ve gereci sağlamak','Trafik kazalarının oluş nedenlerine göre verileri hazırlamak ve kara yollarında gerekli önleyici teknik tedbirleri almak veya aldırmak','Motorlu araç sürücülerinin yetiştirilmesi için sürücü kursları açmak, özel sürücü kursu açılmasına izin vermek ve bunları her safhada denetlemek','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(201,'trafik','[FARUK] Bir aracın güvenle taşıyabileceği en çok yük ağırlığına veya yolcu ve hizmetli sayısına ne denir?','Gabari','Taşıma sınırı','Dingil ağırlığı','Azami ağırlık','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(202,'trafik','[FARUK] Kavşağa yaklaşan bir sürücü, trafik işaret ışığının aralıklarla kırmızı yanıp söndüğünü fark etmiştir. Bu durumda sürücü nasıl davranmalıdır?','Durmalı, ilk geçiş hakkını kendisi kullanmalı','Hızını sabit tutmalı, kontrollü bir şekilde geçmeli','Hızını azaltmalı, kontrollü bir şekilde durmadan geçmeli','Durmalı, ilk geçiş hakkını diğer yönden gelen araçlara vermeli','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(203,'trafik','[FARUK] Şekildeki trafik işaretinin anlamı nedir?','Hemzemin geçit','Kontrollü demir yolu geçidi','Kontrolsüz demir yolu geçidi','Tramvay hattı ile oluşan kavşak','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(204,'trafik','[FARUK] Şekildeki trafik işaretlerinin anlamları sırasıyla hangi seçenekte doğru olarak verilmiştir?','I. Yol ver - II. Girişi olmayan yol','I. Dur - II. Taşıt trafiğine kapalı yol','I. Taşıt trafiğine kapalı yol - II. Girişi olmayan yol','I. Azami hız sınırlaması - II. Bütün yasaklama ve kısıtlamaların sonu','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(205,'trafik','[FARUK] Verilen şekle göre 2 numaralı aracın hangisini yapması doğrudur?','Bisiklet yolunu kullanması','Yayaları ikaz ederek bekletmesi','Sol şeride geçip yoluna devam etmesi','Bu bölgede azami 30 kilometre/saat hızla gitmesi','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(206,'trafik','[FARUK] Şekildeki “park etme bilgi işaretine” göre hangi numaralı araçlar yanlış park etmiştir?','Yalnız 3','1 ve 2','1 ve 3','2 ve 3','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(207,'trafik','[FARUK] Şekle göre 1 numaralı araç sürücüsünün aşağıdakilerden hangisini yapması yanlıştır?','Hızını azaltması','Öndeki aracı geçmesi','Takip mesafesini artırması','Duraklama yapmaktan kaçınması','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(208,'trafik','[FARUK] Trafik kuralının ihlal edildiği tarihten geriye doğru bir yıl içinde, toplam 100 ceza puanını aştığı birinci defa tespit edilen sürücülerin sürücü belgeleri kaç ay süre ile geri alınır?','2','3','6','7','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(209,'trafik','[FARUK] Sürücünün aşağıdakilerden hangisini yapması kural ihlali sayılır?','Üç şeritli ve iki yönlü yollarda sağ şeritten gitmesi','Aracın cinsine ve hızına uygun olan şeridi kullanması','Geçme, dönme gibi mecburi hâller dışında şerit değiştirmesi','Şerit değiştirmeden önce, gireceği şeritte sürülen araçların güvenle geçişlerini beklemesi','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(210,'trafik','[FARUK] Arkadan çarpma şeklindeki trafik kazalarının en önemli sebebi aşağıdakilerden hangisidir?','Takip mesafesi kuralına uyulmaması','Görüş mesafesinin kötü olması','Öndeki aracın durması','Havanın yağışlı olması','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(211,'trafik','[FARUK] Şekilde iki yönlü ve üç şeritli kara yolu bölümünde seyreden araçlar görülmektedir. Yol çizgilerine göre hangi numaralı araç sürücüleri hatalı sollama yapmaktadır?','Yalnız 3','1 ve 2','2 ve 3','1, 2 ve 3','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(212,'trafik','[FARUK] Araç sürücülerinin duraklanan veya park edilen yerden çıkarken;\nI. Işıkla veya kolla çıkış işareti vermeleri,\nII. Araçlarını ve araçların etrafını kontrol etmeleri,\nIII. Yoldan geçen araçları ikaz ederek durdurmaları,\nIV. Görüş alanları dışında kalan yerler varsa gözcü bulundurmaları mecburidir.\nVerilen bilgilerden hangileri doğrudur?','I ve III.','I, II ve IV.','II, III ve IV.','I, II, III ve IV.','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(213,'trafik','[FARUK] Şekildeki gibi bir kavşakta karşılaşan araçların geçiş hakkı sıralaması nasıl olmalıdır?','1 - 2 - 3 - 4','1 - 2 - 4 - 3','2 - 1 - 4 - 3','4 - 1 - 2 - 3','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(214,'trafik','[FARUK] Aşağıdakilerden hangisi geçiş üstünlüğüne sahip araçların sürülmesine ilişkin esaslardan biri değildir?','Bu araçlar, görev hâlinde iken geçiş üstünlüğü hakkına sahiptir.','Bu hak, halkın can ve mal güvenliğini tehlikeye sokmamak, ışıklı ve sesli uyarı işaretlerini bir arada vermek şartı ile kullanılır.','Emniyet ve asayiş işlerinde kullanılan, boyama şekilleri ve ayrım işareti bulunmayan araçlar anında sökülüp takılabilen ışıklı ihbar işareti bulundurmak zorundadır.','Bu araçların görev hâli dışında geçiş üstünlüğü işaret ve hakkını kullanmaları serbesttir.','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(215,'trafik','[FARUK] • Trafik işaretiyle yasaklanmış olan yerlerde\n• Belirlenmiş yangın musluklarına her iki yönden 5 metre mesafe içinde\n• Yerleşim yeri içinde kavşaklara ve bağlantı yollarına 5 metre mesafe içinde\nBelirtilen yerlerde aşağıdakilerden hangisi yasaktır?','Durmak','Duraklamak','Hızı azaltmak','Vites değiştirmek','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(216,'trafik','[FARUK] Araç ışıklarının kullanılması kurallarına göre aşağıdakilerden hangisi doğrudur?','Sadece park veya sis ışıkları yakılarak araç sürülmesi','Gündüzleri görüşü azaltan sisli, yağışlı ve benzeri havalarda sadece sis ışıklarının kullanılması','Geçme sırasında uyarı amacıyla uzağı ve yakını gösteren ışıkların çok kısa süre içinde sıra ile veya ikisinin birlikte aynı zamanda yakılması','Karşı yönden gelen araç sürücülerinin ve kara yolunu kullanan diğer kişilerin gözlerini kamaştıracak bütün hâllerde, uzağı gösteren ışıkların yakılması','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(217,'trafik','[FARUK] Kara Yolları Trafik Yönetmeliğine göre gerekli hâllerde kamyon, kamyonet, römork ve yarı römorklarla yolcu taşınabilir. Aşağıdakilerden hangisi bu araçlarla yolcu taşınabilmesi için yerine getirilmesi gereken şartlardan biri değildir?','Kasa kapaklarının 70 cm yüksekliğinde olması','Kasanın yan ve arka kapaklarının kapalı olması','Yolcuların kasa içinde ayrılacak bir yerde oturtulması','Yüklerin sağlam olarak yerleştirilmiş ve bağlanmış olması','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(218,'trafik','[FARUK] Kaza anında araç dışına fırlama riskini azaltmak için araçlarda bulunan güvenlik sistemi aşağıdakilerden hangisidir?','ASR','ABS','Emniyet kemeri','Hava yastığı','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(219,'trafik','[FARUK] I. Maddi hasar tespiti yapmak\nII. Olayı en yakın zabıta veya sağlık kuruluşuna bildirmek\nIII. Kaza yerinde usulüne uygun ilk yardım tedbirlerini almak\nIV. Yetkililerin isteği hâlinde yaralıları en yakın sağlık kuruluşuna götürmek\nKazaya karışan veya olay yerinden geçmekte olan kişiler yukarıdakilerden hangilerini yapmakla yükümlüdürler?','Yalnız III','I, II ve IV.','I, III ve IV.','II, III ve IV.','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(220,'trafik','[FARUK] Kara Yolları Trafik Kanununa göre “M, A1, A2, A, B1, B, BE, F ve G” sınıfı sürücü belgeleri kaç yıl süreyle geçerlidir?','10','15','20','25','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(221,'trafik','[FARUK] Aşağıdakilerden hangisi trafiğin çevreye verdiği zararları önlemeye yönelik davranışlardandır?','Temiz olmayan yakıt kullanılması','Kimyasal maddelerin ambalajlanarak taşınması','Hususi araçların kullanılmasına gayret edilmesi','Araç motorunun duraklama ve park etme sırasında çalışması','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(222,'arac','[FARUK] Şekilde soru işareti (?) ile gösterilen sistemin görevi aşağıdakilerden hangisidir?','Yakıt tüketimini azaltmak','Aracın fren mesafesini kısaltmak','Yoldan gelen darbelerin etkisini azaltmak','Aracın daha çabuk hızlanmasını sağlamak','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(223,'arac','[FARUK] Şekildeki araç güç aktarma organlarının adları hangi seçenekte doğru olarak verilmiştir?','I. Şaft - II. Diferansiyel - III. Aks','I. Şaft - II. Aks - III. Diferansiyel','I. Aks - II. Diferansiyel - III. Şaft','I. Diferansiyel - II. Aks - III. Şaft','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(224,'arac','[FARUK] Marş yapıldığında gösterge ışıkları yanıyor ancak marş motoru dönmüyorsa problem aşağıdakilerden hangisi olabilir?','Yakıt bitmiştir.','Batarya zayıflamıştır.','Lastik basınçları düşüktür.','Motor yağ seviyesi azalmıştır.','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(225,'arac','[FARUK] Marşa basıldığında motor dönüyor ancak çalışmıyorsa ilk olarak aşağıdakilerden hangisi kontrol edilmelidir?','Bujiler','Akü suyu','Motor yağ seviyesi','Depodaki yakıt seviyesi','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(226,'arac','[FARUK] Periyodik bakımda aşağıdakilerden hangisinin değiştirilmemesi araç motorunun çalışmasını olumsuz etkiler?','Polen filtresinin','Yağ filtresinin','Araç lastiklerinin','Cam sileceklerinin','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(227,'arac','[FARUK] Araçta yanmış bir sigortayı daha yüksek amperli bir sigortayla değiştirmek ya da telle sarmak aşağıdakilerden hangisine neden olabilir?','Bujinin daha iyi ateşlemesine','Farların daha canlı yanmasına','Akünün daha çabuk bitmesine','Elektrik tesisatının yanmasına','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(228,'arac','[FARUK] Radyatördeki su miktarının azalması aşağıdakilerden hangisine neden olur?','Motorun hararet yapmasına','Motor devrinin yükselmesine','Klimanın düzensiz çalışmasına','Akünün kısa zamanda bitmesine','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(229,'arac','[FARUK] I. Şarj\nII. ABS\nIII. Yağ basıncı\nVerilen ikaz lambalarından hangilerinin araç gösterge panelinde yanması aracın derhal durdurulmasını ve kontağın kapatılmasını gerektirir?','Yalnız III','I ve II.','I ve III.','II ve III.','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(230,'arac','[FARUK] • Ani duruş ve hızlanmalardan kaçınılması\n• Tavsiye edilen tip ve ebatlarda araç lastiği kullanılması\n• Araçta yapılması gerekli bakım ve ayarların zamanında yapılması\nVerilenler sonucunda aşağıdakilerden hangisinin gerçekleşmesi beklenir?','Çevre kirliliğinin artması','Sürüş konforunun azalması','Trafik yoğunluğunun artması','Aracın daha az yakıt tüketmesi','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(231,'adab','[FARUK] - - - - ; trafik içinde sorumluluk, yardımlaşma, tahammül, saygı, fedakârlık, sabır vb. değerlere sahip olabilme yetisidir. Verilen ifadede boş bırakılan yere aşağıdakilerden hangisi yazılmalıdır?','Beden dili','Konuşma üslubu','Trafik adabı','Trafikte hak ihlali','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(232,'adab','[FARUK] Aşağıdakilerden hangisi sorumluluk duygusuna sahip bir sürücünün özelliklerindendir?','Trafik kurallarını önemsemeden araç kullanması','Davranışlarının sonuçlarını düşünerek hareket etmesi','Sevdiklerinin hayatını tehlikeye atmaktan çekinmemesi','Kendi yetki alanına giren herhangi bir olayı başkalarının üstlenmesini beklemesi','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(233,'adab','[FARUK] Birlikte yaşadığımız trafik ortamında, kişinin belki de farkında bile olmadan yaptığı olumsuz bir davranış hiçbir suçu olmayan bir başka kişinin ölümüne, yaralanmasına ya da ömür boyu sakat kalmasına neden olabilir. Buna göre trafik içinde hatalı davranış sergileyen bir sürücüye hangisinin yapılması, hem o sürücünün hem de trafikteki diğer sürücülerin kaza yapma ya da olumsuz bir durum oluşturma riskini azaltır?','Aşırı tepki gösterilmesi','Kaba ve saldırgan davranılması','Kızgın biçimde kornaya basılması','Nezaket ve saygı çerçevesinde uyarılması','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(234,'adab','[FARUK] Aracını park ettikten sonra durduğu yerin diğer yol kullanıcıları açısından görme-görülme ya da manevra engeli oluşturup oluşturmadığını kontrol eden bir sürücünün bu davranışı trafikteki hangi değere uygundur?','Empati','Tahammül','Beden dili','Konuşma üslubu','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(235,'adab','[FARUK] Aşağıdakilerden hangisi öfkenin vücutta ortaya çıkardığı fizyolojik tepkilerden biri değildir?','Yüzün kızarması','Kaşların çatılması','Yumrukların sıkılması','Kontrollü davranılması','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(236,'adab','[FARUK] Trafik kazası geçiren kişiler:\nI. Canlarına bir zarar gelmese bile psikolojik olarak zarar görürler.\nII. Kişilerin bu bozuk psikolojileri ailelere ve topluma olumsuz yansır.\nVerilenler için aşağıdakilerden hangisi söylenebilir?','I. doğru, II. yanlış','I. yanlış, II. doğru','Her ikisi de doğru','Her ikisi de yanlış','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(237,'adab','[FARUK] Aşağıdakilerden hangisi tedbirsiz ve saygısız araç sürmeye örnek değildir?','Hız kurallarına uyulması','Yayalara su sıçratılması','Diğer sürücülerin korkutulması','Seyir hâlinde iken sürücünün elindeki cep telefonunu kullanması','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(238,'trafik','[FARUK] Aşağıdakilerden hangisi, aracın yavaşlaması ve durması hâllerinde diğer araçları ikaz etmek amacıyla yanar?','Sis lambaları','Park lambaları','Fren lambaları','İç aydınlatma lambaları','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(239,'adab','[FARUK] Trafikte güvenle seyahat etmek yüksek seviyede konsantrasyon gerektirir.\nBuna göre, direksiyon başında iken seyir emniyetinin tehlikeye düşmemesi için, aşağıdakilerden hangisinin yapılması doğru bir uygulama değildir?','Elde cep telefonu ile konuşulması','Temiz hava için araç camlarının kısa süreliğine açılması','Yol şartlarına göre kontrol edilebilecek hızda araç kullanılması','Trafik yoğunluğu düşük olan alternatif güzergâhların seçilmesi','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(240,'trafik','[FARUK] Trafik zorunlulukları nedeniyle aracın durdurulmasına ne ad verilir?','Park etme','Durma','Bekleme','Duraklama','B',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(241,'trafik','[FARUK] Sürücülerin aşağıdakilerden hangisini yapması yasaktır?','İşaret vermeden şerit değiştirmesi','Aracın cinsine ve hızına uygun şeritten gitmesi','Gidişe ayrılan en sol şeridi geçiş amaçlı olarak kullanması','Şerit değiştirmeden önce gireceği şeritteki araçların güvenli geçişlerini beklemesi','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(242,'trafik','[FARUK] 110 km/saat hızla seyreden bir aracın, önündeki aracı takip mesafesi en az kaç metre olmalıdır?','65','60','55','50','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(243,'trafik','[FARUK] Taşıtlarla ilgili aşağıdaki hâllerden hangisi park etmeye örnektir?','5 dakikadan az beklemek','Yük yüklemek veya boşaltmak','5 dakikadan fazla beklemek','Yolun kapalı olması durumunda beklemek','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(244,'trafik','[FARUK] Kara yollarında uzun süreli beklemeyi gerektiren duraklamalarda aşağıdakilerden hangisinin yapılması gerekir?','Motorun durdurulup el freninin çekilmesi','Motor çalışır halde farların yakılması','Trafik görevlisine haber verilmesi','Aracın başında gözcü bulundurulması','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(245,'trafik','[FARUK] Araçlarda ilk yardım çantası bulundurulması konusunda aşağıdakilerden hangisi doğrudur?','Sadece şehir içi taşımacılık yapan araçlarda zorunludur','Sadece şehirlerarası taşımacılık yapan araçlarda zorunludur','Motorlu araçlarda (motorlu bisiklet, motosiklet ve traktör hariç) zorunludur','Sadece A1, A2 ve F sınıfı belge ile kullanılan araçlarda zorunludur','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(246,'trafik','[FARUK] Aşağıdakilerden hangisi trafik kazasında sürücünün asli kusurlu sayılacağı durumlardan biri değildir?','Kurallara uygun olarak park etmiş araçlara çarpmak','Geçme yasağı olan yerlerden geçmek','Kavşaklarda geçiş önceliğine uymak','Arkadan çarpmak','C',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk'),
+(247,'trafik','[FARUK] Öndeki araç geçilirken, geçiş şeridinde ne kadar seyredilmelidir?','Geçilen aracın boyunun yarısı kadar','Geçilen aracın ön hizasına gelinceye kadar','Karşıdan gelen araçla karşılaşıncaya kadar','Geriyi görme aynasından geçilen araç görülünceye kadar','D',1,NULL,NULL,NULL,NULL,NULL,NULL,'faruk');
+/*!40000 ALTER TABLE `sorular` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `src_ders_notlari`
+--
+
+DROP TABLE IF EXISTS `src_ders_notlari`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `src_ders_notlari` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `konu` varchar(30) NOT NULL,
+  `baslik` varchar(200) NOT NULL,
+  `icerik` longtext DEFAULT NULL,
+  `dosya` varchar(255) DEFAULT NULL,
+  `sira` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_src_ders_konu` (`konu`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `src_ders_notlari`
+--
+
+LOCK TABLES `src_ders_notlari` WRITE;
+/*!40000 ALTER TABLE `src_ders_notlari` DISABLE KEYS */;
+/*!40000 ALTER TABLE `src_ders_notlari` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `src_oturum`
+--
+
+DROP TABLE IF EXISTS `src_oturum`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `src_oturum` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `kursiyer_id` int(10) unsigned NOT NULL,
+  `baslangic` datetime NOT NULL,
+  `bitis` datetime DEFAULT NULL,
+  `sure_sn` int(11) NOT NULL DEFAULT 2700,
+  `puan` int(11) DEFAULT NULL,
+  `dogru_sayisi` int(11) DEFAULT NULL,
+  `basarili` tinyint(1) DEFAULT NULL,
+  `durum` varchar(10) NOT NULL DEFAULT 'devam',
+  PRIMARY KEY (`id`),
+  KEY `idx_src_oturum_kursiyer` (`kursiyer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `src_oturum`
+--
+
+LOCK TABLES `src_oturum` WRITE;
+/*!40000 ALTER TABLE `src_oturum` DISABLE KEYS */;
+/*!40000 ALTER TABLE `src_oturum` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `src_soru`
+--
+
+DROP TABLE IF EXISTS `src_soru`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `src_soru` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `oturum_id` int(10) unsigned NOT NULL,
+  `soru_id` int(10) unsigned NOT NULL,
+  `sira` tinyint(3) unsigned NOT NULL,
+  `cevap` char(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_src_oturum_sira` (`oturum_id`,`sira`),
+  KEY `idx_src_es_oturum` (`oturum_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `src_soru`
+--
+
+LOCK TABLES `src_soru` WRITE;
+/*!40000 ALTER TABLE `src_soru` DISABLE KEYS */;
+/*!40000 ALTER TABLE `src_soru` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `src_sorular`
+--
+
+DROP TABLE IF EXISTS `src_sorular`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `src_sorular` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ders` varchar(20) NOT NULL,
+  `soru` text NOT NULL,
+  `secenek_a` varchar(500) NOT NULL,
+  `secenek_b` varchar(500) NOT NULL,
+  `secenek_c` varchar(500) NOT NULL,
+  `secenek_d` varchar(500) NOT NULL,
+  `dogru` char(1) NOT NULL,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `soru_ar` text DEFAULT NULL,
+  `secenek_a_ar` varchar(500) DEFAULT NULL,
+  `secenek_b_ar` varchar(500) DEFAULT NULL,
+  `secenek_c_ar` varchar(500) DEFAULT NULL,
+  `secenek_d_ar` varchar(500) DEFAULT NULL,
+  `gorsel` varchar(255) DEFAULT NULL,
+  `kaynak` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_src_soru_ders` (`ders`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `src_sorular`
+--
+
+LOCK TABLES `src_sorular` WRITE;
+/*!40000 ALTER TABLE `src_sorular` DISABLE KEYS */;
+INSERT INTO `src_sorular` VALUES
+(1,'is_sagligi','Aşağıdakilerden hangisi koma durumunun tanımıdır?','Kısa süreli, yüzeysel ve geçici baygınlık hissidir','Uzun süreli ve çok derin bilinç kaybı durumudur','Vücutta meydana gelen kontrol edilemeyen kasılmalardır','Herhangi bir nedenle vücuttaki kan şekerinin düşmesinde ortaya çıkan belirtilerdir','A',1,NULL,NULL,NULL,NULL,NULL,NULL,'manuel');
+/*!40000 ALTER TABLE `src_sorular` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `src_videolar`
+--
+
+DROP TABLE IF EXISTS `src_videolar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `src_videolar` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `konu` varchar(30) NOT NULL,
+  `baslik` varchar(200) NOT NULL,
+  `youtube_id` varchar(20) DEFAULT NULL,
+  `aciklama` text DEFAULT NULL,
+  `sira` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `idx_src_video_konu` (`konu`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `src_videolar`
+--
+
+LOCK TABLES `src_videolar` WRITE;
+/*!40000 ALTER TABLE `src_videolar` DISABLE KEYS */;
+/*!40000 ALTER TABLE `src_videolar` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `topics`
+--
+
+DROP TABLE IF EXISTS `topics`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `topics` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(10) unsigned NOT NULL,
+  `slug` varchar(50) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `content` longtext DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `topics`
+--
+
+LOCK TABLES `topics` WRITE;
+/*!40000 ALTER TABLE `topics` DISABLE KEYS */;
+/*!40000 ALTER TABLE `topics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `traffic_signs`
+--
+
+DROP TABLE IF EXISTS `traffic_signs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `traffic_signs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `traffic_signs_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `traffic_signs_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `traffic_signs`
+--
+
+LOCK TABLES `traffic_signs` WRITE;
+/*!40000 ALTER TABLE `traffic_signs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `traffic_signs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_groups`
+--
+
+DROP TABLE IF EXISTS `user_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_groups` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `group_id` int(10) unsigned NOT NULL,
+  `assigned_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_user_group` (`user_id`,`group_id`),
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `user_groups_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_groups`
+--
+
+LOCK TABLES `user_groups` WRITE;
+/*!40000 ALTER TABLE `user_groups` DISABLE KEYS */;
+INSERT INTO `user_groups` VALUES
+(1,18,1,'2026-09-11 16:07:51'),
+(2,12,1,'2026-09-11 16:07:51'),
+(3,20,1,'2026-09-11 16:07:51'),
+(4,19,1,'2026-09-11 16:07:51'),
+(5,11,1,'2026-09-11 16:07:51'),
+(6,8,1,'2026-09-11 16:07:51'),
+(7,23,1,'2026-09-11 16:07:51'),
+(8,14,1,'2026-09-11 16:07:51'),
+(9,15,1,'2026-09-11 16:07:51'),
+(10,21,1,'2026-09-11 16:07:51'),
+(11,22,1,'2026-09-11 16:07:51'),
+(12,16,1,'2026-09-11 16:07:51'),
+(13,13,1,'2026-09-11 16:07:51'),
+(14,17,1,'2026-09-11 16:07:51'),
+(15,4,1,'2026-09-11 16:07:51'),
+(16,9,1,'2026-09-11 16:07:51');
+/*!40000 ALTER TABLE `user_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_progress`
+--
+
+DROP TABLE IF EXISTS `user_progress`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_progress` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `topic_id` int(10) unsigned DEFAULT NULL,
+  `content_type` enum('video','book','animation','exam') NOT NULL,
+  `content_id` int(10) unsigned NOT NULL,
+  `progress_percent` tinyint(4) NOT NULL DEFAULT 0,
+  `is_completed` tinyint(1) NOT NULL DEFAULT 0,
+  `completed_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `user_progress_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_progress`
+--
+
+LOCK TABLES `user_progress` WRITE;
+/*!40000 ALTER TABLE `user_progress` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_progress` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `video_izleme`
+--
+
+DROP TABLE IF EXISTS `video_izleme`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `video_izleme` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `kursiyer_id` int(10) unsigned NOT NULL,
+  `youtube_id` varchar(20) NOT NULL,
+  `baslik` varchar(255) NOT NULL DEFAULT '',
+  `sure_sn` int(10) unsigned NOT NULL DEFAULT 0,
+  `oturum_sayisi` int(10) unsigned NOT NULL DEFAULT 0,
+  `son_izleme` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_kursiyer_video` (`kursiyer_id`,`youtube_id`),
+  KEY `idx_video_son` (`son_izleme`),
+  KEY `idx_video_sure` (`sure_sn`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `video_izleme`
+--
+
+LOCK TABLES `video_izleme` WRITE;
+/*!40000 ALTER TABLE `video_izleme` DISABLE KEYS */;
+/*!40000 ALTER TABLE `video_izleme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `videos`
+--
+
+DROP TABLE IF EXISTS `videos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `videos` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned DEFAULT NULL,
+  `topic_id` int(10) unsigned DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text DEFAULT NULL,
+  `youtube_id` varchar(20) DEFAULT NULL,
+  `video_file` varchar(255) DEFAULT NULL,
+  `thumbnail` varchar(255) DEFAULT NULL,
+  `duration` varchar(10) DEFAULT NULL,
+  `sort_order` tinyint(4) NOT NULL DEFAULT 0,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `instructor` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`),
+  KEY `topic_id` (`topic_id`),
+  CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `education_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `videos_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `videos_ibfk_3` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `videos`
+--
+
+LOCK TABLES `videos` WRITE;
+/*!40000 ALTER TABLE `videos` DISABLE KEYS */;
+INSERT INTO `videos` VALUES
+(3,1,NULL,NULL,'Ebru Hoca - Video 1','Ebru hocanÄ±n videosu','dQw4w9WgXcQ',NULL,NULL,NULL,1,1,'2026-09-12 10:59:14','Ebru Hoca'),
+(4,1,NULL,NULL,'Ebru Hoca - Video 2','Ebru hocanÄ±n ikinci videosu','dQw4w9WgXcQ',NULL,NULL,NULL,2,1,'2026-09-12 10:59:14','Ebru Hoca'),
+(5,1,NULL,NULL,'Cenk Hoca - Video 1','Cenk hocanÄ±n videosu','dQw4w9WgXcQ',NULL,NULL,NULL,3,1,'2026-09-12 10:59:14','Cenk Hoca'),
+(6,1,NULL,NULL,'Cenk Hoca - Video 2','Cenk hocanÄ±n ikinci videosu','dQw4w9WgXcQ',NULL,NULL,NULL,4,1,'2026-09-12 10:59:15','Cenk Hoca');
+/*!40000 ALTER TABLE `videos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `yoneticiler`
+--
+
+DROP TABLE IF EXISTS `yoneticiler`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `yoneticiler` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tc_kimlik` char(11) DEFAULT NULL,
+  `telefon` varchar(20) NOT NULL,
+  `sifre_hash` varchar(255) NOT NULL,
+  `ad_soyad` varchar(120) NOT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `aktif` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_yonetici_tel` (`telefon`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `yoneticiler`
+--
+
+LOCK TABLES `yoneticiler` WRITE;
+/*!40000 ALTER TABLE `yoneticiler` DISABLE KEYS */;
+/*!40000 ALTER TABLE `yoneticiler` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-09-14 10:47:01
