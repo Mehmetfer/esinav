@@ -24,4 +24,13 @@ return [
         'dogru' => 'D',
         'aciklama' => "Vücutta kanayan damar tipine göre 3 çeşit kanama vardır: Atardamar, Toplardamar ve Kılcal damar kanaması.\n\nAtardamar Kanaması: Atardamarlar daha derin yerleşimli olduğundan derin kesi ve yaralanmalarda görülür. Kalbin pompalamasına bağlı olarak kalp atımıyla paralel, hızlı ve bol miktarda kanama olur. Kısa sürede çok miktarda kan kaybı gerçekleşebileceğinden oldukça tehlikelidir ve erken müdahale gerektirir. Oksijen yönünden zengin kan parlak kırmızıdır ve kanamanın durması zordur. Atardamar kanamaları kalp atımlarıyla uyumlu kesik kesik (fışkırarak) akar ve açık renklidir.",
     ],
+    [
+        'soru' => 'Aracın su dolu derin bir çukura girmesi nedeniyle, fren balatalarının ıslanması halinde frenin tutunma özelliğinin azaldığı durumlarda aşağıdakilerden hangisi yapılır?',
+        'a' => 'Fren balatalarının kuruması için birkaç sefer kısa sürelerde hafifçe frene basılıp bırakılır',
+        'b' => 'Fren balatalarının kuruması için beklenir',
+        'c' => 'Fren balatalarının kuruması için hız artırılır',
+        'd' => 'Fren balatalarının kuruması için hız azaltılır',
+        'dogru' => 'A',
+        'aciklama' => "Su dolu derin çukurlar fren balatalarının ıslanmasına ve frenin iyi tutmamasına neden olur. Derin sulardan sonra fren pedalına kısa süre hafifçe basılıp bırakılarak balataların kuruması sağlanır.\n\nYağmurda güvenli sürüş: görüş esastır; silecekler sağlam olmalı, kısa huzmeli farlar gündüz de yakılmalı, bol yağmurda hız 80 km altına düşürülmeli, su birikintilerinde direksiyon düz ve sıkı tutulmalı, takip mesafesi 3-4 saniyeye çıkarılmalıdır.",
+    ],
 ];
