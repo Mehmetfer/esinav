@@ -67,8 +67,13 @@ $chipHref = static function (int $catId, string $q): string {
         <p><?= e($blok['body']) ?></p>
         <?php if (!empty($blok['items'])): ?>
           <ul>
-            <?php foreach ($blok['items'] as $li): ?>
-              <li><?= e($li) ?></li>
+            <?php foreach ($blok['items'] as $li):
+                $li = (string) $li;
+                $pos = strpos($li, ':');
+            ?>
+              <li>
+                <?php if ($pos !== false): ?><strong><?= e(substr($li, 0, $pos)) ?></strong>: <?= e(substr($li, $pos + 1)) ?><?php else: ?><?= e($li) ?><?php endif; ?>
+              </li>
             <?php endforeach; ?>
           </ul>
         <?php endif; ?>

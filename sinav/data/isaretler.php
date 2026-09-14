@@ -28,16 +28,57 @@ function metro_isaret_egitim(): array
 {
     return [
         [
-            'title' => 'Trafik Levhaları Kaça Ayrılır?',
-            'body' => 'Trafik işaretleri ve levhaları toplamda 6 farklı gruba ayrılmıştır.',
+            'title' => 'Trafik Levhaları Nedir?',
+            'body' => 'Trafik levhaları, trafiğe çıkan her sürücünün mutlaka dikkat etmesi gereken uyarı işaretleridir. Trafik kurallarını ve gerekliliklerini uygulama açısından önemli bir yeri olan trafik işaretleri mutlaka izlenmelidir. Trafiğin akışı, yolun durumu ve birçok bilgiyi trafik işaret ve levhalarından öğrenebiliriz. Peki trafik işaretleri ve anlamlarını biliyor muyuz? Trafik levha işaretlerinin anlamları nedir? Trafikte güvenliği sağlamanın önemli koşullarından biri trafik uyarı işaretleridir. Bu işaret ve levhalar yalnızca sürücüleri değil, trafiğin ayrılmaz bir parçası olan yayaları da ilgilendirir.',
+        ],
+        [
+            'title' => 'Trafik İşaretleri Kaç Gruba Ayrılır?',
+            'body' => 'Trafik işaretleri toplamda 6 ayrı kategoriye ayrılır. Kimi trafik işaretleri tehlike ile ilgili bir uyarı verirken, kimi trafik levhaları da olası tehlikelerde önlem amaçlı bilgi verir.',
             'items' => [
-                'Tehlike Uyarı İşaretleri (T grubu)',
-                'Trafik Tanzim İşaretleri (TT grubu)',
-                'Bilgi İşaretleri (B grubu)',
-                'Durma ve Parketme İşaretleri (P grubu)',
+                'Tehlike Uyarı İşaretleri',
+                'Trafik Tanzim İşaretleri',
+                'Bilgi İşaretleri',
+                'Durma ve Park Etme İşaretleri',
                 'Yatay İşaretleme',
                 'Yeni Standart Trafik İşaretleri',
             ],
+        ],
+        [
+            'title' => 'Tehlike Uyarı İşaretleri (T)',
+            'body' => 'Yolda genellikle yolun durumu ile ilgili bilgi veren; dönüş, kavşak ve yol çalışması gibi bilgileri içeren trafik levhaları, Tehlike Uyarı İşaretleri başlığı altında toplanır. Bu trafik levhaları "T" harfi ile başlar.',
+            'items' => [
+                'Sağa Tehlikeli Viraj (T-1a): Yolun sağında tehlikeli bir virajın çıkacağını ve yavaş hareket edilmesi gerektiğini belirtir.',
+                'Sola Tehlikeli Viraj (T-1b): Yolun solunda tehlikeli bir viraj ile karşılaşılacağını ve hızın azaltılması gerektiğini belirtir.',
+                'Sağa Tehlikeli Virajlar (T-2a): Yolda sağa doğru birden fazla tehlikeli viraj olduğunu ve hızın azaltılması gerektiğini belirtir.',
+                'Sola Tehlikeli Virajlar (T-2b): Yolda sola doğru birden fazla tehlikeli viraj olduğunu ve hızın azaltılması gerektiğini belirtir.',
+                'Tehlikeli Eğim İniş (T-3a): Tehlikeli olabilecek eğimli inişleri ifade eder; bu levha ile karşılaşıldığında hızın azaltılması gerekir.',
+                'Tehlikeli Eğim Çıkış (T-3b): Yolda rampa ya da tümsek çıkacağını ve bu nedenle hazırlıklı olunması gerektiğini belirtir.',
+            ],
+        ],
+        [
+            'title' => 'Trafik Tanzim İşaretleri (TT)',
+            'body' => 'Yollarda hayati öneme sahip bir diğer trafik işaretleri grubudur. Öncelik gerektiren, yasak ya da kısıtlama bildiren ve mecburiyetleri anlatan tanzim işaretlerinden oluşur.',
+            'items' => [
+                'Yol Ver (TT-1): Yolların birleştiği kavşaklarda bulunur; ana yoldaki araçlara öncelik verilmesi gerektiğini belirtir.',
+                'Dur (TT-2): Herhangi bir yola girmeden ve hamle yapmadan önce tüm araçlara yol verilmesi gerektiğini belirtir.',
+                'Karşıdan Gelene Yol Ver (TT-3): Dar yollarda karşıdan gelen araçların önceliği olduğunu belirtir.',
+            ],
+        ],
+        [
+            'title' => 'Trafik Bilgi İşaretleri (B)',
+            'body' => 'Yol güvenliği açısından önemli bir diğer trafik işaretleri grubudur. Bu trafik levhaları; yol boyunca şehirleri, yerleşim yerlerini ve yakın çevresinde bulunan hizmet birimleri hakkında bilgi verir. Yolun kenarlarında veya üst levhalarda bulunur ve kısaca "B" harfi ile kodlanır.',
+        ],
+        [
+            'title' => 'Durma ve Park Etme İşaretleri (P)',
+            'body' => 'Engelli alanlarına ve yasak park alanlarına park edilmemesi, mağduriyet yaratılmaması için dikkat edilmesi gereken işaretlerdir.',
+        ],
+        [
+            'title' => 'Yatay İşaretleme',
+            'body' => 'Yatay işaretleme levhaları zemin üzerinde bulunur ve araçlara yol, araç ve yol şeritleri ile ilgili bilgi verir.',
+        ],
+        [
+            'title' => 'Yeni Standart Trafik İşaretleri',
+            'body' => 'Yol kullanıcılarını; yani sürücü, yolcu ve yayaları, yoldaki olası tehlike veya bilgi verilmesi gereken hallerde uyarmak için kullanılan işaret levhalarına yeni standart trafik işaretleri denir. Diğer trafik işaret ve levhalarında olduğu gibi; sürücülerin daha dikkatli olmasını, seyir hızını düşürmesini ve belirtilen kısıtlama, yasak ve uyarılara uymasını gerektirdiğini bildirir.',
         ],
         [
             'title' => 'Trafik Levhaları Şekilleri Nasıldır?',
