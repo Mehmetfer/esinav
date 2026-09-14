@@ -63,6 +63,9 @@ try {
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:#0f172a}
 .container{max-width:1200px;margin:0 auto;padding:20px 16px 60px}
 .page-header h1{font-size:1.5rem;margin:0 0 4px;font-weight:900;color:var(--navy)}
+.page-header-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;font-size:.88rem;border-radius:10px;transition:opacity .15s}
+.back-btn:hover{opacity:.9}
 .hoca-selector{display:flex;gap:10px;margin:14px 0 18px;background:#e2e8f0;padding:6px;border-radius:10px;width:fit-content}
 .hoca-btn{padding:10px 24px;font-weight:700;text-decoration:none;color:#475569;border-radius:8px}
 .hoca-btn.active{background:var(--navy);color:#fff}
@@ -98,7 +101,10 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-s
 
 <div class="container">
     <div class="page-header">
-        <h1>Video Dersler</h1>
+        <div class="page-header-top">
+            <h1>Video Dersler</h1>
+            <a href="index.php?grup=<?php echo urlencode($currentGroup); ?>" class="back-btn">&#8592; Menüye Dön</a>
+        </div>
     </div>
     <?php if ($reklamKodu !== ''): ?>
     <div class="ad-slot" style="margin:12px 0 18px"><?php echo $reklamKodu; ?></div>
