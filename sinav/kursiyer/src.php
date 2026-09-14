@@ -22,9 +22,9 @@ try {
     $pdo = db();
     src_ensure_tables($pdo);
     src_seed_if_needed($pdo);
-    $aktif = src_aktif_oturum($pdo, $kursiyerId);
+    $aktif = src_aktif_oturum($pdo, $kursiyerId, null);
     $stmt = $pdo->prepare(
-        "SELECT id, baslangic, bitis, puan, dogru_sayisi, basarili, durum
+        "SELECT id, baslangic, bitis, puan, dogru_sayisi, basarili, durum, tip, konu
          FROM src_oturum WHERE kursiyer_id = ? AND durum = 'bitti'
          ORDER BY id DESC LIMIT 20"
     );
@@ -47,8 +47,12 @@ try {
     </div>
 
     <?php if ($aktif): ?>
+      <?php $aktifKonu = src_konular()[(string)($aktif['konu'] ?? '')] ?? ''; ?>
       <a class="k-start-btn" href="src-soru.php?q=1">DEVAM ET</a>
-      <div class="k-info-box">Devam eden bir SRC sınavınız var.</div>
+      <div class="k-info-box">
+        Devam eden bir SRC sınavınız var.
+        (<?= (($aktif['tip'] ?? 'deneme') === 'konulu') ? 'Konulu' : 'Deneme' ?><?= $aktifKonu !== '' ? ' · ' . e($aktifKonu) : '' ?>)
+      </div>
     <?php else: ?>
       <form method="post" action="src-baslat.php" id="baslatForm">
         <button type="submit" class="k-start-btn" id="baslaBtn">BAŞLA</button>
@@ -69,6 +73,7 @@ try {
           <tr>
             <th>No</th>
             <th>Tarih</th>
+            <th>Tür</th>
             <th>Not</th>
             <th>Sonuç</th>
             <th></th>
@@ -76,11 +81,18 @@ try {
         </thead>
         <tbody>
         <?php if (!$gecmis): ?>
-          <tr><td colspan="5" class="empty">Henüz SRC kaydı yok</td></tr>
+          <tr><td colspan="6" class="empty">Henüz SRC kaydı yok</td></tr>
         <?php else: foreach ($gecmis as $i => $g): ?>
           <tr>
             <td><?= $i + 1 ?></td>
             <td><?= e(date('d.m.Y H:i', strtotime((string)$g['baslangic']))) ?></td>
+            <td>
+              <?php
+                $tipAd = ((string)($g['tip'] ?? 'deneme') === 'konulu') ? 'Konulu' : 'Deneme';
+                $gKonu = src_konular()[(string)($g['konu'] ?? '')] ?? '';
+              ?>
+              <?= e($tipAd) ?><?= $gKonu !== '' ? '<br><span style="font-size:.75rem;color:var(--muted)">' . e($gKonu) . '</span>' : '' ?>
+            </td>
             <td><?= e((string)($g['puan'] ?? '—')) ?></td>
             <td><?= ((int)($g['basarili'] ?? 0) === 1) ? 'Geçti' : 'Kaldı' ?></td>
             <td><a class="k-btn-sm" href="src-sonuc.php?id=<?= (int)$g['id'] ?>">Sonuç</a></td>

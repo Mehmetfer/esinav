@@ -14,11 +14,13 @@ $error = '';
 $soru = null;
 $oturum = null;
 $istatistik = null;
+$sira = max(1, (int)($_GET['q'] ?? 1));
+$toplamSoru = 1;
 
 try {
     $pdo = db();
     src_ensure_tables($pdo);
-    $oturum = src_aktif_oturum($pdo, $kursiyerId);
+    $oturum = src_aktif_oturum($pdo, $kursiyerId, null);
     if (!$oturum) {
         redirect('/kursiyer/src.php');
     }
@@ -35,10 +37,17 @@ try {
         redirect('/kursiyer/src-bitir.php');
     }
     
+    // Oturumdaki toplam soru sayisi (deneme=50, konulu=10)
+    $stTop = $pdo->prepare("SELECT COUNT(*) FROM src_soru WHERE oturum_id = ?");
+    $stTop->execute([(int)$oturum['id']]);
+    $toplamSoru = max(1, (int)$stTop->fetchColumn());
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cevap'])) {
         src_cevap_kaydet($pdo, (int)$oturum['id'], $sira, (string)$_POST['cevap']);
         $sonraki = $sira + 1;
-        $sonSoru = (int)$pdo->prepare("SELECT MAX(sira) FROM src_soru WHERE oturum_id = ?")->execute([(int)$oturum['id']]);
+        if ($sonraki > $toplamSoru) {
+            redirect('/kursiyer/src-bitir.php');
+        }
         redirect('/kursiyer/src-soru.php?q=' . $sonraki);
     }
     
@@ -52,7 +61,7 @@ if (!empty($soru['gorsel'])) {
     $gorselUrl = '/assets/img/sorular/' . ltrim(str_replace('\\', '/', (string)$soru['gorsel']), '/');
 }
 ?>
-  <h1 class="k-page-title">SRC - Soru <?= (int)$sira ?></h1>
+  <h1 class="k-page-title">SRC - Soru <?= (int)$sira ?> / <?= (int)$toplamSoru ?></h1>
 
   <?php if ($error !== ''): ?>
     <div class="alert alert-error"><?= e($error) ?></div>
@@ -80,15 +89,17 @@ if (!empty($soru['gorsel'])) {
           <span><?= e((string)($soru[$k] ?? '')) ?></span>
         </label>
       <?php endforeach; ?>
-      <div style="display:flex;gap:10px;margin-top:12px">
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
         <button type="submit" class="k-start-btn" style="border:0;cursor:pointer">Sonraki →</button>
+        <a href="/kursiyer/src-bitir.php" class="k-start-btn" style="background:#64748b;text-decoration:none;display:inline-block"
+           onclick="return confirm('Sınavı bitirmek istediğinize emin misiniz?');">SINAVI BİTİR</a>
       </div>
     </form>
   </section>
 
   <section class="k-card" style="margin-top:16px">
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <?php for ($i = 1; $i <= 50; $i++): ?>
+      <?php for ($i = 1; $i <= $toplamSoru; $i++): ?>
         <a href="src-soru.php?q=<?= $i ?>" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;text-decoration:none;font-weight:700;font-size:.8rem;<?= $i === $sira ? 'background:#1e3a8a;color:#fff' : 'background:#e2e8f0;color:#334155' ?>"><?= $i ?></a>
       <?php endfor; ?>
     </div>

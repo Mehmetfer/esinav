@@ -16,11 +16,13 @@ $kursiyerId = (int)($user['id'] ?? 0);
 try {
     $pdo = db();
     src_ensure_tables($pdo);
-    $oturum = src_aktif_oturum($pdo, $kursiyerId);
+    $oturum = src_aktif_oturum($pdo, $kursiyerId, null);
+    $tip = (string)($oturum['tip'] ?? 'deneme');
     if ($oturum) {
         src_bitir($pdo, (int)$oturum['id']);
     }
-    redirect('/kursiyer/src.php');
+    // Konulu (mini) sinavdan sonra konu listesine, denemeden sonra SRC ana sayfasina don.
+    redirect($tip === 'konulu' ? '/kursiyer/src-konu-sinavlari.php' : '/kursiyer/src.php');
 } catch (Throwable $e) {
     $_SESSION['src_error'] = $e->getMessage();
     redirect('/kursiyer/src.php');

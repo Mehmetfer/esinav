@@ -5,6 +5,9 @@ const SRC_SURE_SN = 2700;
 const SRC_PUAN_DOGRU = 2;
 const SRC_GECME_PUAN = 70;
 const SRC_SORU_SAYISI = 50;
+/** Konulu (mini) sinav: soru sayisi ve sure */
+const SRC_KONULU_SORU = 10;
+const SRC_KONULU_SURE_SN = 600;
 
 function src_konular(): array {
     return [
@@ -31,14 +34,45 @@ function src_ders_adlari(): array {
     return src_konular();
 }
 
+/**
+ * SRC sinavi soru dagilimi (toplam SRC_SORU_SAYISI = 50).
+ * Bir derste yeterli soru yoksa o dersten elde olan kadari cekilir.
+ */
 function src_dagilim(): array {
     return [
-        'is_sagligi' => 2, 'is_organizasyon' => 2, 'surus_hazirlik' => 4,
-        'yolcu_tasima' => 4, 'guvenli_surus' => 4, 'mevzuat' => 4,
-        'trafik_cezalar' => 4, 'psikoloji' => 2, 'trafik_adabi' => 1,
-        'iletisim' => 2, 'gumruk' => 2, 'yasal' => 2,
-        'ilk_yardim' => 4, 'arac_bilgisi' => 4, 'meslek_gelisim' => 1,
+        'is_sagligi' => 4, 'is_organizasyon' => 4, 'surus_hazirlik' => 4,
+        'yolcu_tasima' => 3, 'guvenli_surus' => 4, 'mevzuat' => 3,
+        'trafik_cezalar' => 4, 'psikoloji' => 3, 'trafik_adabi' => 2,
+        'iletisim' => 3, 'gumruk' => 3, 'yasal' => 3,
+        'ilk_yardim' => 4, 'arac_bilgisi' => 4, 'meslek_gelisim' => 2,
     ];
+}
+
+/**
+ * Belirli bir derste (konu slug) aktif soru sayisi.
+ */
+function src_konu_soru_sayisi(PDO $pdo, string $konu): int {
+    try {
+        $st = $pdo->prepare("SELECT COUNT(*) FROM src_sorular WHERE ders = ? AND aktif = 1");
+        $st->execute([$konu]);
+        return (int)$st->fetchColumn();
+    } catch (Throwable) {
+        return 0;
+    }
+}
+
+/**
+ * Tum derslerin aktif soru sayilari: ['slug' => adet].
+ */
+function src_konu_sayilari(PDO $pdo): array {
+    $sonuc = [];
+    try {
+        foreach ($pdo->query("SELECT ders, COUNT(*) AS adet FROM src_sorular WHERE aktif = 1 GROUP BY ders")->fetchAll() as $r) {
+            $sonuc[(string)$r['ders']] = (int)$r['adet'];
+        }
+    } catch (Throwable) {
+    }
+    return $sonuc;
 }
 
 function src_ensure_tables(PDO $pdo): void {
@@ -103,6 +137,33 @@ function src_ensure_tables(PDO $pdo): void {
       aktif TINYINT(1) NOT NULL DEFAULT 1,
       KEY idx_src_video_konu (konu)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci");
+    src_ensure_oturum_kolonlari($pdo);
+}
+
+/**
+ * src_oturum tablosunda sonradan eklenen kolonlari tamamlar.
+ * CREATE TABLE IF NOT EXISTS mevcut tabloyu degistirmedigi icin
+ * eski kurulumlarda 'tip' / 'konu' kolonlari eksik kalabiliyor.
+ */
+function src_ensure_oturum_kolonlari(PDO $pdo): void {
+    $eksikler = [
+        'tip'  => "ALTER TABLE src_oturum ADD COLUMN tip VARCHAR(20) NOT NULL DEFAULT 'deneme' AFTER kursiyer_id",
+        'konu' => "ALTER TABLE src_oturum ADD COLUMN konu VARCHAR(30) NULL AFTER tip",
+    ];
+    foreach ($eksikler as $kolon => $sql) {
+        try {
+            $st = $pdo->prepare(
+                "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'src_oturum' AND COLUMN_NAME = ?"
+            );
+            $st->execute([$kolon]);
+            if ((int)$st->fetchColumn() === 0) {
+                $pdo->exec($sql);
+            }
+        } catch (Throwable) {
+            // Sema degistirme yetkisi yoksa sessizce devam et (koruma amacli).
+        }
+    }
 }
 
 function src_seed_if_needed(PDO $pdo): void {
@@ -118,12 +179,15 @@ function src_oturum_soru(PDO $pdo, int $oturumId, int $sira): ?array {
 function src_oturum_baslat(PDO $pdo, int $kursiyerId, string $tip = 'deneme', ?string $konu = null): int {
     $pdo->beginTransaction();
     try {
-        $pdo->prepare("UPDATE src_oturum SET durum = 'bitti', bitis = NOW() WHERE kursiyer_id = ? AND durum = 'devam' AND tip = ?")->execute([$kursiyerId, $tip]);
+        // Ayni anda tek aktif oturum kalsin (deneme veya konulu farketmez).
+        $pdo->prepare("UPDATE src_oturum SET durum = 'bitti', bitis = NOW() WHERE kursiyer_id = ? AND durum = 'devam'")->execute([$kursiyerId]);
         if ($tip === 'konulu' && $konu) {
-            $st = $pdo->prepare("SELECT id FROM src_sorular WHERE ders = ? AND aktif = 1 ORDER BY RAND() LIMIT 10");
+            $st = $pdo->prepare("SELECT id FROM src_sorular WHERE ders = ? AND aktif = 1 ORDER BY RAND() LIMIT " . SRC_KONULU_SORU);
             $st->execute([$konu]);
             $ids = $st->fetchAll(PDO::FETCH_COLUMN);
         } else {
+            $tip = 'deneme';
+            $konu = null;
             $dagilim = src_dagilim();
             $ids = [];
             foreach ($dagilim as $k => $adet) {
@@ -132,7 +196,7 @@ function src_oturum_baslat(PDO $pdo, int $kursiyerId, string $tip = 'deneme', ?s
                 foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $fid) { $ids[] = (int)$fid; }
             }
         }
-        $sure = ($tip === 'konulu') ? 600 : SRC_SURE_SN;
+        $sure = ($tip === 'konulu') ? SRC_KONULU_SURE_SN : SRC_SURE_SN;
         $pdo->prepare("INSERT INTO src_oturum (kursiyer_id, tip, konu, baslangic, sure_sn, durum) VALUES (?, ?, ?, NOW(), ?, 'devam')")->execute([$kursiyerId, $tip, $konu, $sure]);
         $oturumId = (int)$pdo->lastInsertId();
         $ins = $pdo->prepare("INSERT INTO src_soru (oturum_id, soru_id, sira) VALUES (?, ?, ?)");
@@ -142,9 +206,19 @@ function src_oturum_baslat(PDO $pdo, int $kursiyerId, string $tip = 'deneme', ?s
     } catch (Throwable $e) { $pdo->rollBack(); throw $e; }
 }
 
-function src_aktif_oturum(PDO $pdo, int $kursiyerId, string $tip = 'deneme'): ?array {
-    $st = $pdo->prepare("SELECT * FROM src_oturum WHERE kursiyer_id = ? AND durum = 'devam' AND tip = ? ORDER BY id DESC LIMIT 1");
-    $st->execute([$kursiyerId, $tip]);
+/**
+ * Kursiyerin devam eden SRC oturumunu dondurur.
+ * $tip = null verilirse tip filtresi uygulanmaz (deneme + konulu birlikte).
+ * $konu verilirse sadece o konuya ait oturum aranir.
+ */
+function src_aktif_oturum(PDO $pdo, int $kursiyerId, ?string $tip = 'deneme', ?string $konu = null): ?array {
+    $sql = "SELECT * FROM src_oturum WHERE kursiyer_id = ? AND durum = 'devam'";
+    $par = [$kursiyerId];
+    if ($tip !== null) { $sql .= " AND tip = ?"; $par[] = $tip; }
+    if ($konu !== null) { $sql .= " AND konu = ?"; $par[] = $konu; }
+    $sql .= " ORDER BY id DESC LIMIT 1";
+    $st = $pdo->prepare($sql);
+    $st->execute($par);
     return $st->fetch() ?: null;
 }
 
