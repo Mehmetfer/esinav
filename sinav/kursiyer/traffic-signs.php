@@ -7,7 +7,10 @@ require __DIR__ . '/_layout_top.php';
 require_once dirname(__DIR__) . '/data/isaretler.php';
 
 $kategoriler = metro_isaret_kategoriler();
-$items = metro_isaretler();
+$items = metro_isaretler_db();
+if (empty($items)) {
+    $items = metro_isaretler(); // DB bossa statik katalog yedek olarak kullanilir
+}
 $egitim = metro_isaret_egitim();
 $sekiller = metro_isaret_sekiller();
 

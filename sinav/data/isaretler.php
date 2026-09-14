@@ -268,3 +268,48 @@ function metro_isaretler(): array
 
     return $list;
 }
+
+/**
+ * DB'den trafik işaretlerini okur (admin panelinden yönetilir).
+ * Boşsa boş dizi döner; katalog sayfası statik metro_isaretler()'i yedek olarak kullanır.
+ *
+ * @return list<array{cat:int,code?:string,title:string,file:string}>
+ */
+function metro_isaretler_db(): array
+{
+    try {
+        $pdo = db();
+        $rows = $pdo->query(
+            "SELECT t.*, c.slug AS cat_slug
+             FROM traffic_signs t
+             LEFT JOIN categories c ON t.category_id = c.id
+             WHERE t.aktif = 1
+             ORDER BY t.sort_order, t.id"
+        )->fetchAll();
+    } catch (Throwable) {
+        return [];
+    }
+
+    $slugToCat = [
+        'isaret-t' => 1,
+        'isaret-tt' => 2,
+        'isaret-b' => 3,
+        'isaret-p' => 4,
+        'isaret-yatay' => 5,
+        'isaret-yeni' => 6,
+    ];
+
+    $list = [];
+    foreach ($rows as $r) {
+        $code = trim((string)($r['code'] ?? ''));
+        $name = trim((string)($r['name'] ?? ''));
+        $cat = $slugToCat[(string)($r['cat_slug'] ?? '')] ?? (int)($r['category_id'] ?? 0);
+        $list[] = [
+            'cat' => $cat,
+            'code' => $code,
+            'title' => $code !== '' ? $name . ' (' . $code . ')' : $name,
+            'file' => trim((string)($r['image'] ?? '')),
+        ];
+    }
+    return $list;
+}
