@@ -69,6 +69,9 @@ $secenekKeys = ['A' => 'secenek_a', 'B' => 'secenek_b', 'C' => 'secenek_c', 'D' 
               </div>
             <?php endforeach; ?>
           </div>
+          <?php if (!empty($s['aciklama'])): ?>
+            <div style="margin-top:12px;padding:10px 14px;background:#f0f9ff;border-left:3px solid #1e3a8a;border-radius:6px;font-size:.85rem;color:#1e3a8a;line-height:1.6"><?= e((string)$s['aciklama']) ?></div>
+          <?php endif; ?>
         </section>
       <?php endforeach; ?>
     </div>

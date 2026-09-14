@@ -13,7 +13,7 @@ $isEdit = $id > 0;
 $pageTitle = $isEdit ? 'SRC Soru Düzenle' : 'SRC Yeni Soru';
 $activeMenu = 'src-sorular';
 
-$form = ['ders' => 'is_sagligi', 'soru' => '', 'secenek_a' => '', 'secenek_b' => '', 'secenek_c' => '', 'secenek_d' => '', 'dogru' => 'A', 'aktif' => 1, 'kaynak' => 'manuel', 'gorsel' => ''];
+$form = ['ders' => 'is_sagligi', 'soru' => '', 'secenek_a' => '', 'secenek_b' => '', 'secenek_c' => '', 'secenek_d' => '', 'dogru' => 'A', 'aktif' => 1, 'kaynak' => 'manuel', 'gorsel' => '', 'aciklama' => ''];
 $error = '';
 $message = '';
 
@@ -22,7 +22,7 @@ if ($isEdit) {
     $st->execute([$id]);
     $row = $st->fetch();
     if (!$row) { redirect('/admin/src-sorular.php'); }
-    $form = ['ders' => (string)$row['ders'], 'soru' => (string)$row['soru'], 'secenek_a' => (string)$row['secenek_a'], 'secenek_b' => (string)$row['secenek_b'], 'secenek_c' => (string)$row['secenek_c'], 'secenek_d' => (string)$row['secenek_d'], 'dogru' => strtoupper((string)$row['dogru']), 'aktif' => (int)$row['aktif'], 'kaynak' => (string)($row['kaynak'] ?? 'manuel'), 'gorsel' => (string)($row['gorsel'] ?? '')];
+    $form = ['ders' => (string)$row['ders'], 'soru' => (string)$row['soru'], 'secenek_a' => (string)$row['secenek_a'], 'secenek_b' => (string)$row['secenek_b'], 'secenek_c' => (string)$row['secenek_c'], 'secenek_d' => (string)$row['secenek_d'], 'dogru' => strtoupper((string)$row['dogru']), 'aktif' => (int)$row['aktif'], 'kaynak' => (string)($row['kaynak'] ?? 'manuel'), 'gorsel' => (string)($row['gorsel'] ?? ''), 'aciklama' => (string)($row['aciklama'] ?? '')];
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!in_array($dogru, ['A', 'B', 'C', 'D'], true)) $dogru = 'A';
     $kaynak = trim((string)($_POST['kaynak'] ?? 'manuel'));
     if (!in_array($kaynak, ['doc', 'meb', 'manuel'], true)) $kaynak = 'manuel';
-    $data = ['ders' => $ders, 'soru' => trim((string)($_POST['soru'] ?? '')), 'secenek_a' => trim((string)($_POST['secenek_a'] ?? '')), 'secenek_b' => trim((string)($_POST['secenek_b'] ?? '')), 'secenek_c' => trim((string)($_POST['secenek_c'] ?? '')), 'secenek_d' => trim((string)($_POST['secenek_d'] ?? '')), 'dogru' => $dogru, 'aktif' => isset($_POST['aktif']) ? 1 : 0, 'kaynak' => $kaynak];
+    $data = ['ders' => $ders, 'soru' => trim((string)($_POST['soru'] ?? '')), 'secenek_a' => trim((string)($_POST['secenek_a'] ?? '')), 'secenek_b' => trim((string)($_POST['secenek_b'] ?? '')), 'secenek_c' => trim((string)($_POST['secenek_c'] ?? '')), 'secenek_d' => trim((string)($_POST['secenek_d'] ?? '')), 'dogru' => $dogru, 'aktif' => isset($_POST['aktif']) ? 1 : 0, 'kaynak' => $kaynak, 'aciklama' => trim((string)($_POST['aciklama'] ?? ''))];
     
     if ($data['soru'] === '') { $error = 'Soru metni zorunludur.'; }
     elseif ($data['secenek_a'] === '' || $data['secenek_b'] === '' || $data['secenek_c'] === '' || $data['secenek_d'] === '') { $error = 'Tüm şıklar (A–D) doldurulmalıdır.'; }
@@ -63,12 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if ($isEdit) {
-                $upd = $pdo->prepare('UPDATE src_sorular SET ders=?, soru=?, secenek_a=?, secenek_b=?, secenek_c=?, secenek_d=?, dogru=?, aktif=?, gorsel=?, kaynak=? WHERE id=?');
-                $upd->execute([$data['ders'], $data['soru'], $data['secenek_a'], $data['secenek_b'], $data['secenek_c'], $data['secenek_d'], $data['dogru'], $data['aktif'], $gorsel !== '' ? $gorsel : null, $data['kaynak'], $id]);
+                $upd = $pdo->prepare('UPDATE src_sorular SET ders=?, soru=?, secenek_a=?, secenek_b=?, secenek_c=?, secenek_d=?, dogru=?, aktif=?, gorsel=?, kaynak=?, aciklama=? WHERE id=?');
+                $upd->execute([$data['ders'], $data['soru'], $data['secenek_a'], $data['secenek_b'], $data['secenek_c'], $data['secenek_d'], $data['dogru'], $data['aktif'], $gorsel !== '' ? $gorsel : null, $data['kaynak'], $data['aciklama'], $id]);
                 $message = 'Soru güncellendi.';
             } else {
-                $ins = $pdo->prepare('INSERT INTO src_sorular (ders, soru, secenek_a, secenek_b, secenek_c, secenek_d, dogru, aktif, gorsel, kaynak) VALUES (?,?,?,?,?,?,?,?,?,?)');
-                $ins->execute([$data['ders'], $data['soru'], $data['secenek_a'], $data['secenek_b'], $data['secenek_c'], $data['secenek_d'], $data['dogru'], $data['aktif'], $gorsel !== '' ? $gorsel : null, $data['kaynak']]);
+                $ins = $pdo->prepare('INSERT INTO src_sorular (ders, soru, secenek_a, secenek_b, secenek_c, secenek_d, dogru, aktif, gorsel, kaynak, aciklama) VALUES (?,?,?,?,?,?,?,?,?,?,?)');
+                $ins->execute([$data['ders'], $data['soru'], $data['secenek_a'], $data['secenek_b'], $data['secenek_c'], $data['secenek_d'], $data['dogru'], $data['aktif'], $gorsel !== '' ? $gorsel : null, $data['kaynak'], $data['aciklama']]);
                 $message = 'Soru oluşturuldu.';
                 $id = (int)$pdo->lastInsertId();
                 $isEdit = true;
@@ -127,6 +127,10 @@ require __DIR__ . '/_layout_top.php';
         <div>
           <label style="<?= $lab ?>">Soru metni</label>
           <textarea name="soru" rows="4" required style="<?= $inp ?>"><?= e((string)$form['soru']) ?></textarea>
+        </div>
+        <div>
+          <label style="<?= $lab ?>">Açıklama (çözüm)</label>
+          <textarea name="aciklama" rows="4" style="<?= $inp ?>"><?= e((string)$form['aciklama']) ?></textarea>
         </div>
         <?php foreach (['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D'] as $k => $h): ?>
           <div>

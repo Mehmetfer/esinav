@@ -23,6 +23,7 @@ function src_konular(): array {
         'ilk_yardim'     => '13 - İlk Yardım',
         'arac_bilgisi'   => '14 - Araç Bilgisi ve Ekonomik Araç Kullanma',
         'meslek_gelisim' => '15 - Mesleki Gelişim Dersi',
+        'cikmis'         => '16 - Çıkmış Sınav Soruları',
     ];
 }
 
@@ -53,6 +54,7 @@ function src_ensure_tables(PDO $pdo): void {
       aktif TINYINT(1) NOT NULL DEFAULT 1,
       gorsel VARCHAR(255) NULL,
       kaynak VARCHAR(20) NULL,
+      aciklama TEXT NULL,
       KEY idx_src_soru_konu (ders)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci");
     $pdo->exec("CREATE TABLE IF NOT EXISTS src_oturum (
